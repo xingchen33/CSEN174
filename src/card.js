@@ -1,5 +1,3 @@
-const STANDARDANIMATIONRATE = 24
-
 class Card {
     /**
    * @param {string} type - The card type ("l" or "e")

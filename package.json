@@ -1,8 +1,14 @@
 {
   "dependencies": {
-    "jest": "^30.5.2"
+    "browserify": "^17.0.1",
+    "jest": "^30.5.2",
+    "uniq": "^1.0.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "bundle": ""
+  },
+  "allowScripts": {
+    "browserify@17.0.1": true
   }
 }

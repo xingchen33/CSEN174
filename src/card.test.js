@@ -1,4 +1,4 @@
-const Card = require("./cardClass")
+const Card = require("./card");
 
 const defaultCard = new Card("e", "exampleName", "This is the description.", [], 1);
 
