@@ -1,4 +1,4 @@
-STANDARDANIMATIONRATE = 24
+const STANDARDANIMATIONRATE = 24
 
 class Card {
     /**
@@ -229,5 +229,6 @@ function visualize(selected_card){
     cardContents.appendChild(cardEnergy)
 
     return cardBase
-}
-    
+};
+
+module.exports = Card;
