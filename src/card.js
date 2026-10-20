@@ -67,7 +67,7 @@ class Card {
     }
 
     getActualDamage(){
-        return "placeholder"
+        return this.customization["damage"] || null;
     }
 
     getActualEnergy(){
