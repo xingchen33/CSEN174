@@ -1,4 +1,7 @@
 class Player {
+    /** 
+     * @param {*} image - player's image icon
+     */
     constructor (image="pacman.jpeg"){
         this.LogicCards = new CardGroup("hand",{"spread": 20, "h": 5, "w": 20, "origin": [30,69]})  // holds the logic cards in hand
         this.EffectCards = new CardGroup("hand",{"spread": 20, "h": 5, "w": 20, "origin": [70,69]}) // holds the effect cards in hand
@@ -102,9 +105,16 @@ class Player {
         return vis
     }
     updateAllCardDisplays(){
+        /*
+        collect all discarded cards and place in discard pile
+        */
         [this.EffectCards, this.LogicCards, this.drawPile].forEach((pile) => {
             this.discardPile.addCards(pile.discarded())
         });
+        
+        /*
+        update all card groups
+        */
         [this.EffectCards, this.LogicCards, this.discardPile, this.drawPile].forEach((pile)=>{
             pile.updateDisplay()
         })
