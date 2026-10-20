@@ -1,4 +1,4 @@
-export class EnemyList{
+class EnemyList{
     constructor (){
         this.enemies = []
     }

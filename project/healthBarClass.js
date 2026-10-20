@@ -1,5 +1,5 @@
 // WORK IN Progress
-export class Healthbar {
+class Healthbar {
     constructor (health=67, maxHealth=67, color1="#eb4034", color2="#000000", color3="#ffffff"){
         this.health = health 
         this.max = maxHealth

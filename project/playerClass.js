@@ -1,4 +1,4 @@
-export class Player {
+class Player {
     constructor (image="pacman.jpeg"){
         this.LogicCards = new CardGroup("hand",{"spread": 20, "h": 5, "w": 20, "origin": [30,69]})  // holds the logic cards in hand
         this.EffectCards = new CardGroup("hand",{"spread": 20, "h": 5, "w": 20, "origin": [70,69]}) // holds the effect cards in hand

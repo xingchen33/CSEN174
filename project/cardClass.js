@@ -1,6 +1,6 @@
 STANDARDANIMATIONRATE = 24
 
-export class Card {
+class Card {
     constructor (type, name, description, effects, energy, customization={}, tags={}){
         this.type = type
         this.name = name 

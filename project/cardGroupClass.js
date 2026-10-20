@@ -1,4 +1,4 @@
-export class CardGroup {
+class CardGroup {
     constructor (type, visuals={"spread": 40, "h": 5, "w": 20, "origin": [50,70]}){
         this.type = type 
         this.cards = []
