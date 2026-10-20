@@ -1,6 +1,15 @@
 STANDARDANIMATIONRATE = 24
 
 class Card {
+    /**
+   * @param {string} type - The card type ("l" or "e")
+   * @param {number} name - The card name
+   * @param {string} description - The card description
+   * @param {array} effects - The effects for the card
+   * @param {number} energy - The card energy cost
+   * @param {object} customization - Customization options for the card (e.g., background color)
+   * @param {object} tags - Tags associated with the card
+   */
     constructor (type, name, description, effects, energy, customization={}, tags={}){
         this.type = type
         this.name = name 
@@ -11,34 +20,37 @@ class Card {
         this.cardPos = [0,0]
         this.discarded = false
         this.player = null
+
         // this.effects.forEach((effect) => {
         //     console.log(effect)
         // })
+
         this.tags = this.tags
-        this.card = this.show()
-        this.card.addEventListener("click", ()=>{
-            if (this.selectable){ // EXAMPLE FUNCTION
-                // if (this.card.classList.contains("flipped")){
-                //     this.card.classList.remove("flipped")
-                // }
-                // else {
-                //     this.card.classList.add("flipped")
-                // }
-                this.discard();
+        this.card = this.show()         // generate the card's visuals
+        this.card.addEventListener("click", ()=>{   // when this card is clicked
+            if (this.selectable){ 
+                this.discard();         // discard this card
             }
         })
 
-        this.rotation = 0
+        this.rotation = 0           // rotation of card's visuals
         
-        this.selectable = true
+        this.selectable = true      // card can be selected by player
 
-        this.updateCardVisual()
+        this.updateCardVisual()     // update the card's visuals
     }
 
     backToDraw(){
-        this.discarded = false
-        this.card.style.zIndex = 100000
-        this.moveAnimation(
+        /* 
+        Animation to move card back to the draw pile
+        * also set this.discarded to false so card is collected from discard pile 
+        */
+        this.discarded = false          // remove from discarded pile
+        this.card.style.zIndex = 100000 // move visual to front
+        /*
+        Run animation
+        */
+        this.moveAnimation(             
             new Animation(
                 {
                     "coords": this.player.drawPile.origin, 
@@ -48,9 +60,15 @@ class Card {
     }
 
     discard(){
-        // may want to add a cooldown
-        this.discarded = true
-        this.card.style.zIndex = 100000
+        /*
+        Animation to move card to the discard pile
+        * also set this.discarded to true so collected to place in discard pil
+        */
+        this.discarded = true           // add to discard pile
+        this.card.style.zIndex = 100000 // move visual to front
+        /*
+        Run animation
+        */
         this.moveAnimation(
             new Animation(
                 {
@@ -58,10 +76,12 @@ class Card {
                     "time": 1.5,
                     "onEnd": this.player.updateAllCardDisplays // not working
                 }))
-        // this.player.updateAllCardDisplays()
     }
 
     updateCardVisual(){
+        /*
+
+        */
         if (this.player == null){
             this.hidden()
             return
@@ -159,7 +179,7 @@ class Card {
 }
 
      
-export function visualize(selected_card){
+function visualize(selected_card){
     cardBase = document.createElement("div")
     cardBase.classList.add("cardBase")
     cardBase.style.position = "absolute"
