@@ -24,18 +24,10 @@ class Card {
         // })
 
         this.tags = this.tags
-        this.card = this.show()         // generate the card's visuals
-        this.card.addEventListener("click", ()=>{   // when this card is clicked
-            if (this.selectable){ 
-                this.discard();         // discard this card
-            }
-        })
 
         this.rotation = 0           // rotation of card's visuals
         
         this.selectable = true      // card can be selected by player
-
-        this.updateCardVisual()     // update the card's visuals
     }
 
     backToDraw(){
@@ -44,7 +36,6 @@ class Card {
         * also set this.discarded to false so card is collected from discard pile 
         */
         this.discarded = false          // remove from discarded pile
-        this.card.style.zIndex = 100000 // move visual to front
         /*
         Run animation
         */
@@ -63,7 +54,6 @@ class Card {
         * also set this.discarded to true so collected to place in discard pil
         */
         this.discarded = true           // add to discard pile
-        this.card.style.zIndex = 100000 // move visual to front
         /*
         Run animation
         */
@@ -76,36 +66,6 @@ class Card {
                 }))
     }
 
-    updateCardVisual(){
-        /*
-
-        */
-        if (this.player == null){
-            this.hidden()
-            return
-        }
-        this.shown()
-        if (this.selectable == true)
-            this.card.classList.add("cardSelectable")
-        else 
-            this.card.classList.remove("cardSelectable")
-
-        
-        if (this.getActualEnergy() == 0)
-            this.hideEnergy()
-        // else 
-        //     this.showEnergy()
-
-        // this.card.style.transform = "rotate(" + String(this.rotation) + "deg)"
-
-        this.card.style.left = String(this.cardPos[0]) + "%"
-        this.card.style.top = String(this.cardPos[1]) + "%"
-
-    }
-
-    show(){
-        return visualize(this)
-    }
     getActualDamage(){
         return "placeholder"
     }
@@ -116,12 +76,10 @@ class Card {
     setLocation(x,y){
         this.cardPos[0] = x
         this.cardPos[1] = y
-        this.updateCardVisual()
     }
     shiftLocation(shift=[0,0]){
         this.cardPos[0] += shift[0]
         this.cardPos[1] += shift[1]
-        this.updateCardVisual()
     }
     getLocation(){
         return this.cardPos
@@ -129,20 +87,12 @@ class Card {
     
     setRotation(r){
         this.rotation = r
-        this.updateCardVisual()
     }
     adjustRotation(n){
         this.rotation += n
-        this.updateCardVisual()
     }
     getRotation(){
         return this.rotation
-    }
-    hideEnergy(){
-        this.card.cNRG.style.display= "none";
-    }
-    showEnergy(){
-        this.card.cNRG.style.display= "block";
     }
     moveAnimation(destinations){
         return
@@ -167,66 +117,6 @@ class Card {
         setTimeout(() => {this.animationFrame(change, onEnd, framesRemaining-1)}, 100/STANDARDANIMATIONRATE);
         return
     }
-    
-    hidden(){
-        this.card.style.display = "none"
-    }
-    shown(){
-        this.card.style.display = "block"
-    }
-}
-
-     
-function visualize(selected_card){
-    cardBase = document.createElement("div")
-    cardBase.classList.add("cardBase")
-    cardBase.style.position = "absolute"
-    // cardBase.style.transformOrigin = "0 0"
-
-    cardContents = document.createElement("div")
-    cardContents.classList.add("cardContents","cardItem")
-    if (Object.hasOwn(selected_card.customization, "bg")){
-        cardContents.style.background = selected_card.customization["bg"]
-    }
-
-    cardBack = document.createElement('img')
-    cardBack.src = "pokemon.png"
-    cardBack.classList.add("cardBack", "cardItem")
-    
-    cardName = document.createElement("div")
-    cardName.classList.add("cardName","cardItem")
-    cardName.innerText = selected_card.name
-    if (Object.hasOwn(selected_card.customization, "lbg")){
-        cardName.style.background = selected_card.customization["lbg"]
-    }
-
-    cardDesc = document.createElement("div")
-    cardDesc.classList.add("cardDesc","cardItem")
-    cardDesc.innerText = selected_card.description
-    if (Object.hasOwn(selected_card.customization, "cdbg")){
-        cardDesc.style.background = selected_card.customization["cdbg"]
-    }
-
-    cardEnergy = document.createElement("div")
-    cardEnergy.classList.add("cardNRG", "cardItem")
-    cardEnergy.innerText = selected_card.getActualEnergy()
-    if (Object.hasOwn(selected_card.customization, "nrgbg")){
-        cardEnergy.style.background = selected_card.customization["nrgbg"]
-    }
-
-    document.body.appendChild(cardBase)
-    cardBase.appendChild(cardContents)
-    cardBase.cBack = (cardBack)
-    cardBase.appendChild(cardBack)
-
-    cardBase.cName = cardName
-    cardContents.appendChild(cardName)
-    cardBase.cDesc = cardDesc
-    cardContents.appendChild(cardDesc)
-    cardBase.cNRG = cardEnergy
-    cardContents.appendChild(cardEnergy)
-
-    return cardBase
-};
+}    
 
 module.exports = Card;
