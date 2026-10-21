@@ -1,3 +1,5 @@
+const CardGroup = require("./cardGroup.js")
+const Healthbar = require("./healthBar.js")
 class Player {
     /** 
      * @param {*} image - player's image icon
@@ -85,24 +87,14 @@ class Player {
         return 
     }
     visualize(coords=[10, 30]){
-        /* 
-        create and place img element on screen
-        */
-        this.setLocation(coords)                // set location for img to be made
-        /*
-        create img element
-        */
-        let vis = document.createElement("img") 
-        vis.src = this.image
-        vis.classList.add("playerImg")
-        /* 
-        place img element
-        */
-        vis.style.left = String(this.coords[0]) + "%"
-        vis.style.top = String(this.coords[1]) + "%"
-        document.body.appendChild(vis)
-        
-        return vis
+    this.setLocation(coords)
+    let vis = document.createElement("img")
+    vis.src = this.image
+    vis.classList.add("playerImg")
+    vis.style.left = String(this.coords[0]) + "%"
+    vis.style.top = String(this.coords[1]) + "%"
+    document.body.appendChild(vis)
+    return vis
     }
     updateAllCardDisplays(){
         /*
@@ -120,3 +112,4 @@ class Player {
         })
     }
 }
+module.exports = Player;
