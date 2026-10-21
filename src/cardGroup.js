@@ -68,3 +68,7 @@ class CardGroup {
         return this.cards.pop()
     }
 }
+
+module.exports = CardGroup;
+
+
