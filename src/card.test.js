@@ -1,29 +1,25 @@
-const Card = require("./card");
+import Card from "./card.js";
 
-const defaultCard = new Card("e", "exampleName", "This is the description.", [], 1);
-const damageCard = new Card("e", "damangeName", "This card does damage.", [], 1, {damage: 10});
+const defaultCard = new Card("e", "exampleName", "This is the description.", {}, 1);
+const damageCard = new Card("e", "damangeName", "This card does damage.", {damage: 10}, 1);
+const overchargedCard = new Card("e", "damangeName", "This card does damage, and is overcharged.", {damage: 15, overcharged: true}, 1);
 
 test('energy works as expected unmodified', () => {
-  expect(defaultCard.getActualEnergy()).toBe(1);
+  expect(defaultCard.getEnergy()).toBe(1);
 });
 
 test('damage works as expected unmodified', () => {
-  expect(damageCard.getActualDamage()).toBe(10);
+  expect(damageCard.getDamage()).toBe(10);
 });
 
 test('no damage set returns null', () => {
-  expect(defaultCard.getActualDamage()).toBe(null);
+  expect(defaultCard.getDamage()).toBe(null);
 });
 
-// Location tests
-
-test('getting/setting location works', () => {
-  defaultCard.setLocation(5,10);
-  expect(defaultCard.getLocation()).toEqual([5, 10]);
+test('overcharging increases damage', () => {
+  expect(overchargedCard.getDamage()).toBe(30);
 });
 
-test('shifting location works', () => {
-  defaultCard.setLocation(5,10);
-  defaultCard.shiftLocation([20, -5]);
-  expect(defaultCard.getLocation()).toEqual([25, 5]);
+test('overcharging increases energy', () => {
+  expect(overchargedCard.getEnergy()).toBe(2);
 });

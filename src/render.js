@@ -1,26 +1,25 @@
-const Card = require("./card");
-
-// Rate at which cards move (frames per second)
-STANDARDANIMATIONRATE = 24
+import Card from "./card.js";
+import Player from "./player.js";
+import Enemy from "./enemy.js";
 
 // burnEffect = new Effect("Burning", "1 Damage over time ", example, 1)
-burnEffect = null
+const burnEffect = null
 function dmg(q){
     return {
         "name": "Damage",
         "quantity": q
     }
 }
-player = new Player()
+const player = new Player()
 
-LIGHTCOLOR1 = "#f2e6c4"
-LIGHTCOLOR2 = "#f5dd9a"
-NATURALCOLOR1 = "#c1f59a"
-NATURALCOLOR2 = "#9ad96a"
-DARKCOLOR1 = "#cf6ee0"
-DARKCOLOR2 = "#7c3d87"
+const LIGHTCOLOR1 = "#f2e6c4"
+const LIGHTCOLOR2 = "#f5dd9a"
+const NATURALCOLOR1 = "#c1f59a"
+const NATURALCOLOR2 = "#9ad96a"
+const DARKCOLOR1 = "#cf6ee0"
+const DARKCOLOR2 = "#7c3d87"
 
-cardList = {
+const cardList = {
     "Fireball": ["l", "Fireball", `{dmg} Damage`,[burnEffect, dmg(6)], 2, {"bg": NATURALCOLOR2, "lbg": NATURALCOLOR1, "cdbg": NATURALCOLOR1}, ["Natural"]],
     "EtherPupil": ["e", "Ether Pupil", "Play a natural card from your hand", [], 1, {"bg": NATURALCOLOR2, "lbg": NATURALCOLOR1, "cdbg": NATURALCOLOR1}, ["Natural"]],
     "CompiledTome": ["e", "CompiledTome", "Each turn, when you reuse a previous function for the first time, +1 energy.", [], 0, {"bg": NATURALCOLOR2, "lbg": NATURALCOLOR1, "cdbg": NATURALCOLOR1}, ["Natural"]],
@@ -61,13 +60,24 @@ b4.addEventListener("click", function(){
 document.body.appendChild(b4)
 
 
-let settingsBTN = document.createElement("img")
+const settingsBTN = document.createElement("img")
 settingsBTN.classList.add("settingsButton")
-settingsBTN.src = "67.png"
+settingsBTN.src = "./assets/67.png"
 document.body.appendChild(settingsBTN)
 
 
-let myEnemies = new EnemyList()
-let enemy1 = new Enemy()
-enemy1.setLocation([60,30])
-myEnemies.addEnemy(enemy1)
+function visualizePlayer (player, coords=[10, 30]){
+  player.setLocation(coords)
+  let vis = document.createElement("img")
+  vis.src = player.image
+  vis.classList.add("playerImg")
+  vis.style.left = String(player.coords[0]) + "%"
+  vis.style.top = String(player.coords[1]) + "%"
+  document.body.appendChild(vis)
+  return vis
+}
+
+
+const myEnemies = [];
+const enemy1 = new Enemy();
+enemy1.setLocation([60,30]);
