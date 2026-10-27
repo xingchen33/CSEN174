@@ -2,7 +2,7 @@
     position: absolute;
     height: 8%;
     right: 2%;
-    top: 2%
+    top: 2%;
 }
 .settings-button:hover{
     transition: transform 0.3s ease;
