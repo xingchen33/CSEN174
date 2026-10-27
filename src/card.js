@@ -1,6 +1,6 @@
 export default class Card {
   /**
-   * @param {string} type - The card type ("l" or "e")
+   * @param {string} type - The card type ("l" or "s" or "r")
    * @param {number} name - The card name
    * @param {string} description - The card description
    * @param {object} effects - The effects for the card

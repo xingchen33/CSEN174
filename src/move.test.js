@@ -1,8 +1,8 @@
 import Player from "./player.js"
-import Deck from "./deck.js"
+import CardDeck from "./simpleDeck.js"
 
 test('with an empty main attack, only statements should be playable', () => {
-  const deck = new Deck("fireballer");
+  const deck = new CardDeck("fireballer");
   const player = new Player(100, 5, deck);
 
   player.damage(20);

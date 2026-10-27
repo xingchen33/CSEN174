@@ -1,16 +1,5 @@
 import { CARDLIST } from "./card.js";
-
-const LOGIC_PRESETS = {
-  "empty": [],
-  "fireballer": [
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Ether Pupil"),
-  ]
-};
+import SimpleDeck from "./simpleDeck.js";
 
 const CARD_PRESETS = {
   "empty": [],
@@ -24,12 +13,9 @@ const CARD_PRESETS = {
   ]
 };
 
-export default class Deck {
-  /**
-   * @param {number} preset - Which of the deck presets to use
-   */
-  constructor (type, preset){
-    this.preset = preset;
+export default class CardDeck extends SimpleDeck {
+  constructor (preset){
+    super("empty");
 
     // It is POSSIBLE this is more structured cloning than needs to happen
     // "Top" of the deck is drawPile[0]
@@ -43,22 +29,9 @@ export default class Deck {
     this.graveyard = [];
   }
 
-  /**
-   * @param {boolean} refill - Should the graveyard be shuffled back into the deck?
-   */
-  shuffleDeck(refill=false){
-    if (refill) {
-      this.drawPile.push(...this.graveyard);
-      this.graveyard = [];
-    }
-
-    // Source - https://stackoverflow.com/a/12646864
-    // Posted by Laurens Holst, modified by community. See post 'Timeline' for change history
-    // Retrieved 2026-10-24, License - CC BY-SA 4.0
-    for (let i = this.drawPile.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [this.drawPile[i], this.drawPile[j]] = [this.drawPile[j], this.drawPile[i]];
-    }
+  refill() {
+    this.drawPile.push(...this.graveyard);
+    this.graveyard = [];
   }
 
   // TODO Ask about hand limit mechanics
@@ -77,7 +50,8 @@ export default class Deck {
     let remaining = n - this.drawPile.length;
     this.hand.push(...this.drawPile);
     this.drawPile = [];
-    this.shuffleDeck(true)
+    this.refill();
+    this.shuffleDeck();
 
     // Finish drawing
     if (remaining <= this.drawPile.length) {

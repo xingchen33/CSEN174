@@ -1,8 +1,8 @@
 import Player from "./player.js"
-import Deck from "./deck.js"
+import SimpleDeck from "./simpleDeck.js";
 
 test('damaging/healing works as expected', () => {
-  const deck = new Deck("fireballer");
+  const deck = new SimpleDeck("fireballer");
   const player = new Player(100, 5, deck);
 
   player.damage(20);
@@ -12,7 +12,7 @@ test('damaging/healing works as expected', () => {
 });
 
 test('energy depletes when playing cards', () => {
-  const deck = new Deck("fireballer");
+  const deck = new SimpleDeck("fireballer");
   const player = new Player(100, 5, deck);
 
   player.deck.draw(1);
@@ -22,7 +22,7 @@ test('energy depletes when playing cards', () => {
 });
 
 test('energy comes back after passing', () => {
-  const deck = new Deck("fireballer");
+  const deck = new SimpleDeck("fireballer");
   const player = new Player(100, 5, deck);
 
   player.deck.draw(1);
@@ -33,7 +33,7 @@ test('energy comes back after passing', () => {
 });
 
 test('playing a card removes it from your hand', () => {
-  const deck = new Deck("fireballer");
+  const deck = new SimpleDeck("fireballer");
   const player = new Player(100, 5, deck);
 
   player.deck.draw(3);
@@ -43,7 +43,7 @@ test('playing a card removes it from your hand', () => {
 });
 
 test('failing to play a card does not remove it from your hand', () => {
-  const deck = new Deck("fireballer");
+  const deck = new SimpleDeck("fireballer");
   const player = new Player(100, 5, deck);
 
   player.deck.draw(6);

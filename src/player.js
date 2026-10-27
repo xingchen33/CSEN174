@@ -2,13 +2,17 @@ import Entity from "./entity.js"
 export default class Player extends Entity {
   /** 
    * @param {*} image - player's image icon
-   * @param {*} maxEnergy - player's maximum energy
+   * @param {int} maxHealth
+   * @param {int} maxEnergy
+   * @param {CardDeck} cardDeck - player's playable cards
+   * @param {SimpleDeck} logicDeck - player's logic cards
    */
   constructor (maxHealth, maxEnergy, cardDeck, logicDeck, image="./assets/pacman.jpeg"){
     super(maxHealth, image);
 
     this.maxEnergy = maxEnergy;
     this.energy = maxEnergy;
+
     this.cardDeck = cardDeck;
     this.logicDeck = logicDeck;
 
