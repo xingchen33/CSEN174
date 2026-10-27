@@ -1,0 +1,99 @@
+:root {
+    --defaultCardMaxHeight: 100%;
+    --defaultCardHeight: 250px;
+    --defaultHoverColor: rgb(15, 218, 195);
+}
+
+.card-base {
+    max-height: var(--defaultCardMaxHeight);
+    height: var(--defaultCardHeight);
+    aspect-ratio: 3 / 4;
+    text-decoration: none;
+    transform-style: preserve-3d;
+    position: absolute;
+}
+
+.card-front-contents {
+    height: 100%;
+    container-type: inline-size;
+    border-width: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.card-item {
+    backface-visibility: hidden;
+    border-width: 0.1rem;
+    border-radius: 0.5rem;
+    outline: 0.2rem solid black;
+    width: 100%;
+    font-size: 10cqi;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+
+.card-name {
+    font-family: "Apple Chancery", cursive;
+    height: 10%;
+    top: 0%;
+}
+
+.card-image {
+    height: 10%;
+    bottom: 50%;
+}
+
+.card-type {
+    font-family: "Apple Chancery", cursive;
+    height: 10%;
+    top: 0%;
+}
+
+.card-description {
+    height: 40%;
+    bottom: 0%;
+}
+
+.card-energy {
+    font-family: "Copperplate", cursive;
+    font-size: 15cqi;
+    height: 15%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    top: -3%;
+    left: -3%;
+    width: auto;
+    outline: 0.3rem solid;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    position: absolute;
+    backface-visibility: hidden;
+    height: 100%;
+    top: 0%
+}
+
+.card-selectable {
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.card-selectable:hover {
+    border-width: 0.1rem !important;
+    border-radius: 0.5rem !important;
+    outline: 0.3rem solid var(--defaultHoverColor) !important;
+    filter: brightness(110%) !important;
+    max-height: calc(1.05*var(--defaultCardMaxHeight)) !important;
+    height: calc(1.05*var(--defaultCardHeight)) !important;
+    transform: translateY(-5%);
+    z-index: 9999 !important;
+}
+
+.flipped {
+    transform: rotateY(180deg);
+}

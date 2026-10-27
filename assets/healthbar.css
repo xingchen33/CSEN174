@@ -1,0 +1,25 @@
+:root {
+    --healthBarWidth: 80%
+}
+
+.health-bar-base {
+    position: absolute;
+    width: var(--healthBarWidth);
+    aspect-ratio: 8/1;
+}
+
+.health-bar-fill {
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    height: 100%
+}
+
+.health-bar-label {
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
