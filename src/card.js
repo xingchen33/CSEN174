@@ -38,15 +38,28 @@ export default class Card {
   }
 }
 
+// Make sure you add all your card stuff to these lists!
 export const CARDLIST = {
   "pick": (name) => { 
     const card = structuredClone(CARDLIST.cards[name]);
     Object.setPrototypeOf(card, Card.prototype);
     return card;
   },
-  // Make sure you add all your card stuff to this list!
   "cards": {
-    "Fireball": new Card("l", "Fireball", "{dmg} Damage", {burn: true, damage: 2}, 2, {}, {natural: true}),
-    "Ether Pupil": new Card("e", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, {}, {natural: true}),
+    "Fireball": new Card("s", "Fireball", "Deal 6 damage", {burn: true, damage: 6}, 1, {}, {natural: true}),
+    "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, {}, {natural: true}),
+    "Cure Wound": new Card("s", "Cure Wound", "Heal 6 HP", {healing: 6}, 1, {}, {}),
+  }
+}
+
+export const LOGICLIST = {
+  "pick": (name) => { 
+    const card = structuredClone(LOGICLIST.cards[name]);
+    Object.setPrototypeOf(card, Card.prototype);
+    return card;
+  },
+  "cards": {
+    "If": new Card("l", "If", "Execute actions FOR FREE if a condition is met", {condition: null}, 0, {}, {}),
+    "While": new Card("l", "While", "Execute actions FOR FREE while a condition is met. Don't go infinite!", {condition: null}, 0, {}, {}),
   }
 }

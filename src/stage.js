@@ -1,7 +1,7 @@
 export default class Stage {
   /**
-   * @param {string} preset - Which deck preset the run was started with
-   * @param {number} difficulty - Which difficulty setting to use
+   * player {}
+   * enemies { Enemy[] }
    */
   constructor (preset, difficulty){
   }

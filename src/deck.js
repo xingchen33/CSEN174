@@ -1,6 +1,18 @@
 import { CARDLIST } from "./card.js";
 
-const PRESETS = {
+const LOGIC_PRESETS = {
+  "empty": [],
+  "fireballer": [
+    CARDLIST.pick("Fireball"),
+    CARDLIST.pick("Fireball"),
+    CARDLIST.pick("Fireball"),
+    CARDLIST.pick("Fireball"),
+    CARDLIST.pick("Fireball"),
+    CARDLIST.pick("Ether Pupil"),
+  ]
+};
+
+const CARD_PRESETS = {
   "empty": [],
   "fireballer": [
     CARDLIST.pick("Fireball"),
@@ -16,12 +28,12 @@ export default class Deck {
   /**
    * @param {number} preset - Which of the deck presets to use
    */
-  constructor (preset){
+  constructor (type, preset){
     this.preset = preset;
 
     // It is POSSIBLE this is more structured cloning than needs to happen
     // "Top" of the deck is drawPile[0]
-    this.drawPile = PRESETS[preset].map((card) => {
+    this.drawPile = CARD_PRESETS[preset].map((card) => {
       const copy = structuredClone(card);
       Object.setPrototypeOf(copy, Object.getPrototypeOf(card));
       return copy;
