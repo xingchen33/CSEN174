@@ -1,0 +1,13 @@
+.player-base {
+    width: 30%;
+    aspect-ratio: 1/1;
+    position: absolute;
+}
+
+.player-image {
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    aspect-ratio: 1/1;
+    position: absolute;
+}

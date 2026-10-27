@@ -1,0 +1,13 @@
+.enemy-base {
+    width: 30%;
+    aspect-ratio: 1/1;
+    position: absolute;
+}
+
+.enemy-image {
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    aspect-ratio: 1/1;
+    position: absolute;
+}
