@@ -1,6 +1,6 @@
 function createCardFrontend(card) {
     /** 
-    @param {Card} card - The card to be visualized
+    * @param {Card} card - The card to be visualized
     */
     return null;
 }
