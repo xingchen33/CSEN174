@@ -36,14 +36,35 @@ export function createCardFrontend(card) {
     addClass(card_back, "card-back", "card-item")
     card_contents.appendChild(card_back)
 
-    customizeCardFrontend(card_base, card)
-
-    updateCardFrontend(card_base, card)
-
     return card_base;
 }
 
 export function customizeCardFrontend(card_base, card){
+    let cardElements = ["name", "type", "description", "energy"]
+    let elementModifications = ["bg-color", "text-color", "b-color"]
+
+    Object.keys(card.customization).forEach(elementName => {
+        let elementCustomization = card.customization[elementName]
+
+        if (cardElements.includes(elementName)){
+            let element = getCardFrontendItem(card_base, elementName)
+
+            Object.keys(elementCustomization).forEach(modification => {
+                let value = elementCustomization[modification]
+                if (modification == "bg-color")
+                    element.style.backgroundColor = value
+                
+                else if (modification == "text-color")
+                    element.style.color = value
+
+                else if (modification == "b-color")
+                    element.style.color = value
+
+                if (elementModifications.includes(modification) == false)
+                    throw new Error(`Invalid card modification: ${modification}`);
+            })
+        }
+    });
     return;
 }
 
@@ -52,7 +73,7 @@ export function updateCardFrontend(card_base, card) {
 }
 
 export function getCardFrontendItem(card_base,  item){
-    let valid_inputs = ["name", "image", "type", "description", "back"]
+    let valid_inputs = ["name", "image", "type", "description", "back", "energy"]
 
     if (item == "base")
         return card_base
