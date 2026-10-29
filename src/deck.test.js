@@ -1,8 +1,10 @@
 import SimpleDeck from "./simpleDeck.js";
+import CardDeck from "./cardDeck.js";
+
 
 test('decks should be made with the right card counts', () => {
   const deck1 = new SimpleDeck("fireballer");
-  expect(deck1.drawPile.length).toBe(6);
+  expect(deck1.drawPile.length).toBe(3);
 
   const deck2 = new SimpleDeck("empty");
   expect(deck2.drawPile.length).toBe(0);
@@ -20,12 +22,12 @@ test('drawing decreases drawPile size + increases hand size', () => {
   let deck = new SimpleDeck("fireballer");
   deck.draw(2);
 
-  expect(deck.drawPile.length).toBe(4);
+  expect(deck.drawPile.length).toBe(1);
   expect(deck.hand.length).toBe(2);
 });
 
 test('discarding decreases hand size and increases graveyard size', () => {
-  let deck = new SimpleDeck("fireballer");
+  let deck = new CardDeck("fireballer");
   deck.draw(3);
   deck.discard(2, [0,2]);
 
@@ -34,7 +36,7 @@ test('discarding decreases hand size and increases graveyard size', () => {
 });
 
 test('drawing from a deck which doesn\'t have enough cards works okay', () => {
-  const deck = new SimpleDeck("empty");
+  const deck = new CardDeck("empty");
   deck.draw(3);
 
   expect(deck.hand.length).toBe(0);
@@ -42,8 +44,19 @@ test('drawing from a deck which doesn\'t have enough cards works okay', () => {
   expect(deck.graveyard.length).toBe(0);
 });
 
+test('drawing from a deck which doesn\'t have enough cards works okay', () => {
+  const deck = new CardDeck("fireballer");
+  deck.draw(3);
+
+  expect(deck.hand.length).toBe(3);
+  expect(deck.drawPile.length).toBe(3);
+  expect(deck.graveyard.length).toBe(0);
+});
+
+
+
 test('drawing from a deck which would usually have enough cards reshuffles', () => {
-  let deck = new SimpleDeck("fireballer");
+  let deck = new CardDeck("fireballer");
   deck.draw(4);
   deck.discard(3, [0,1,2]);
   deck.draw(3);
