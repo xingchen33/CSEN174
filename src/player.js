@@ -24,7 +24,8 @@ export default class Player extends Entity {
 
   playCard(pos) {
     let playing = this.cardDeck.hand[pos];
-    if (this.evaluateCard(playing)) {
+    let location = this.getValidPositions(playing.type);
+    if (this.evaluateCard(playing, location)) {
       this.cardDeck.discard(1, [pos]);
     }
   }
