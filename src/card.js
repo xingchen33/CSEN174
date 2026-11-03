@@ -45,6 +45,13 @@ export const CARDLIST = {
     Object.setPrototypeOf(card, Card.prototype);
     return card;
   },
+  "pickRandom": () => {
+    // https://stackoverflow.com/questions/2532218/pick-random-property-from-a-javascript-object
+    var keys = Object.keys(CARDLIST.cards);
+    const card = CARDLIST.cards[keys[keys.length * Math.random() << 0]];
+    Object.setPrototypeOf(card, Card.prototype);
+    return card;
+  },
   "cards": {
     "Fireball": new Card("s", "Fireball", "Deal 6 damage", {burn: true, damage: 6}, 1, {}, {natural: true}),
     "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, {}, {natural: true}),
@@ -55,6 +62,12 @@ export const CARDLIST = {
 export const LOGICLIST = {
   "pick": (name) => { 
     const card = structuredClone(LOGICLIST.cards[name]);
+    Object.setPrototypeOf(card, Card.prototype);
+    return card;
+  },
+  "pickRandom": () => {
+    var keys = Object.keys(LOGICLIST.cards);
+    const card = LOGICLIST.cards[keys[keys.length * Math.random() << 0]];
     Object.setPrototypeOf(card, Card.prototype);
     return card;
   },

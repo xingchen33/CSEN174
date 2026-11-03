@@ -25,6 +25,7 @@ export default class Enemy extends Entity {
     this.nextMove = this.moves[n];
   }
 
+  // TODO you probably need to redo this
   getAttackDamage() {
     let move = this.nextMove;
     if (move.damage) {
@@ -39,6 +40,7 @@ export default class Enemy extends Entity {
     return null;
   }
 
+  // TODO you probably need to redo this
   passTurn() {
     this.statusDecay();
     this.getNextMove();
@@ -50,6 +52,12 @@ export const ENEMYLIST = {
     const enemy = structuredClone(ENEMYLIST.enemies[name]);
     Object.setPrototypeOf(enemy, Enemy.prototype);
     return enemy;
+  },
+  "pickRandom": () => {
+    var keys = Object.keys(ENEMYLIST.cards);
+    const enemy = ENEMYLIST.cards[keys[keys.length * Math.random() << 0]];
+    Object.setPrototypeOf(enemy, Enemy.prototype);
+    return card;
   },
   // Make sure you add all your enemies to this list!
   "enemies": {

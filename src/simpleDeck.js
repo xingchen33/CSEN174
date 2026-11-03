@@ -37,7 +37,7 @@ export default class SimpleDeck {
     }
   }
 
-  // TODO Ask about hand limit mechanics
+  // ASK about hand limit mechanics
   draw(n){
     // Normal behavior
     if (n <= this.drawPile.length) {

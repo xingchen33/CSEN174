@@ -34,7 +34,7 @@ export default class CardDeck extends SimpleDeck {
     this.graveyard = [];
   }
 
-  // TODO Ask about hand limit mechanics
+  // ASK about hand limit mechanics
   /**
    * @param {number} refill - Should the graveyard be shuffled back into the deck?
    */

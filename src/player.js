@@ -7,7 +7,8 @@ export default class Player extends Entity {
    * @param {CardDeck} cardDeck - player's playable cards
    * @param {SimpleDeck} logicDeck - player's logic cards
    */
-  constructor (maxHealth, maxEnergy, cardDeck, logicDeck, image="./assets/pacman.jpeg"){
+  // ASK do players start at max health, or whatever health they ended last stage with?
+  constructor (maxHealth, maxEnergy, cardDeck, logicDeck, items, image="./assets/pacman.jpeg"){
     super(maxHealth, image);
 
     this.maxEnergy = maxEnergy;
@@ -15,6 +16,7 @@ export default class Player extends Entity {
 
     this.cardDeck = cardDeck;
     this.logicDeck = logicDeck;
+    this.items = items;
 
     // This is an array of objects, some of which are objects
     // Spells have targets
@@ -30,6 +32,7 @@ export default class Player extends Entity {
     }
   }
 
+  // TEST like REALLY REALLY TEST
   // Should return the list of places that one could put a card of the specified type
   // Valid types: statement, ritual, target
   // Returns an object showing the type (target / statement / condition) of the element and the indexing required to change that element (for arrays, the index which it will occupy)
@@ -75,8 +78,9 @@ export default class Player extends Entity {
 
   // Adding a card to a move
   // "location" is an index set return from getValidPositions
+  // TODO this is also very important
   evaluateCard(card, location) {
-    // Can't case something that costs too much energy
+    // Can't cast something that costs too much energy
     if (card.getEnergy() > this.energy) {
       return false;
     }
@@ -87,7 +91,7 @@ export default class Player extends Entity {
     }
     // Targets just override the property
     else if (location.type == "target") {
-      
+           
     }
     // Targets just override the property
     else if (location.type == "condition") {
@@ -111,3 +115,17 @@ export default class Player extends Entity {
     this.energy = this.maxEnergy;
   }
 }
+
+export const ITEMLIST = {
+  "pick": (name) => {
+    return structuredClone(ITEMLIST.items[name]);
+  },
+  "pickRandom": () => {
+    var keys = Object.keys(ITEMLIST.items);
+    const item = ITEMLIST.items[keys[keys.length * Math.random() << 0]];
+    return item;
+  },
+  "items": {
+    "Rubber Duck": { name: "Rubber Duck" },
+  }
+};

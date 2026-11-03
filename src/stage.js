@@ -1,80 +1,41 @@
-
-import Player from "./player.js"
-import Enemey from "./enemy.js"
-import Card from './card.js'
-import Enemy from "./enemy.js";
-
-
 export default class Stage {
-  player = new Player();
-  enemies_list = [];
-  constructor (cards, curr_player, enemies_list, curr_round ,curr_turn, damage_dealt = 0, hp_delta = 0, enemies_destroyed = 0){
-    this.cards = cards;
-    this.player = curr_player;
-    this.enemies_list = enemies_list;
-    this.curr_round = curr_round;
-    this.curr_turn = curr_turn;
-    this.damage_dealt = damage_dealt;
-    this.hp_delta = hp_delta;
-    this.enemies_destroyed = enemies_destroyed;
-    this.start_health = this.player.health;
-    this.start_energy = this.player.energy;    
+  constructor (player, enemies, rewards) {
+    this.player = player;
+    this.enemies = enemies;
+    this.rewards = rewards;
+
+    this.turnCount = 0;
+    this.turn = "player";
+
+    // TODO this should match the stats object in run
+    this.stats = {
+      damageDone: 0,
+      damageTaken: 0,
+      cardsPlayed: 0,
+    };
   }
+
+  // Mostly for debug purposes
   addEnemy(enemy){
-    if(!(enemy instanceof Enemy)){
-      throw new Error("Not an enemy");
-    }
-    this.enemies_list.push(enemy);
+    this.enemies.push(enemy);
   }
 
-  
-  changeTurn(player){
-    this.curr_turn = player;
-  }
+  // TODO this should use enemy or player attacks, and check for wins/losses
+  nextTurn() {
 
-  playerDamageTaken(){
-    return this.start_health - this.player.health;
-  }
+    // TODO Use attacks
 
-  playerEnergyUsed(){
-    return this.start_energy - this.player.energy;
-  }
+    // TODO Clear enemies
 
-  nextTurn(p1, p2){
+    // TODO Update stats
+
+    // TODO Check wins / losses
+    // Check for win before loss, so that you can live on 0HP if it works out that way
+
+    // TODO Set up for next round
     this.curr_round += 1
-    this.changeTurn(p2)
-    this.damage_dealt += p1.getAttackDamage();
-    this.hp_delta = this.playerDamageTaken();
-    this.energy_used = this.playerEnergyUsed();
-    for(const i in this.enemies_list){
-      if(this.enemies_list[i].isDead()){
-        this.enemies_destroyed += 1;
-    }
+
+    // Switch turn from player to enemy and vice versa
+    this.turn = this.turn == "player" ? "enemy" : "player";
   }
-  
-  }
-
-
-  
-
-  
-    
-
-
-
-  
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
