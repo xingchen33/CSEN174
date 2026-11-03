@@ -97,3 +97,16 @@
 .flipped {
     transform: rotateY(180deg);
 }
+
+.card-block-base {
+    height: 40%;
+    width: 200%;
+    text-decoration: none;
+    transform-style: preserve-3d;
+    container-type: inline-size;
+    border-width: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}

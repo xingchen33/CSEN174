@@ -36,6 +36,14 @@ export default class Card {
 
     return energy;
   }
+
+  getDescription(){
+    let polishedDescription = this.description;
+    polishedDescription = polishedDescription.replaceAll("{dmg}", String(this.getDamage()))
+    polishedDescription = polishedDescription.replaceAll("{nrg}", String(this.getEnergy()))
+
+    return polishedDescription
+  }
 }
 
 // Make sure you add all your card stuff to these lists!
