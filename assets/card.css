@@ -40,22 +40,26 @@
     font-family: "Apple Chancery", cursive;
     height: 10%;
     top: 0%;
+    z-index: 2;
 }
 
 .card-image {
-    height: 10%;
+    height: 40%;
     bottom: 50%;
+    z-index: 1;
 }
 
 .card-type {
     font-family: "Apple Chancery", cursive;
     height: 10%;
-    top: 0%;
+    top: 50%;
+    z-index: 3;
 }
 
 .card-description {
     height: 40%;
     bottom: 0%;
+    z-index: 2;
 }
 
 .card-energy {
@@ -68,6 +72,7 @@
     left: -3%;
     width: auto;
     outline: 0.3rem solid;
+    z-index: 3;
 }
 
 .card-back {

@@ -17,7 +17,7 @@ export function createCardFrontend() {
     card_contents.appendChild(card_name)
 
     let card_image = document.createElement("img")
-    addClass(card_image, "card-image", "card-type")
+    addClass(card_image, "card-image", "card-item")
     card_contents.appendChild(card_image)
 
     let card_type = document.createElement("div")
@@ -58,13 +58,14 @@ export function customizeCardFrontend(card_base, card){
             Object.keys(elementCustomization).forEach(modification => {
                 let value = elementCustomization[modification];
                 if (modification == "bg-color")
-                    element.style.backgroundColor = value;
+                    element.style.background = value;
                 
                 else if (modification == "text-color")
                     element.style.color = value;
 
                 else if (modification == "b-color")
-                    element.style.color = value;
+                    console.log("here")
+                    element.style.borderColor = value;
 
                 if (elementModifications.includes(modification) == false)
                     throw new Error(`Invalid card modification: ${modification}`);
@@ -94,6 +95,11 @@ export function setCardDescriptionFrontend(card_base, card){
 export function setCardEnergyFrontend(card_base, card){
     let card_energy = getCardFrontendItem(card_base, "energy");
     card_energy.innerText = card.getEnergy();
+}
+
+export function setCardImageFrontend(card_base, card) {
+    let card_image = getCardFrontendItem(card_base, "image");
+    card_image.src = card.getImage();
 }
 
 export function getCardFrontendItem(card_base,  item){
@@ -185,6 +191,5 @@ export function card_drag_and_drop(card_base){
         addClass(card_block, "hidden")
         addClass(card_base, "card-selectable")
         removeClass(card_contents, "hidden")
-        // console.log(getNearestElementofClass("card-base", [0,0]))
     }
 }
