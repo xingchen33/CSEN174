@@ -104,6 +104,9 @@ export function getCardFrontendItem(card_base,  item){
 
     else if (item == "contents")
         return card_base.querySelector(".card-front-contents")
+    
+     else if (item == "block")
+        return card_base.querySelector(".card-block-base")
 
     else if (valid_inputs.includes(item))
         return card_base.querySelector(`.card-${item}`)
