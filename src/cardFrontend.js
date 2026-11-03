@@ -162,6 +162,10 @@ export function card_drag_and_drop(card_base){
     function card_drag(){
         let current_mouse = get_mouse_position()
         setPosition(card_base, [current_mouse[0]+drag_offset[0], current_mouse[1]+drag_offset[1]])
+        let card_block = getCardFrontendItem(card_base, "block")
+        let card_contents = getCardFrontendItem(card_base, "contents")
+        addClass(card_contents, "hidden")
+        removeClass(card_block, "hidden")
     }
 
     function card_drop(){
@@ -171,6 +175,9 @@ export function card_drag_and_drop(card_base){
         document.ontouchmove = null;
         document.onmouseup = null;
         document.ontouchend = null;
+
+        addClass(card_block, "hidden")
+        removeClass(card_contents, "hidden")
         // console.log(getNearestElementofClass("card-base", [0,0]))
     }
 }

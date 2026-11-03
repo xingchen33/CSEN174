@@ -17,8 +17,9 @@ export function hasClass(htmlElement, classCheck){
     return htmlElement.classList.contains(classCheck);
 }
 
-export function removeClass(htmlElement, takeClass){
-    htmlElement.classList.remove(takeClass)
+export function removeClass(htmlElement){
+    for (var i = 1; i < arguments.length; ++i)
+        htmlElement.classList.remove(arguments[i])
 }
 
 export function addClass(htmlElement){
