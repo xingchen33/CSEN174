@@ -1,38 +1,38 @@
-import {addClass} from 'generalFrontend.js'
+import {addClass} from './generalFrontend.js'
 
-export function createCardFrontend(card) {
+export function createCardFrontend() {
     /** 
     * @param {Card} card - The card to be visualized
     */
 
-    card_base = document.createElement("div")
+    let card_base = document.createElement("div")
     addClass(card_base, "card-base")
 
-    card_contents = document.createElement("div")
+    let card_contents = document.createElement("div")
     addClass(card_contents, "card-front-contents", "card-item")
     card_base.appendChild(card_contents)
 
-    card_name = document.createElement("div")
+    let card_name = document.createElement("div")
     addClass(card_name, "card-name", "card-item")
     card_contents.appendChild(card_name)
 
-    card_image = document.createElement("img")
+    let card_image = document.createElement("img")
     card_image.classList.add("card-image", "card-type")
     card_contents.appendChild(card_image)
 
-    card_type = document.createElement("div")
+    let card_type = document.createElement("div")
     card_type.classList.add("card-item", "card-type")
     card_contents.appendChild(card_type)
 
-    card_description = document.createElement("div")
-    addClass("card_description", "card-description", "card-item")
+    let card_description = document.createElement("div")
+    addClass(card_description, "card-description", "card-item")
     card_contents.appendChild(card_description)
 
-    card_energy = document.createElement("div")
+    let card_energy = document.createElement("div")
     card_energy.classList.add("card-energy", "card-item")
     card_contents.appendChild(card_energy)
 
-    card_back = document.createElement('img')
+    let card_back = document.createElement('img')
     addClass(card_back, "card-back", "card-item")
     card_contents.appendChild(card_back)
 
