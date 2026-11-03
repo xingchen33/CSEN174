@@ -43,7 +43,7 @@ export default class Entity {
     return this.health <= 0;
   }
 
-  // TODO this should really take non-timed statuses into account
+  // TEST
   statusDecay() {
     let thing = {};
 
@@ -54,9 +54,12 @@ export default class Entity {
         thing[key] = [e[0] - 1, ...e.slice(1)]
       }
     }
+
+    this.statuses = thing;
   }
 
-  // TODO this should really take non-timed statuses into account
+  // TEST
+  // As we add more effects this will need to be expanded
   buff(status, info) {
     if (!this.statuses[status]) {
       this.statuses[status] = info;

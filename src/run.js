@@ -114,9 +114,10 @@ export default class Run {
     let stage = this.getCurrentStage();
     let result = stage.nextTurn();
     if (result == "win") {
-      // TODO
+      let rewards = this.getCurrentStage().rewards;
+      return rewards;
     } else if (result == "loss") {
-      // TODO
+      return "loss";
     }
   }
 }

@@ -37,7 +37,14 @@ export default class Enemy extends Entity {
       return base;
     }
 
-    return null;
+    return 0;
+  }
+
+  // This passes a Player even though it maybe shouldn't
+  useMove(player) {
+    // Deal any damage this does
+    let damage = this.getAttackDamage();
+    player.damage(damage);
   }
 
   // TODO you probably need to redo this

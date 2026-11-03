@@ -105,12 +105,12 @@ export default class Player extends Entity {
 
   useMove() {
     // TODO this is the core of the game
-    // "currentMove" is an array of objects
+    // "currentMove" is an array of objects representing what is going on
   }
 
   passTurn() {
     this.statusDecay();
-    this.useMove()
+    this.useMove();
 
     this.energy = this.maxEnergy;
   }
