@@ -1,4 +1,4 @@
-import {addClass, get_mouse_position, getPosition, setPosition, getDistance} from './generalFrontend.js'
+import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass} from './generalFrontend.js'
 
 export function createCardFrontend() {
     /** 
@@ -104,7 +104,7 @@ export function getCardFrontendItem(card_base,  item){
 
     else if (item == "contents")
         return card_base.querySelector(".card-front-contents")
-    
+
      else if (item == "block")
         return card_base.querySelector(".card-block-base")
 
@@ -155,7 +155,11 @@ export function card_interaction(){
 export function card_drag_and_drop(card_base){
     let card_home = getPosition(card_base)
     let initial_click = get_mouse_position()
-    let drag_offset = [card_home[0] - initial_click[0], card_home[1] - initial_click[1]]
+    let drag_offset = [-3, -10]
+    // let drag_offset = [card_home[0] - initial_click[0], card_home[1] - initial_click[1]]
+
+    let card_block = getCardFrontendItem(card_base, "block")
+    let card_contents = getCardFrontendItem(card_base, "contents")
 
     document.onmousemove = card_drag;
     document.ontouchmove = card_drag;
@@ -165,9 +169,8 @@ export function card_drag_and_drop(card_base){
     function card_drag(){
         let current_mouse = get_mouse_position()
         setPosition(card_base, [current_mouse[0]+drag_offset[0], current_mouse[1]+drag_offset[1]])
-        let card_block = getCardFrontendItem(card_base, "block")
-        let card_contents = getCardFrontendItem(card_base, "contents")
         addClass(card_contents, "hidden")
+        removeClass(card_base, "card-selectable")
         removeClass(card_block, "hidden")
     }
 
@@ -180,6 +183,7 @@ export function card_drag_and_drop(card_base){
         document.ontouchend = null;
 
         addClass(card_block, "hidden")
+        addClass(card_base, "card-selectable")
         removeClass(card_contents, "hidden")
         // console.log(getNearestElementofClass("card-base", [0,0]))
     }

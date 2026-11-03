@@ -20,6 +20,7 @@ export function hasClass(htmlElement, classCheck){
 export function removeClass(htmlElement){
     for (var i = 1; i < arguments.length; ++i)
         htmlElement.classList.remove(arguments[i])
+        // console.log(htmlElement.classList, arguments[i], 2)
 }
 
 export function addClass(htmlElement){
