@@ -73,8 +73,7 @@ export function styleCardFrontend(card_base, card){
                 else if (modification == "text-color")
                     element.style.color = value;
 
-                else if (modification == "b-color")
-                    console.log("here")
+                else if (modification == "b-color") // may be useless...
                     element.style.borderColor = value;
 
                 if (elementModifications.includes(modification) == false)
@@ -126,7 +125,6 @@ export function setCardImageFrontend(card_base, card) {
 export function setCardBackImageFrontend(card_base, card) {
     let card_image = getCardFrontendItem(card_base, "back");
     card_image.src = card.getImage("back_img");
-    console.log(card.getImage("back_img"))
 }
 
 export function getCardFrontendItem(card_base,  item){

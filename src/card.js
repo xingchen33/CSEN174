@@ -55,7 +55,7 @@ export default class Card {
   getImage(side="front_img"){
     if (Object.keys(this.customization).includes(side))
       return this.customization[side]
-    return null
+    return "../assets/missing.jpg"
   }
 }
 
@@ -76,14 +76,12 @@ export const CARDLIST = {
   "cards": {
     "Fireball": new Card("s", "Fireball", "Deal 6 damage", {burn: true, damage: 6}, 1, {
       "front_img": "../assets/1.webp",
-      "back_img": "../assets/pokemon.png",
       "name": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
       "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
       "description": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000", }, 
       "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"}
     }, {natural: true}),
     "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, {
-      "back_img": "../assets/pokemon.png",
       "name": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000"}, 
       "type": {"bg-color": "linear-gradient(.90turn, #9235de, #de35d0)", "text-color": "#000000"}, 
       "description": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000", }, 
