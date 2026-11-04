@@ -1,5 +1,12 @@
 import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass} from './generalFrontend.js'
 
+export function generateVisualCard(card) {
+    let card_base = createCardFrontend()
+    createCardBlockFrontend(card_base)
+    styleCardFrontend(card_base, card)
+    updateCardFrontend(card_base, card)
+}
+
 export function createCardFrontend() {
     /** 
     * @param {Card} card - The card to be visualized
@@ -46,7 +53,7 @@ export function createCardBlockFrontend(card_base){
     return card_block_base
 }
 
-export function customizeCardFrontend(card_base, card){
+export function styleCardFrontend(card_base, card){
     let cardElements = ["name", "type", "description", "energy"];
     let elementModifications = ["bg-color", "text-color", "b-color"];
     Object.keys(card.customization).forEach(elementName => {
@@ -79,6 +86,7 @@ export function updateCardFrontend(card_base, card) {
     setCardNameFrontend(card_base, card);
     setCardDescriptionFrontend(card_base, card);
     setCardEnergyFrontend(card_base, card);
+    setCardTypeFrontend(card_base, card)
     return;
 }
 
@@ -95,6 +103,16 @@ export function setCardDescriptionFrontend(card_base, card){
 export function setCardEnergyFrontend(card_base, card){
     let card_energy = getCardFrontendItem(card_base, "energy");
     card_energy.innerText = card.getEnergy();
+}
+
+export function setCardTypeFrontend(card_base, card){
+    let card_type = getCardFrontendItem(card_base, "type")
+    if (card.type == "r")
+        card_type.innerText = "Ritual"
+    else if (card.type == "s")
+        card_type.innerText = "Spell"
+    else if (card.type == "l")
+        card_type.innerText = "Logic"
 }
 
 export function setCardImageFrontend(card_base, card) {

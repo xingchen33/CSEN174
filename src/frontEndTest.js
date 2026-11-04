@@ -1,5 +1,5 @@
 import { CARDLIST } from './card.js'
-import { customizeCardFrontend, createCardFrontend, updateCardFrontend, attach_interaction, createCardBlockFrontend, setCardImageFrontend} from './cardFrontend.js'
+import { styleCardFrontend, createCardFrontend, updateCardFrontend, attach_interaction, createCardBlockFrontend, setCardImageFrontend} from './cardFrontend.js'
 import { setPosition, addClass, removeClass } from './generalFrontend.js'
 
 
@@ -9,7 +9,7 @@ let cardBlock = createCardBlockFrontend(cardFront)
 
 addClass(cardBlock, "hidden")
 
-customizeCardFrontend(cardFront, cardData)
+styleCardFrontend(cardFront, cardData)
 document.body.appendChild(cardFront)
 setPosition(cardFront, [50, 10])
 setCardImageFrontend(cardFront, cardData)
