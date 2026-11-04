@@ -80,7 +80,8 @@
     position: absolute;
     backface-visibility: hidden;
     height: 100%;
-    top: 0%
+    top: 0%;
+    z-index: 3;
 }
 
 .card-selectable {

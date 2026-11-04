@@ -5,6 +5,9 @@ export function generateVisualCard(card) {
     createCardBlockFrontend(card_base)
     styleCardFrontend(card_base, card)
     updateCardFrontend(card_base, card)
+    setCardImageFrontend(card_base, card)
+    setCardBackImageFrontend(card_base, card)
+    return card_base
 }
 
 export function createCardFrontend() {
@@ -41,7 +44,7 @@ export function createCardFrontend() {
 
     let card_back = document.createElement('img')
     addClass(card_back, "card-back", "card-item")
-    card_contents.appendChild(card_back)
+    card_base.appendChild(card_back)
 
     return card_base;
 }
@@ -118,6 +121,12 @@ export function setCardTypeFrontend(card_base, card){
 export function setCardImageFrontend(card_base, card) {
     let card_image = getCardFrontendItem(card_base, "image");
     card_image.src = card.getImage();
+}
+
+export function setCardBackImageFrontend(card_base, card) {
+    let card_image = getCardFrontendItem(card_base, "back");
+    card_image.src = card.getImage("back_img");
+    console.log(card.getImage("back_img"))
 }
 
 export function getCardFrontendItem(card_base,  item){
