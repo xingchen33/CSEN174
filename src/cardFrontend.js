@@ -72,7 +72,7 @@ export function createCardBlockFrontend(card_base){
 }
 
 export function styleCardFrontend(card_base, card){
-    let cardElements = ["name", "type", "description", "energy"];
+    let cardElements = ["name", "type", "description", "energy", "block"];
     let elementModifications = ["bg-color", "text-color", "b-color"];
     Object.keys(card.customization).forEach(elementName => {
         let elementCustomization = card.customization[elementName];

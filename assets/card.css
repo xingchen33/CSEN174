@@ -1,6 +1,6 @@
 :root {
     --defaultCardMaxHeight: 100%;
-    --defaultCardHeight: 250px;
+    --defaultCardHeight: 225px;
     --defaultHoverColor: rgb(15, 218, 195);
 }
 
@@ -102,7 +102,7 @@
 
 .flipped {
     transform: rotateY(180deg);
-    z-index: -1;
+    z-index: -2;
 }
 
 .card-block-base {
@@ -116,6 +116,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    z-index: 10 !important;
 }
 
 .scaled-down {

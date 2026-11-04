@@ -2,7 +2,7 @@ import { generateVisualCard, attach_interaction, drawCardVisual } from "./cardFr
 import { addClass, setPosition } from "./generalFrontend.js";
 
 // MAY NEED LARGE CHANGES
-export function createVisualCardDeck(input_deck, hand=[50,60,20], draw=[60,60]){
+export function createVisualCardDeck(input_deck, hand=[50,60,10], draw=[70,60]){
     let myCards = []
     input_deck.hand.forEach((card, index) => {
         let cardFront = generateVisualCard(card)
