@@ -7,7 +7,22 @@ export function generateVisualCard(card) {
     updateCardFrontend(card_base, card)
     setCardImageFrontend(card_base, card)
     setCardBackImageFrontend(card_base, card)
+    playCardVisual(card_base)
     return card_base
+}
+
+export function playCardVisual(card_base){
+    removeClass(card_base, "hidden", "scaled-down", "flipped")
+    addClass(card_base, "card-selectable")
+    let card_back = getCardFrontendItem(card_base, "block")
+    addClass(card_back, "hidden")
+}
+
+export function drawCardVisual(card_base){
+    removeClass(card_base, "hidden", "card-selectable")
+    addClass(card_base, "scaled-down", "flipped")
+    let card_back = getCardFrontendItem(card_base, "block")
+    addClass(card_back, "hidden")
 }
 
 export function createCardFrontend() {

@@ -102,6 +102,7 @@
 
 .flipped {
     transform: rotateY(180deg);
+    z-index: -1;
 }
 
 .card-block-base {
@@ -115,4 +116,9 @@
     align-items: center;
     justify-content: center;
     position: relative;
+}
+
+.scaled-down {
+    max-height: calc(0.75*var(--defaultCardMaxHeight));
+    height: calc(0.75*var(--defaultCardHeight));
 }
