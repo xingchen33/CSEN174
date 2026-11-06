@@ -5,17 +5,20 @@ export default class Card {
    * @param {string} description - The card description
    * @param {object} effects - The effects for the card
    * @param {number} energy - The card energy cost
+   * @param {object} target - The target of the card
    * @param {object} customization - Customization options for the card (e.g., background color)
    * @param {object} tags - Tags associated with the card
    */
-  constructor (type, name, description, effects, energy, customization={}, tags={}){
+  constructor (type, name, description, effects, energy, target, conditions, block ,customization={}, tags={}){
     this.type = type
     this.name = name 
     this.description = description
     this.effects = effects
-    this.baseEnergy = energy 
+    this.baseEnergy = energy
+    this.target = target 
+    this.conditions = conditions
+    this.block = block;
     this.customization = customization
-
     this.tags = this.tags
   }
 
