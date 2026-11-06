@@ -1,7 +1,11 @@
 import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass} from './generalFrontend.js'
 
 export function generateVisualCard(card) {
-    let card_base = createCardFrontend()
+    /**
+     * @param {Card} card - The card information 
+     * @returns 
+     */
+    let card_base = createCardFrontend(card)
     createCardBlockFrontend(card_base)
     styleCardFrontend(card_base, card)
     updateCardFrontend(card_base, card)
@@ -25,12 +29,13 @@ export function drawCardVisual(card_base){
     addClass(card_back, "hidden")
 }
 
-export function createCardFrontend() {
+export function createCardFrontend(card) {
     /** 
     * @param {Card} card - The card to be visualized
     */
 
     let card_base = document.createElement("div")
+    card_base.id = String(card.id)
     addClass(card_base, "card-base")
 
     let card_contents = document.createElement("div")

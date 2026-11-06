@@ -8,7 +8,8 @@ export default class Card {
    * @param {object} target - The target of the card
    * @param {object} customization - Customization options for the card (e.g., background color)
    * @param {object} tags - Tags associated with the card
-   */
+   */  
+  static nextCardID = 1;
   constructor (type, name, description, effects, energy, target, conditions, block ,customization={}, tags={}){
     this.type = type
     this.name = name 
@@ -19,6 +20,7 @@ export default class Card {
     this.conditions = conditions
     this.block = block;
     this.customization = customization
+    this.id = ++nextCardID;
     this.tags = this.tags
   }
 
