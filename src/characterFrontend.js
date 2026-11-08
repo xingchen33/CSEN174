@@ -1,12 +1,12 @@
 import { hasClass } from "./generalFrontend"
 
-function generateVisualCharacter(input_character){
+export function generateVisualCharacter(input_character){
     let character_base = createCharacterFrontend(input_character)
     updateHealthFrontend(character_base, input_character)
     return character_base
 }
 
-function createCharacterFrontend(input_character){
+export function createCharacterFrontend(input_character){
     let character_base = document.createElement("div")
     let character_image = document.createElement("img")
 
@@ -36,7 +36,7 @@ function createCharacterFrontend(input_character){
     return character_base
 }
 
-function updateHealthFrontend(character_base, input_character){
+export function updateHealthFrontend(character_base, input_character){
     let character_empty_health = getCharacterFrontendItem(character_base, "healthEmpty")
     let character_health_label = getCharacterFrontendItem(character_base, "healthLabel")
 

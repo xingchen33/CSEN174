@@ -1,6 +1,8 @@
 :root {
     --defaultCardMaxHeight: 100%;
     --defaultCardHeight: 225px;
+    --cardMaxHeightScaled: calc(0.75*var(--defaultCardMaxHeight));
+    --cardHeightScaled: calc(0.75*var(--defaultCardHeight));
     --defaultHoverColor: rgb(15, 218, 195);
 }
 
@@ -120,6 +122,6 @@
 }
 
 .scaled-down {
-    max-height: calc(0.75*var(--defaultCardMaxHeight));
-    height: calc(0.75*var(--defaultCardHeight));
+    max-height: var(--cardMaxHeightScaled);
+    height: var(--cardHeightScaled)
 }

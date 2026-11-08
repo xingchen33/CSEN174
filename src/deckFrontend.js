@@ -20,3 +20,11 @@ export function createVisualCardDeck(input_deck, hand=[50,60,10], draw=[70,60]){
     });
     return myCards
 }
+
+export function updateVisualCardDeck(input_deck, location){
+    let card_location = document.getElementById(location);
+    input_deck.hand.forEach(card => {
+        cardFront.document.getElementByID(card.id);
+        card_location.appendChild(cardFront)
+    });
+}
