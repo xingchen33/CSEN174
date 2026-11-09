@@ -30,6 +30,7 @@
     font-family: "Apple Chancery", cursive;
     font-size: 2cqi;
     width: 30%; 
+    height: 10%;
     aspect-ratio: 5/2; 
     text-align: center;
 }
@@ -39,7 +40,7 @@
     width: 10%;
     aspect-ratio: 5/2;
     position: absolute;
-    top: 20%;
+    top: 10%;
     left: 85%
 }
 
@@ -48,9 +49,37 @@
     width: 15%;
     aspect-ratio: 5/1;
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 2%
-    
+}
+
+#code-zone {
+    z-index: 1;
+    width: 40%;
+    aspect-ratio: 5/3;
+    position: absolute;
+    top: 5%;
+    left: 2%
+}
+#code-zone:hover { 
+    background-color: aliceblue;
+    opacity: 0.3;
+}
+
+#enemy-container {
+    width: 35%;
+    height: 50%;
+    position: absolute;
+    top: 20%;
+    right: 5%
+}
+
+#player-container {
+    width: 35%;
+    height: 50%;
+    position: absolute;
+    top: 20%;
+    left: 5%
 }
 
 #logic-card-draw-pile {
@@ -73,14 +102,15 @@
     width: 20%;
     max-height: var(--cardPileMaxHeight);
     height: var(--cardPileHeight);
-    bottom: 1%
+    bottom: 1%;
+    display: flex;
 }
 
 .card-pile {
     width: 10%;
     max-height: var(--cardMaxHeightScaled);
     height: var(--cardHeightScaled);
-    bottom: 2%
+    bottom: 2%;
 }
 
 #discard-pile {

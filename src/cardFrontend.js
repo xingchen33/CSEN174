@@ -1,10 +1,11 @@
-import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass} from './generalFrontend.js'
+import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass, fromElement} from './generalFrontend.js'
 
 export function generateVisualCard(card) {
     /**
      * @param {Card} card - The card information 
      * @returns 
      */
+    card.assignID()
     let card_base = createCardFrontend(card)
     createCardBlockFrontend(card_base)
     styleCardFrontend(card_base, card)
@@ -204,10 +205,9 @@ export function card_interaction(){
 }
 
 export function card_drag_and_drop(card_base){
+    let card_parent = card_base.parentNode;
     let card_home = getPosition(card_base)
-    let initial_click = get_mouse_position()
     let drag_offset = [-3, -10]
-    // let drag_offset = [card_home[0] - initial_click[0], card_home[1] - initial_click[1]]
 
     let card_block = getCardFrontendItem(card_base, "block")
     let card_contents = getCardFrontendItem(card_base, "contents")
@@ -220,21 +220,31 @@ export function card_drag_and_drop(card_base){
     function card_drag(){
         let current_mouse = get_mouse_position()
         setPosition(card_base, [current_mouse[0]+drag_offset[0], current_mouse[1]+drag_offset[1]])
+        document.body.appendChild(card_base)
         addClass(card_contents, "hidden")
         removeClass(card_base, "card-selectable")
         removeClass(card_block, "hidden")
     }
 
     function card_drop(){
-        setPosition(card_base, card_home)
+        let codeZone = document.getElementById("code-zone");
+        console.log(codeZone.style.left, "FIX")
+        if (fromElement(codeZone, get_mouse_position()) == 0){
+            console.log("yay!")
+        }
+        else {
+            card_parent.appendChild(card_base)
+            setPosition(card_base, card_home)
+            addClass(card_block, "hidden")
+            addClass(card_base, "card-selectable")
+            removeClass(card_contents, "hidden")
+        }
 
         document.onmousemove = null;
         document.ontouchmove = null;
         document.onmouseup = null;
         document.ontouchend = null;
 
-        addClass(card_block, "hidden")
-        addClass(card_base, "card-selectable")
-        removeClass(card_contents, "hidden")
+        
     }
 }
