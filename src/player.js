@@ -78,8 +78,6 @@ export default class Player extends Entity {
 
   // Adding a card to a move
   // "location" is an index set return from getValidPositions
-  // TODO this is also very important
-  
   evaluateCard(card, location) {
     // Can't cast something that costs too much energy
     if (card.getEnergy() > this.energy) {

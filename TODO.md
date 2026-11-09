@@ -4,5 +4,11 @@ Anything with a ASK commment should have questions about it asked to Yue
 Anything with a TEST comment should have tests written
 
 # Overarching TODOs
-- Get a "backend playable" version
+## Get an MVP
+- Stage 1 loads with some enemies
+- Enemies deal damage
+- The player can play cards as expected
+- Simple main menu
+- Losing is possible
+- Winning is possible
 - Add cards / effects / enemies from the sheet
