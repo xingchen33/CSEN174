@@ -1,25 +1,39 @@
 :root {
-    --healthBarWidth: 80%
+    --healthBarWidth: 80%;
 }
 
 .health-bar-base {
     position: absolute;
+    left: 10%;
+    top: 114%;
     width: var(--healthBarWidth);
-    aspect-ratio: 8/1;
+    height: 1.25rem;
+    overflow: hidden;
+    border: 0.15rem solid #171717;
+    border-radius: 0.4rem;
+    background: #6d1d2a;
+    box-sizing: border-box;
+    z-index: 2;
 }
 
 .health-bar-fill {
     position: absolute;
     left: 0%;
-    top: 0%;
-    height: 100%
+    top: 0;
+    height: 100%;
+    background: #35bd55;
+    transition: width 0.2s ease;
 }
 
 .health-bar-label {
     position: absolute;
     left: 0%;
-    top: 0%;
+    top: 0;
     height: 100%;
     width: 100%;
     text-align: center;
+    color: white;
+    font-size: 0.85rem;
+    line-height: 1.05rem;
+    text-shadow: 0 0.08rem 0.12rem black;
 }

@@ -28,10 +28,17 @@
 #turn-indicator{
     z-index: 1;
     font-family: "Apple Chancery", cursive;
-    font-size: 2cqi;
-    width: 30%; 
-    aspect-ratio: 5/2; 
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    width: fit-content;
+    height: fit-content;
+    margin: 1rem;
     text-align: center;
+    padding: 0.5rem 1rem;
+    border: 0.15rem solid #171717;
+    border-radius: 0.5rem;
+    background: rgba(245, 221, 154, 0.9);
+    color: #171717;
+    box-sizing: border-box;
 }
 
 #end-turn-button {
@@ -39,8 +46,8 @@
     width: 10%;
     aspect-ratio: 5/2;
     position: absolute;
-    top: 20%;
-    left: 85%
+    right: 5%;
+    bottom: 5%;
 }
 
 #items-container {
