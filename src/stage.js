@@ -20,32 +20,27 @@ export default class Stage {
     this.enemies.push(enemy);
   }
 
-  // Architecturally, might need to completely change all of this to make it work with frontend
-  nextTurn() {
-    for (const enemy in enemies) {
-      enemy.useMove(player);
+  passTurn() {
+    this.player.useMove();
+    this.enemies = this.enemies.filter((enemy) => !enemy.isDead());
+
+    if (this.enemies.length === 0) {
+      return "win";
     }
 
-    this.player.useMove();
-
-    this.enemies = this.enemies.filter((e) => { return !e.isDead(); });
-
-    // TODO Update stats (as stretch)
-
-    // Check for loss before win
-
+    this.enemies.forEach((enemy) => enemy.useMove(this.player));
     if (this.player.isDead()) {
       return "loss";
-    } else if (this.enemies.length == 0) {
-      return "win"; 
     }
 
-    // Set up for next round
-    this.curr_round += 1;
     this.player.passTurn();
     this.enemies.forEach((enemy) => enemy.passTurn());
+    this.turnCount += 1;
+    this.turn = "player";
+    return "continue";
+  }
 
-    // Switch turn from player to enemy and vice versa
-    this.turn = this.turn == "player" ? "enemy" : "player";
+  nextTurn() {
+    return this.passTurn();
   }
 }

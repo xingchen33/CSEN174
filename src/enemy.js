@@ -11,6 +11,7 @@ export default class Enemy extends Entity {
     this.attribute = customization.attribute ?? null;
     this.power = 0;
     this.defense = 0;
+    this.nextMoveIndex = 0;
 
     this.getNextMove();
   }
@@ -22,8 +23,9 @@ export default class Enemy extends Entity {
     }
 
     if (n < 0) {
-      // For now: purely random
-      this.nextMove = this.moves[Math.floor(Math.random() * this.moves.length)];
+      this.nextMove = this.moves[this.nextMoveIndex];
+      this.nextMoveIndex++;
+      this.nextMoveIndex %= this.moves.length;
       return;
     }
 

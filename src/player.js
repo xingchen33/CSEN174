@@ -15,7 +15,9 @@ export default class Player extends Entity {
     this.energy = maxEnergy;
 
     this.cardDeck = cardDeck;
+    cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
+    logicDeck.shuffleDeck();
     this.items = items;
 
     // This is an array of objects, some of which are objects
@@ -24,12 +26,30 @@ export default class Player extends Entity {
     this.currentMove = [];
   }
 
-  playCard(pos) {
+  playCard(pos, target = null, location = null) {
     let playing = this.cardDeck.hand[pos];
-    let location = this.getValidPositions(playing.type);
-    if (this.evaluateCard(playing, location)) {
-      this.cardDeck.discard(1, [pos]);
+    if (!playing) {
+      return false;
     }
+
+    if (target !== null) {
+      playing.target = target;
+    }
+
+    const requiresTarget = !["self", "all", "allEnemies"].includes(playing.target)
+      && (playing.target === "enemy" || playing.target === "a" || playing.effects?.damage != null);
+    if (requiresTarget && (typeof playing.target !== "object" || playing.target === null)) {
+      return false;
+    }
+
+    const positionType = {s: "statement", r: "ritual", l: "statement"}[playing.type] ?? playing.type;
+    const selectedLocation = location ?? this.getValidPositions(positionType)[0];
+    if (this.evaluateCard(playing, selectedLocation)) {
+      this.cardDeck.discard(1, [pos]);
+      return true;
+    }
+
+    return false;
   }
 
   // TEST like REALLY REALLY TEST
@@ -89,6 +109,8 @@ export default class Player extends Entity {
     }
     //turning the card into the dictionary
     let dict_to_insert = {};
+    dict_to_insert.name = card.name;
+    dict_to_insert.description = card.getDescription();
     dict_to_insert.type = card.type;
     dict_to_insert.target = card.target;
     dict_to_insert.effects = card.effects;

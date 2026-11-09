@@ -37,6 +37,10 @@ export default class SimpleDeck {
     }
   }
 
+  getSortedCards(cards = this.hand) {
+    return [...cards].sort((a, b) => a.name.localeCompare(b.name));
+  }
+
   // ASK about hand limit mechanics
   draw(n){
     // Normal behavior

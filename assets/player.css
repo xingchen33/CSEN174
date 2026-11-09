@@ -37,3 +37,16 @@
 .player-base-health {
     top: 112%;
 }
+
+.player-energy {
+    position: absolute;
+    top: 124%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0.1rem 0.2rem black;
+    font-size: 1rem;
+    font-weight: bold;
+}
