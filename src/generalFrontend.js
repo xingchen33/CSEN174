@@ -2,19 +2,26 @@ export function cutPercentage(input_text){
     return input_text.replaceAll("%","")
 }
 
+export function cutPx(input_text){
+    return input_text.replaceAll("px","")
+}
+
 export function getPosition(htmlElement){
-    let htmlGetX = Number(cutPercentage(htmlElement.style.left))
-    let htmlGetY = Number(cutPercentage(htmlElement.style.top))
+    let parent = htmlElement.parentElement
+    let htmlGetX = 100*Number(cutPx(getComputedStyle(htmlElement).left))/Number(cutPx(getComputedStyle(parent).width))
+    let htmlGetY = 100*Number(cutPx(getComputedStyle(htmlElement).top))/Number(cutPx(getComputedStyle(parent).height))
 
     console.log([htmlGetX, htmlGetY])
     return [htmlGetX, htmlGetY]; // work on
 }
 export function getWidth(htmlElement){
-    return Number(cutPercentage(htmlElement.style.width))
+    let parent = htmlElement.parentElement
+    return 100*Number(cutPx(getComputedStyle(htmlElement).width))/Number(cutPx(getComputedStyle(parent).width))
 }
 
 export function getHeight(htmlElement){
-    return Number(cutPercentage(htmlElement.style.height))
+    let parent = htmlElement.parentElement
+    return 100*Number(cutPx(getComputedStyle(htmlElement).height))/Number(cutPx(getComputedStyle(parent).height))
 }
 
 export function setPosition(htmlElement, coords){

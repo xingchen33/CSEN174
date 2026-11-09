@@ -1,4 +1,4 @@
-import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass, fromElement} from './generalFrontend.js'
+import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass, fromElement, cutPx} from './generalFrontend.js'
 
 export function generateVisualCard(card) {
     /**
@@ -228,9 +228,10 @@ export function card_drag_and_drop(card_base){
 
     function card_drop(){
         let codeZone = document.getElementById("code-zone");
-        console.log(codeZone.style.left, "FIX")
         if (fromElement(codeZone, get_mouse_position()) == 0){
             console.log("yay!")
+            codeZone.appendChild(card_base)
+            setPosition(card_base, [0,0])
         }
         else {
             card_parent.appendChild(card_base)
