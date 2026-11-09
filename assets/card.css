@@ -1,6 +1,8 @@
 :root {
     --defaultCardMaxHeight: 100%;
-    --defaultCardHeight: 250px;
+    --defaultCardHeight: 225px;
+    --cardMaxHeightScaled: calc(0.75*var(--defaultCardMaxHeight));
+    --cardHeightScaled: calc(0.75*var(--defaultCardHeight));
     --defaultHoverColor: rgb(15, 218, 195);
 }
 
@@ -40,22 +42,26 @@
     font-family: "Apple Chancery", cursive;
     height: 10%;
     top: 0%;
+    z-index: 2;
 }
 
 .card-image {
-    height: 10%;
+    height: 40%;
     bottom: 50%;
+    z-index: 1;
 }
 
 .card-type {
     font-family: "Apple Chancery", cursive;
     height: 10%;
-    top: 0%;
+    top: 50%;
+    z-index: 3;
 }
 
 .card-description {
     height: 40%;
     bottom: 0%;
+    z-index: 2;
 }
 
 .card-energy {
@@ -68,6 +74,7 @@
     left: -3%;
     width: auto;
     outline: 0.3rem solid;
+    z-index: 3;
 }
 
 .card-back {
@@ -75,7 +82,8 @@
     position: absolute;
     backface-visibility: hidden;
     height: 100%;
-    top: 0%
+    top: 0%;
+    z-index: 3;
 }
 
 .card-selectable {
@@ -96,4 +104,24 @@
 
 .flipped {
     transform: rotateY(180deg);
+    z-index: -2;
+}
+
+.card-block-base {
+    height: 40%;
+    width: 200%;
+    text-decoration: none;
+    transform-style: preserve-3d;
+    container-type: inline-size;
+    border-width: 0.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 10 !important;
+}
+
+.scaled-down {
+    max-height: var(--cardMaxHeightScaled);
+    height: var(--cardHeightScaled)
 }

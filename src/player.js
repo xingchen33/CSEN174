@@ -39,7 +39,7 @@ export default class Player extends Entity {
   getValidPositions(type, current=this.currentMove, indexset=[]) {
     let positions = [];
     for (let i = 0; i < current.length; i++) {
-      let e = this.currentMove[i];
+      let e = current[i];
 
       // Anything with a "target" can have that overridden
       // Anything with a condition can have that condition's target overridden
@@ -62,9 +62,9 @@ export default class Player extends Entity {
         positions.push({type: "condition", index: [...indexset, i]});
       }
 
-      if (e.type == "logic") {
+      if (e.type == "logic" && e.block != null) {
         // If this was a logic statement, we recurse and prepend the index of this 
-        positions.push(...this.getValidPositions(type, e, [...indexset, i]));
+        positions.push(...this.getValidPositions(type, e.block, [...indexset, i]));
       }
     }
 
@@ -79,28 +79,110 @@ export default class Player extends Entity {
   // Adding a card to a move
   // "location" is an index set return from getValidPositions
   // TODO this is also very important
+  
   evaluateCard(card, location) {
     // Can't cast something that costs too much energy
     if (card.getEnergy() > this.energy) {
       return false;
     }
-
-    // Placing a statement just shifts everything down
-    if (location.type == "statement") {
-      
+    //checks on the location
+    if(location == null || location.index == null || location.index.length == 0) {
+      return false;
     }
-    // Targets just override the property
-    else if (location.type == "target") {
-           
+    //turning the card into the dictionary
+    let dict_to_insert = {};
+    dict_to_insert.type = card.type;
+    dict_to_insert.target = card.target;
+    dict_to_insert.effects = card.effects;
+    dict_to_insert.condition = card.conditions;
+    dict_to_insert.block = card.block;
+    //base case
+    if(location.index.length == 1){
+      let insert = location.index[0];
+      if(location.type == "statement"){
+        //check the index is valid
+        if(insert < 0 || insert > this.currentMove.length){
+          return false;
+        }
+        else{
+          //shift all the statements
+          for(let i = this.currentMove.length; i > insert; i--){
+            this.currentMove[i] = this.currentMove[i-1];
+          }
+          //add the statement in the right position
+          this.currentMove[insert] = dict_to_insert;
+        }
+      }
+      else if(location.type == "target"){
+          //if you want change the target for a condition
+          if(insert == "condition"){
+            //make sure the condition exists
+            if(this.currentMove.condition == null){
+              return false;
+            }
+            else{
+              //change the target for the condition
+              this.currentMove.target = card.target;
+            }
+          }
+          else{
+            //make sure the target exists
+            if(this.currentMove[insert] == null || this.currentMove[insert].target == null){
+              return false;
+            }
+            else{
+              this.currentMove[insert].target = card.target;
+            }
+          }
+      }
+        
+      else if(location.type == "condition"){
+            //make sure the condition exists
+            if(this.currentMove[insert] == null || this.currentMove[insert].condition == null){
+              return false;
+            }
+            //change the condition
+            else{
+              this.currentMove[insert].condition = card.conditions;
+            }
+      }
+      //if the location.type is not valid
+      else{
+        return false;
+      }
+      //subtract the energy
+      this.energy -= card.getEnergy();
+      return true;
     }
-    // Targets just override the property
-    else if (location.type == "condition") {
-      
+    else{
+      //recursive case
+      let first_index = location.index[0];
+      if(this.currentMove[first_index] == null){
+        return false;
+      }
+      let root = this.currentMove;
+      let next = root[first_index];
+      //check if we are adding a statement in an if/while block
+      if(next.block != null){
+        this.currentMove = next.block;
+
+      }
+      else{
+        this.currentMove = next;
+      }
+      //come up with the new location
+      let new_location_index = [];
+      for(let i = 1; i < location.index.length; i++){
+        new_location_index.push(location.index[i]);
+      }
+      let new_location = {type: location.type, index: new_location_index};
+      //call the function recursively on the new function
+      let final_result = this.evaluateCard(card, new_location);
+      //set the current move back to the root
+      this.currentMove = root;
+      return final_result
     }
-
-    this.energy -= card.getEnergy();
-
-    return true;
+ 
   }
 
   useMove(selectedMove=this.currentMove) {

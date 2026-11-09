@@ -1,0 +1,94 @@
+@import "card.css";
+
+:root {
+    --cardPileMaxHeight: calc(var(--defaultCardMaxHeight));
+    --cardPileHeight: calc(var(--defaultCardHeight));
+}
+
+#play-screen {
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    left: 0%;
+    position: absolute;
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+}
+
+#play-background {
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    left: 0%;
+    position: absolute;
+    z-index: 0;
+}
+
+#turn-indicator{
+    z-index: 1;
+    font-family: "Apple Chancery", cursive;
+    font-size: 2cqi;
+    width: 30%; 
+    aspect-ratio: 5/2; 
+    text-align: center;
+}
+
+#end-turn-button {
+    z-index: 1;
+    width: 10%;
+    aspect-ratio: 5/2;
+    position: absolute;
+    top: 20%;
+    left: 85%
+}
+
+#items-container {
+    z-index: 1;
+    width: 15%;
+    aspect-ratio: 5/1;
+    position: absolute;
+    top: 10%;
+    left: 2%
+    
+}
+
+#logic-card-draw-pile {
+    left: 5%;
+}
+
+#logic-card-play-hand {
+    left: 20%;
+}
+
+#action-card-draw-pile {
+    left: 75%;
+}
+
+#action-card-play-hand {
+    left: 50%;
+}
+
+.card-hand {
+    width: 20%;
+    max-height: var(--cardPileMaxHeight);
+    height: var(--cardPileHeight);
+    bottom: 1%
+}
+
+.card-pile {
+    width: 10%;
+    max-height: var(--cardMaxHeightScaled);
+    height: var(--cardHeightScaled);
+    bottom: 2%
+}
+
+#discard-pile {
+    left: 90%;
+}
+
+.card-holder {
+    z-index: 1;
+    position: absolute;
+    z-index: 1;
+}

@@ -5,17 +5,22 @@ export default class Card {
    * @param {string} description - The card description
    * @param {object} effects - The effects for the card
    * @param {number} energy - The card energy cost
+   * @param {object} target - The target of the card
    * @param {object} customization - Customization options for the card (e.g., background color)
    * @param {object} tags - Tags associated with the card
-   */
-  constructor (type, name, description, effects, energy, customization={}, tags={}){
+   */  
+  static nextCardID = 1;
+  constructor (type, name, description, effects, energy, target, conditions, block ,customization={}, tags={}){
     this.type = type
     this.name = name 
     this.description = description
     this.effects = effects
-    this.baseEnergy = energy 
+    this.baseEnergy = energy
+    this.target = target 
+    this.conditions = conditions
+    this.block = block;
     this.customization = customization
-
+    this.id = ++Card.nextCardID;
     this.tags = this.tags
   }
 
@@ -28,6 +33,12 @@ export default class Card {
     return damage || null;
   }
 
+  getHeal(){
+    let heal = this.effects["heal"];
+
+    return heal || null;
+  }
+
   getEnergy() {
     let energy = this.baseEnergy;
     if (this.effects["overcharged"]) {
@@ -35,6 +46,21 @@ export default class Card {
     }
 
     return energy;
+  }
+
+  getDescription(){
+    let polishedDescription = this.description;
+    polishedDescription = polishedDescription.replaceAll("{dmg}", String(this.getDamage()));
+    polishedDescription = polishedDescription.replaceAll("{nrg}", String(this.getEnergy()));
+    polishedDescription = polishedDescription.replaceAll("{heal}", String(this.getHeal()));
+
+    return polishedDescription
+  }
+
+  getImage(side="front_img"){
+    if (Object.keys(this.customization).includes(side))
+      return this.customization[side]
+    return "../assets/missing.jpg"
   }
 }
 
@@ -53,9 +79,21 @@ export const CARDLIST = {
     return card;
   },
   "cards": {
-    "Fireball": new Card("s", "Fireball", "Deal 6 damage", {burn: true, damage: 6}, 1, {}, {natural: true}),
-    "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, {}, {natural: true}),
-    "Cure Wound": new Card("s", "Cure Wound", "Heal 6 HP", {healing: 6}, 1, {}, {}),
+    "Fireball": new Card("s", "Fireball", "Deal 6 damage", {burn: true, damage: 6}, 1, 'a', 'b', 'c', {
+      "front_img": "../assets/1.webp",
+      "name": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
+      "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
+      "description": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
+      "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
+      "block": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}
+    }, {natural: true}),
+    "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, 'a', 'b', 'c',  {
+      "name": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000"}, 
+      "type": {"bg-color": "linear-gradient(.90turn, #9235de, #de35d0)", "text-color": "#000000"}, 
+      "description": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000"}, 
+      "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"}
+    }, {natural: true}),
+    "Cure Wound": new Card("s", "Cure Wound", "Heal {heal} HP", {healing: 6}, 1, {}, {}),
   }
 }
 

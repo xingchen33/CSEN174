@@ -1,0 +1,37 @@
+:root{
+    --startButtonWidth: 30%;
+}
+
+#main-menu{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#main-menu-start-button{
+    width: 100%;
+    height: 100%;
+}
+
+#main-menu-start-link{
+    width: var(--startButtonWidth);
+    max-height: var(--startButtonWidth);
+    aspect-ratio: 3/1;
+    top: 60%;
+    position: absolute;
+    transition: transform 0.1s ease-in-out;
+    z-index: 2;
+}
+#main-menu-start-link:hover {
+    transform: scale(1.2);
+}
+
+#main-menu-background{
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
