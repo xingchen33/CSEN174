@@ -22,9 +22,8 @@ export default class Run {
     this.playerInfo = {
       logicDeck: new SimpleDeck(logicPreset),
       cardDeck: new CardDeck(cardPreset),
-      // ASK what should these be
       maxHealth: 50,
-      maxEnergy: 5,
+      maxEnergy: 3,
       items: {},
     };
 

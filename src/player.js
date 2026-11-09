@@ -103,9 +103,31 @@ export default class Player extends Entity {
     return true;
   }
 
-  useMove() {
+  useMove(selectedMove=this.currentMove) {
     // TODO this is the core of the game
-    // "currentMove" is an array of objects representing what is going on
+    
+    // Iterate through all elements of the current move
+    for (let i = 0; i < selectedMove.length; i++) {
+
+      let move = selectedMove[i];
+      // If the statement is a logic block, check condition
+      if (move.type == "If") {
+        
+      }
+      else if (move.type == "While") {
+        
+      }
+      else {
+        let effects = move.effects;
+        if ("damage" in effects) {
+          move.target.damage(effects["damage"]);
+        }
+
+        if ("healing" in effects) {
+          move.target.heal(effects["healing"]);
+        }
+      }
+    }
   }
 
   passTurn() {
