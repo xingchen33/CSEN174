@@ -13,6 +13,7 @@ function renderCard(card) {
 
 function renderHand(deck, containerId, label) {
   const container = document.getElementById(containerId);
+  container.innerHTML = '';
   container.replaceChildren();
 
   const heading = document.createElement("h2");
@@ -66,6 +67,7 @@ function renderDeck(deck, containerId, label) {
 function renderHands() {
   renderHand(stage.player.logicDeck, "logic-card-play-hand", "Logic hand");
   renderHand(stage.player.cardDeck, "action-card-play-hand", "Card hand");
+
   renderDeck(stage.player.logicDeck, "logic-card-draw-pile", "Logic deck");
   renderDeck(stage.player.cardDeck, "action-card-draw-pile", "Card deck");
 }
@@ -263,10 +265,8 @@ function playCard(cardIndex, target, location) {
   }
 }
 
-stage.player.cardDeck.draw(Math.min(3, stage.player.cardDeck.drawPile.length));
-stage.player.logicDeck.draw(Math.min(1, stage.player.logicDeck.drawPile.length));
-renderHands();
-renderCode();
+window.refreshHands = renderHands;
+window.refreshCode = renderCode;
 
 function renderCharacter(character, container, baseClass, imageClass, label) {
   if (!container) {
@@ -417,6 +417,8 @@ if (endTurnButton) {
   endTurnButton.addEventListener("click", () => {
     const result = stage.passTurn();
     window.refreshHealthBars();
+    window.refreshHands();
+    window.refreshCode();
 
     enemyViews.forEach(({character, element}) => {
       element.hidden = character.isDead();
@@ -434,3 +436,6 @@ if (endTurnButton) {
     }
   });
 }
+
+window.refreshHands();
+window.refreshCode();

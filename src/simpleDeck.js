@@ -26,8 +26,13 @@ export default class SimpleDeck {
     this.hand = [];
   }
 
-  shuffleDeck() {
+  reshuffleAll() {
+    this.drawPile = [...this.drawPile, ...this.hand];
+    this.hand = [];
+    this.shuffleDeck();
+  }
 
+  shuffleDeck() {
     // Source - https://stackoverflow.com/a/12646864
     // Posted by Laurens Holst, modified by community. See post 'Timeline' for change history
     // Retrieved 2026-10-24, License - CC BY-SA 4.0

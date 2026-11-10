@@ -8,22 +8,30 @@ export default class Player extends Entity {
    * @param {SimpleDeck} logicDeck - player's logic cards
    */
   // ASK do players start at max health, or whatever health they ended last stage with?
-  constructor (maxHealth=50, maxEnergy=3, cardDeck, logicDeck, items={}, image="./assets/player.png", attribute="natural"){
+  constructor (maxHealth=50, maxEnergy=3, cardDeck, logicDeck, startingSpellCount=3, startingLogicCount=3, items={}, image="./assets/player.png", attribute="natural"){
     super(maxHealth, image, {}, attribute);
 
     this.maxEnergy = maxEnergy;
     this.energy = maxEnergy;
 
+    this.startingLogicCount = startingLogicCount;
+    this.startingSpellCount = startingSpellCount;
+
     this.cardDeck = cardDeck;
     cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
     logicDeck.shuffleDeck();
+
+    this.cardDeck.draw(this.startingSpellCount);
+    this.logicDeck.draw(this.startingLogicCount);
+
     this.items = items;
 
     // This is an array of objects, some of which are objects
     // Spells have targets
     // Logic cards have conditions and subarrays
     this.currentMove = [];
+    this.previousMoves = [];
   }
 
   playCard(pos, target = null, location = null) {
@@ -235,9 +243,16 @@ export default class Player extends Entity {
     this.statusDecay();
     this.useMove();
 
-    this.logicDeck;
+    this.logicDeck.reshuffleAll();
+    this.logicDeck.draw(this.startingLogicCount);
+
+    this.cardDeck.discardHand();
+    this.cardDeck.draw(this.startingSpellCount);
 
     this.energy = this.maxEnergy;
+
+    this.previousMoves.push(this.currentMove);
+    this.currentMove = [];
   }
 }
 

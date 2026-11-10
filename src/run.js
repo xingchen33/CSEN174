@@ -25,6 +25,8 @@ export default class Run {
       cardDeck: new CardDeck(cardPreset),
       maxHealth: 50,
       maxEnergy: 3,
+      startingSpellCount: 3,
+      startingLogicCount: 3,
       attribute: "natural",
       items: {},
     };
@@ -65,6 +67,8 @@ export default class Run {
       this.playerInfo.maxEnergy,
       this.playerInfo.cardDeck,
       this.playerInfo.logicDeck,
+      this.playerInfo.startingSpellCount,
+      this.playerInfo.startingLogicCount,
       this.playerInfo.items,
       undefined,
       this.playerInfo.attribute,

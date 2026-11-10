@@ -65,6 +65,11 @@ export default class CardDeck extends SimpleDeck {
     // No cards remaining to draw
   }
 
+  discardHand() {
+    this.graveyard.push(...this.hand);
+    this.hand = [];
+  }
+
   discard(count, pos) {
     if (count != pos.length) {
       console.log(`Cannot discard ${count} cards at positions: ${pos}`);
