@@ -216,7 +216,8 @@
 .card-pile {
     width: 5%;
     aspect-ratio: 3/4;
-    bottom: 2%
+    bottom: 2%;
+    z-index: 11;
 }
 
 #discard-pile {
@@ -224,9 +225,8 @@
 }
 
 .card-holder {
-    z-index: 1;
+    z-index: 10;
     position: absolute;
-    z-index: 1;
 }
 
 #logic-card-play-hand,
@@ -320,7 +320,6 @@
     position: absolute;
     bottom: 105%;
     left: 0;
-    z-index: 10;
     display: none;
     min-width: 6rem;
     padding: 0.5rem;
