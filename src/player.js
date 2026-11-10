@@ -134,37 +134,37 @@ export default class Player extends Entity {
         }
       }
       else if(location.type == "target"){
-          //if you want change the target for a condition
-          if(insert == "condition"){
-            //make sure the condition exists
-            if(this.currentMove.condition == null){
-              return false;
-            }
-            else{
-              //change the target for the condition
-              this.currentMove.target = card.target;
-            }
+        //if you want change the target for a condition
+        if(insert == "condition"){
+          //make sure the condition exists
+          if(this.currentMove.condition == null){
+            return false;
           }
           else{
-            //make sure the target exists
-            if(this.currentMove[insert] == null || this.currentMove[insert].target == null){
-              return false;
-            }
-            else{
-              this.currentMove[insert].target = card.target;
-            }
+            //change the target for the condition
+            this.currentMove.target = card.target;
           }
+        }
+        else{
+          //make sure the target exists
+          if(this.currentMove[insert] == null || this.currentMove[insert].target == null){
+            return false;
+          }
+          else{
+            this.currentMove[insert].target = card.target;
+          }
+        }
       }
-        
+
       else if(location.type == "condition"){
-            //make sure the condition exists
-            if(this.currentMove[insert] == null || this.currentMove[insert].condition == null){
-              return false;
-            }
-            //change the condition
-            else{
-              this.currentMove[insert].condition = card.conditions;
-            }
+        //make sure the condition exists
+        if(this.currentMove[insert] == null || this.currentMove[insert].condition == null){
+          return false;
+        }
+        //change the condition
+        else{
+          this.currentMove[insert].condition = card.conditions;
+        }
       }
       //if the location.type is not valid
       else{
@@ -202,12 +202,11 @@ export default class Player extends Entity {
       this.currentMove = root;
       return final_result
     }
- 
+
   }
 
+  // TODO this is the core of the game
   useMove(selectedMove=this.currentMove) {
-    // TODO this is the core of the game
-    
     // Iterate through all elements of the current move
     for (let i = 0; i < selectedMove.length; i++) {
 

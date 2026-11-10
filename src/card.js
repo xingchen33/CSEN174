@@ -130,7 +130,14 @@ export const CARDLIST = {
       "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"}
     }, {attribute: "natural"}),
     "Cure Wound": new Card(
-      "s", "Cure Wound", "Heal {heal} HP.", {healing: 6}, 1, "self", null, null, {}, {attribute: "light"}
+      "s", "Cure Wound", "Heal {heal} HP.", {healing: 6}, 1, "self", null, null, {}, {attribute: "light"}, {
+      "front_img": "./assets/Curewound.png",
+      "name": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
+      "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
+      "description": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
+      "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
+      "block": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}
+    }
     ),
     "Mind Shock": new Card(
       "s", "Mind Shock", "Deal 10 damage to 1 enemy.", {damage: 10}, 2, "enemy", null, null, {}, {attribute: "dark"}
