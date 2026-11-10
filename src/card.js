@@ -119,3 +119,56 @@ export const LOGICLIST = {
     "Pointer": new Card("l", "Pointer", "Execute actions FOR FREE while a condition is met. Don't go infinite!", {condition: null}, 0, {}, {}),
   }
 }
+
+// this may need to be moved
+export function addCard(card, input_player, loc="hand"){
+  let player_deck = null
+  if (card.type == "s" || card.type == "r")
+    player_deck = input_player.cardDeck
+  else 
+    player_deck = input_player.logicDeck
+  
+  if (loc == "hand")
+    player_deck.hand.push(card)
+  else if (loc == "current")
+    input_player.currentMove.push(card)
+  else 
+    player_deck.drawPile.push(card)
+}
+
+export function removeCard(card, input_player){
+  sub_remove(card, input_player.currentMove)
+
+  let next_removal = input_player.cardDeck
+  if (card.type == "l"){
+      next_removal = input_player.logicDeck
+  }
+
+  sub_remove(card, next_removal.hand)
+  sub_remove(card, next_removal.drawPile)
+
+  function sub_remove(input_card, input_deck){
+    let index = 0
+    for (let check_card of input_deck) {
+    if (input_card == check_card){
+      input_deck.splice(index, 1)
+      return card
+    }
+    ++index;
+  };
+  }
+}
+
+export function get_card_by_id(id, input_player){
+  for (const sub_deck of 
+    [input_player.currentMove, 
+      input_player.cardDeck.hand, 
+      input_player.cardDeck.drawPile, 
+      input_player.logicDeck.hand, 
+      input_player.logicDeck.drawPile]){
+    for (const card of sub_deck){
+      if (card.id == id)
+        return card
+    };
+  };
+}

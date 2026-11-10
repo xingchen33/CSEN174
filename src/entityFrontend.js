@@ -33,7 +33,7 @@ export function createCharacterFrontend(input_character){
     character_fill_health.classList.add("health-bar-fill")
     character_base_health.appendChild(character_fill_health)
 
-    let character_health_label = document.createElement("p")
+    let character_health_label = document.createElement("div")
     character_health_label.classList.add("health-bar-label")
     character_base_health.appendChild(character_health_label)
 
@@ -43,7 +43,7 @@ export function createCharacterFrontend(input_character){
 export function updateHealthFrontend(character_base, input_character){
     let character_fill_health = getCharacterFrontendItem(character_base, "healthFill")
     let character_health_label = getCharacterFrontendItem(character_base, "healthLabel")
-    
+
     character_fill_health.style.width = String(100*input_character.health/input_character.maxHealth) +"%"
     character_health_label.innerText = `${input_character.health} / ${input_character.maxHealth}`
 }

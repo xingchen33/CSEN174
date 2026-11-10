@@ -60,6 +60,9 @@
 }
 
 .card-description {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    line-height: 1.5;
     height: 40%;
     bottom: 0%;
     z-index: 2;
@@ -120,9 +123,28 @@
     justify-content: center;
     position: relative;
     z-index: 10 !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 .scaled-down {
     max-height: var(--cardMaxHeightScaled);
     height: var(--cardHeightScaled)
+}
+
+.in-code-zone {
+    position: relative;
+    height: 20% !important;
+}
+
+.in-code-zone .card-block-base {
+    width: 100%;
+    aspect-ratio: 5/2;
+}
+.in-code-zone .card-block-base:hover {
+    outline: 0.3rem solid var(--defaultHoverColor) !important;
+    z-index: 9999 !important;
+    border-width: 0.1rem !important;
+    border-radius: 0.5rem !important;
 }

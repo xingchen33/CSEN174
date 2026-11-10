@@ -1,4 +1,4 @@
-import { generateVisualCard, attach_interaction, drawCardVisual, playCardVisual } from "./cardFrontend.js";
+import { generateVisualCard, attach_interaction, drawCardVisual, playCardVisual, attach_player } from "./cardFrontend.js";
 import { setPosition } from "./generalFrontend.js";
 
 // MAY NEED LARGE CHANGES
@@ -34,5 +34,16 @@ export function updateVisualCardDeck(input_deck, location){
         let cardFront = document.getElementById(card.id);
         drawCardVisual(cardFront)
         card_draw_location.appendChild(cardFront)
+    });
+}
+
+export function attach_cards_to_player(input_deck, player){
+    input_deck.hand.forEach(card => {
+        let card_base = document.getElementById(card.id)
+        attach_player(card_base, player)
+    });
+    input_deck.drawPile.forEach(card => {
+        let card_base = document.getElementById(card.id)
+        attach_player(card_base, player)
     });
 }

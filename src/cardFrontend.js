@@ -1,4 +1,7 @@
+import { addCard, removeCard, get_card_by_id} from './card.js'
 import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass, fromElement, cutPx} from './generalFrontend.js'
+import { updatePlayerFrontendCards } from './inGame.js'
+
 
 export function generateVisualCard(card) {
     /**
@@ -19,8 +22,12 @@ export function generateVisualCard(card) {
 export function playCardVisual(card_base){
     removeClass(card_base, "hidden", "scaled-down", "flipped")
     addClass(card_base, "card-selectable")
-    let card_back = getCardFrontendItem(card_base, "block")
-    addClass(card_back, "hidden")
+
+    let card_contents = getCardFrontendItem(card_base, "contents")
+    removeClass(card_contents, "hidden")
+    
+    let card_block = getCardFrontendItem(card_base, "block")
+    addClass(card_block, "hidden")
 }
 
 export function drawCardVisual(card_base){
@@ -28,6 +35,16 @@ export function drawCardVisual(card_base){
     addClass(card_base, "scaled-down", "flipped")
     let card_back = getCardFrontendItem(card_base, "block")
     addClass(card_back, "hidden")
+}
+
+export function codeBlockVisual(card_base){
+    removeClass(card_base, "card-selectable", "in-code-zone")
+
+    let card_contents = getCardFrontendItem(card_base, "contents")
+    addClass(card_contents, "hidden")
+    
+    let card_block = getCardFrontendItem(card_base, "block")
+    removeClass(card_block, "hidden")
 }
 
 export function createCardFrontend(card) {
@@ -110,6 +127,7 @@ export function updateCardFrontend(card_base, card) {
     setCardDescriptionFrontend(card_base, card);
     setCardEnergyFrontend(card_base, card);
     setCardTypeFrontend(card_base, card)
+    setCardCodeBlockText(card_base, card)
     return;
 }
 
@@ -146,6 +164,11 @@ export function setCardImageFrontend(card_base, card) {
 export function setCardBackImageFrontend(card_base, card) {
     let card_image = getCardFrontendItem(card_base, "back");
     card_image.src = card.getImage("back_img");
+}
+
+export function setCardCodeBlockText(card_base, card) {
+    let card_block = getCardFrontendItem(card_base, "block")
+    card_block.innerText = card.getDescription()
 }
 
 export function getCardFrontendItem(card_base,  item){
@@ -205,12 +228,9 @@ export function card_interaction(){
 }
 
 export function card_drag_and_drop(card_base){
-    let card_parent = card_base.parentNode;
-    let card_home = getPosition(card_base)
+    let card = get_card_by_id(Number(card_base.id), card_base.user)
+    
     let drag_offset = [-3, -10]
-
-    let card_block = getCardFrontendItem(card_base, "block")
-    let card_contents = getCardFrontendItem(card_base, "contents")
 
     document.onmousemove = card_drag;
     document.ontouchmove = card_drag;
@@ -221,25 +241,24 @@ export function card_drag_and_drop(card_base){
         let current_mouse = get_mouse_position()
         setPosition(card_base, [current_mouse[0]+drag_offset[0], current_mouse[1]+drag_offset[1]])
         document.body.appendChild(card_base)
-        addClass(card_contents, "hidden")
-        removeClass(card_base, "card-selectable")
-        removeClass(card_block, "hidden")
+        codeBlockVisual(card_base)
     }
 
     function card_drop(){
         let codeZone = document.getElementById("code-zone");
         if (fromElement(codeZone, get_mouse_position()) == 0){
-            console.log("yay!")
             codeZone.appendChild(card_base)
+            addClass(card_base, "in-code-zone")
             setPosition(card_base, [0,0])
+            removeCard(card, card_base.user)
+            addCard(card, card_base.user, "current")
         }
         else {
-            card_parent.appendChild(card_base)
-            setPosition(card_base, card_home)
-            addClass(card_block, "hidden")
-            addClass(card_base, "card-selectable")
-            removeClass(card_contents, "hidden")
+            removeCard(card, card_base.user)
+            addCard(card, card_base.user, "hand")
         }
+
+        updatePlayerFrontendCards(card_base.user)
 
         document.onmousemove = null;
         document.ontouchmove = null;
@@ -248,4 +267,8 @@ export function card_drag_and_drop(card_base){
 
         
     }
+}
+
+export function attach_player(card_base, player){
+    card_base.user = player 
 }

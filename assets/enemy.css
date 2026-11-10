@@ -1,13 +1,14 @@
 .enemy-base {
-    width: 30%;
+    height: 100%;
     aspect-ratio: 1/1;
     position: absolute;
+    display: flex;
+    justify-content: center;
 }
 
 .enemy-image {
-    left: 0%;
     top: 0%;
-    width: 100%;
-    aspect-ratio: 1/1;
+    height: 100%;
+    aspect-ratio: 256/515;
     position: absolute;
 }

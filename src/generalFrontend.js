@@ -60,9 +60,6 @@ export function fromElement(htmlElement, coords){
     let element_width = getWidth(htmlElement)
     let element_height = getHeight(htmlElement)
 
-    console.log(element_coords[0], coords[0], element_coords[0]+element_width)
-    console.log(element_coords[1], coords[1], element_coords[1]+element_height)
-
     if (element_coords[0]<coords[0] && coords[0]<element_coords[0]+element_width){
         if (element_coords[1]<coords[1] && coords[1]<element_coords[1]+element_height)
             return 0

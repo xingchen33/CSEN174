@@ -9,6 +9,7 @@
     position: absolute;
     bottom: 0%;
     background-color: rgb(164, 164, 164);
+    display: flex;
 }
 
 .health-bar-fill {
