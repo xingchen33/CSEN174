@@ -8,6 +8,8 @@ Anything with a TEST comment should have tests written
 - Stage 1 loads with some enemies
 - Enemies deal damage
 - The player can play cards as expected
+- Status effects
+- Actually get cards working
 - Simple main menu
 - Losing is possible
 - Winning is possible
