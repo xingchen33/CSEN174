@@ -158,6 +158,17 @@
     cursor: pointer;
 }
 
+.cancel-card-button {
+    display: block;
+    margin: 0.6rem auto 0;
+    padding: 0.3rem 0.6rem;
+    border: 0.1rem solid #7a2730;
+    border-radius: 0.25rem;
+    background: #7a2730;
+    color: white;
+    cursor: pointer;
+}
+
 #logic-card-draw-pile {
     left: 5%;
 }

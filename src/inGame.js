@@ -119,6 +119,15 @@ function renderCode() {
     codeZone.appendChild(entry);
   });
 
+  if (pendingCard) {
+    const cancelButton = document.createElement("button");
+    cancelButton.type = "button";
+    cancelButton.classList.add("cancel-card-button");
+    cancelButton.textContent = "Cancel Card";
+    cancelButton.addEventListener("click", cancelPendingCard);
+    codeZone.appendChild(cancelButton);
+  }
+
   if (pendingCard && !pendingCard.position) {
     const options = document.createElement("div");
     options.classList.add("code-placement-options");
@@ -230,6 +239,16 @@ function clearTargetSelection() {
     playerView.classList.remove("targetable");
     playerView.style.pointerEvents = "";
   }
+}
+
+function cancelPendingCard() {
+  if (!pendingCard) {
+    return;
+  }
+
+  clearTargetSelection();
+  renderCode();
+  turnIndicator.textContent = "Player Action";
 }
 
 function playCard(cardIndex, target, location) {
