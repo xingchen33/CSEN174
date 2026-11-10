@@ -309,10 +309,10 @@ function renderCharacter(character, container, baseClass, imageClass, label) {
   characterBase.healthBar = {fill: healthFill, label: healthLabel};
 
   if (baseClass === "player-base") {
-    const energy = document.createElement("p");
-    energy.classList.add("player-energy");
-    characterBase.appendChild(energy);
-    characterBase.energyLabel = energy;
+    let playScreen = document.getElementById("play-screen")
+    const energy = document.createElement("div");
+    energy.id = "player-energy";
+    playScreen.appendChild(energy);
   }
 
   updateHealthBar(character, characterBase);
@@ -330,8 +330,11 @@ function updateHealthBar(character, characterBase) {
   characterBase.healthBar.fill.style.width = `${percentage}%`;
   characterBase.healthBar.label.textContent = `${character.health} / ${character.maxHealth}`;
 
-  if (characterBase.energyLabel) {
-    characterBase.energyLabel.textContent = `Energy: ${character.energy} / ${character.maxEnergy}`;
+  let active_energy = document.getElementById("player-energy")
+  console.log(active_energy)
+  if (active_energy) {
+    
+    active_energy.textContent = `Energy: ${character.energy} / ${character.maxEnergy}`;
   }
 }
 
