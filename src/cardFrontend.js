@@ -230,6 +230,7 @@ export function card_interaction(){
 export function card_drag_and_drop(card_base){
     let player = card_base.user
     let card = get_card_by_id(Number(card_base.id), player)
+    removeCard(card, player)
     
     let drag_offset = [-3, -10]
 
@@ -243,6 +244,7 @@ export function card_drag_and_drop(card_base){
         setPosition(card_base, [current_mouse[0]+drag_offset[0], current_mouse[1]+drag_offset[1]])
         document.body.appendChild(card_base)
         codeBlockVisual(card_base)
+        adjustEnergyDisplay(player)
     }
 
     function card_drop(){
