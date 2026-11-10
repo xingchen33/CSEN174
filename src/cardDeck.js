@@ -3,7 +3,7 @@ import SimpleDeck from "./simpleDeck.js";
 
 const CARD_PRESETS = {
   "empty": [],
-  "fireballer": [
+  "basic": [
     CARDLIST.pick("Fireball"),
     CARDLIST.pick("Curse"),
     CARDLIST.pick("Cure Wound"),

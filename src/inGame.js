@@ -3,7 +3,7 @@ import { generateVisualCard, playCardVisual } from "./cardFrontend.js";
 
 // The game entry point creates one run and starts its first stage when the
 // player arrives from the main menu.
-const run = new Run("fireballer", "fireballer", 2);
+const run = new Run("basic", "basic", 2);
 const stage = run.createNextStage();
 let pendingCard = null;
 

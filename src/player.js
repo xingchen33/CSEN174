@@ -235,6 +235,8 @@ export default class Player extends Entity {
     this.statusDecay();
     this.useMove();
 
+    this.logicDeck;
+
     this.energy = this.maxEnergy;
   }
 }

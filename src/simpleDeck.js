@@ -2,7 +2,7 @@ import { LOGICLIST } from "./card.js";
 
 const LOGIC_PRESETS = {
   "empty": [],
-  "fireballer": [
+  "basic": [
     LOGICLIST.pick("If"),
     LOGICLIST.pick("If"),
     LOGICLIST.pick("While"),

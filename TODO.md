@@ -7,7 +7,6 @@ Paul:
 - Add display for status effects
 - Make code display better
 Devs:
-- Merge prototype to main
 - Implement all card effects
 - Implement While/If/Pointer
 

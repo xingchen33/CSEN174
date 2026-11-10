@@ -3,7 +3,7 @@ import CardDeck from "./cardDeck.js";
 
 
 test('decks should be made with the right card counts', () => {
-  const deck1 = new SimpleDeck("fireballer");
+  const deck1 = new SimpleDeck("basic");
   expect(deck1.drawPile.length).toBe(3);
 
   const deck2 = new SimpleDeck("empty");
@@ -11,7 +11,7 @@ test('decks should be made with the right card counts', () => {
 });
 
 test('modifying a card should only change that card (not others of the same name)', () => {
-  let deck = new SimpleDeck("fireballer");
+  let deck = new SimpleDeck("basic");
   deck.drawPile[0].customization["overcharged"] = true;
 
   let ocCount = deck.drawPile.reduce((count, card) => count + (card.customization.overcharged === true ? 1 : 0), 0);
@@ -19,7 +19,7 @@ test('modifying a card should only change that card (not others of the same name
 });
 
 test('drawing decreases drawPile size + increases hand size', () => {
-  let deck = new SimpleDeck("fireballer");
+  let deck = new SimpleDeck("basic");
   deck.draw(2);
 
   expect(deck.drawPile.length).toBe(1);
@@ -27,7 +27,7 @@ test('drawing decreases drawPile size + increases hand size', () => {
 });
 
 test('discarding decreases hand size and increases graveyard size', () => {
-  let deck = new CardDeck("fireballer");
+  let deck = new CardDeck("basic");
   deck.draw(3);
   deck.discard(2, [0,2]);
 
@@ -45,7 +45,7 @@ test('drawing from a deck which doesn\'t have enough cards works okay', () => {
 });
 
 test('drawing from a deck which doesn\'t have enough cards works okay', () => {
-  const deck = new CardDeck("fireballer");
+  const deck = new CardDeck("basic");
   deck.draw(3);
 
   expect(deck.hand.length).toBe(3);
@@ -56,7 +56,7 @@ test('drawing from a deck which doesn\'t have enough cards works okay', () => {
 
 
 test('drawing from a deck which would usually have enough cards reshuffles', () => {
-  let deck = new CardDeck("fireballer");
+  let deck = new CardDeck("basic");
   deck.draw(4);
   deck.discard(3, [0,1,2]);
   deck.draw(3);
@@ -67,12 +67,12 @@ test('drawing from a deck which would usually have enough cards reshuffles', () 
 });
 
 test('energy of cards is gettable', () => {
-  let deck = new SimpleDeck("fireballer");
+  let deck = new SimpleDeck("basic");
   expect(deck.drawPile[0].getEnergy()).not.toBe(undefined);
 });
 
 test('cards can be sorted alphabetically without changing deck order', () => {
-  let deck = new SimpleDeck("fireballer");
+  let deck = new SimpleDeck("basic");
   const originalOrder = deck.hand;
   deck.hand = [deck.drawPile[2], deck.drawPile[0], deck.drawPile[1]];
 

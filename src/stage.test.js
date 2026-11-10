@@ -8,8 +8,8 @@ import { CARDLIST } from "./card.js";
 
 
 test("initializing the stage works", () => {
-    card_deck = new CardDeck("fireballer");
-    logic_deck = new SimpleDeck("fireballer");
+    card_deck = new CardDeck("basic");
+    logic_deck = new SimpleDeck("basic");
     player = new Player(100, 5, card_deck, logic_deck);
     enemy1 = new Enemy(100, [{"damage": 20}, {"damage": 30}], "Dummy", "./assets/missing.jpg", {})
     enemies = [enemy1];
@@ -23,8 +23,8 @@ test("initializing the stage works", () => {
 })
 
 test("adding an enemy works", () =>{
-    card_deck = new CardDeck("fireballer");
-    logic_deck = new SimpleDeck("fireballer");
+    card_deck = new CardDeck("basic");
+    logic_deck = new SimpleDeck("basic");
     player = new Player(100, 5, card_deck, logic_deck);
     enemy1 = new Enemy(100, [{"fireball": 20}, {"fireball": 30}], "E1", "./assets/missing.jpg", {})
     enemies = [enemy1];
@@ -39,8 +39,8 @@ test("adding an enemy works", () =>{
 
 test("attacking and changing turns updates the metadata" , () => {
     
-    card_deck = new CardDeck("fireballer");
-    logic_deck = new SimpleDeck("fireballer");
+    card_deck = new CardDeck("basic");
+    logic_deck = new SimpleDeck("basic");
     player = new Player(100, 5, card_deck, logic_deck);
     enemy1 = new Enemy(100, [{"damage": 20}, {"damage": 30}], "Dummy", "./assets/missing.jpg", {})
     enemies = [enemy1];

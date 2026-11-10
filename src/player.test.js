@@ -5,8 +5,8 @@ import CardDeck from "./cardDeck.js";
 const target = {damage() {}};
 
 test('damaging/healing works as expected', () => {
-  const card_deck = new CardDeck("fireballer");
-  const logic_deck = new SimpleDeck("fireballer")
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic")
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.damage(20);
@@ -16,8 +16,8 @@ test('damaging/healing works as expected', () => {
 });
 
 test('energy depletes when playing cards', () => {
-  const card_deck = new CardDeck("fireballer");
-  const logic_deck = new SimpleDeck("fireballer")
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic")
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(1);
@@ -27,8 +27,8 @@ test('energy depletes when playing cards', () => {
 });
 
 test('energy comes back after passing', () => {
-  const card_deck = new CardDeck("fireballer");
-  const logic_deck = new SimpleDeck("fireballer")
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic")
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(1);
@@ -39,8 +39,8 @@ test('energy comes back after passing', () => {
 });
 
 test('playing a card removes it from your hand', () => {
-  const card_deck = new CardDeck("fireballer");
-  const logic_deck = new SimpleDeck("fireballer")
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic")
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(3);
@@ -50,8 +50,8 @@ test('playing a card removes it from your hand', () => {
 });
 
 test('failing to play a card does not remove it from your hand', () => {
-  const card_deck = new CardDeck("fireballer");
-  const logic_deck = new SimpleDeck("fireballer")
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic")
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(6);
