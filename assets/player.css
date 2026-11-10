@@ -2,6 +2,8 @@
     width: 30%;
     aspect-ratio: 1/1;
     position: absolute;
+    display: flex;
+    justify-content: center;
 }
 
 .player-image {

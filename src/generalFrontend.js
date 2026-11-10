@@ -11,8 +11,7 @@ export function getPosition(htmlElement){
     let htmlGetX = 100*Number(cutPx(getComputedStyle(htmlElement).left))/Number(cutPx(getComputedStyle(parent).width))
     let htmlGetY = 100*Number(cutPx(getComputedStyle(htmlElement).top))/Number(cutPx(getComputedStyle(parent).height))
 
-    console.log([htmlGetX, htmlGetY])
-    return [htmlGetX, htmlGetY]; // work on
+    return [htmlGetX, htmlGetY];
 }
 export function getWidth(htmlElement){
     let parent = htmlElement.parentElement
