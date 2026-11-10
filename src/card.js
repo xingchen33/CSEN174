@@ -131,7 +131,7 @@ export const CARDLIST = {
     }, {attribute: "natural"}),
     "Cure Wound": new Card(
       "s", "Cure Wound", "Heal {heal} HP.", {healing: 6}, 1, "self", null, null, {}, {attribute: "light"}, {
-      "front_img": "./assets/Curewound.png",
+      "front_img": "./assets/curewound.png",
       "name": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
       "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
       "description": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
