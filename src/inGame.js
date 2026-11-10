@@ -1,4 +1,5 @@
 import Run from "./run.js";
+import { generateVisualCard, playCardVisual } from "./cardFrontend.js";
 
 // The game entry point creates one run and starts its first stage when the
 // player arrives from the main menu.
@@ -6,32 +7,8 @@ const run = new Run("fireballer", "fireballer", 2);
 const stage = run.createNextStage();
 let pendingCard = null;
 
-function cardTypeLabel(card) {
-  return {r: "Ritual", s: "Spell", l: "Logic"}[card.type] ?? card.type;
-}
-
 function renderCard(card) {
-  const cardElement = document.createElement("article");
-  cardElement.classList.add("hand-card");
-
-  const name = document.createElement("h3");
-  name.textContent = card.name;
-  cardElement.appendChild(name);
-
-  const type = document.createElement("small");
-  type.textContent = `${cardTypeLabel(card)} · ${card.tags?.attribute ?? ""}`;
-  cardElement.appendChild(type);
-
-  const description = document.createElement("p");
-  description.textContent = card.getDescription();
-  cardElement.appendChild(description);
-
-  const energy = document.createElement("strong");
-  energy.classList.add("hand-card-energy");
-  energy.textContent = card.getEnergy();
-  cardElement.appendChild(energy);
-
-  return cardElement;
+  return generateVisualCard(card);
 }
 
 function renderHand(deck, containerId, label) {
@@ -43,12 +20,17 @@ function renderHand(deck, containerId, label) {
   heading.textContent = label;
   container.appendChild(heading);
 
-  deck.getSortedCards(deck.hand).forEach((card) => {
+  deck.getSortedCards(deck.hand).forEach((card, index) => {
     const cardElement = renderCard(card);
     if (deck === stage.player.cardDeck) {
       cardElement.classList.add("can-play");
       cardElement.addEventListener("click", () => handleCardClick(card));
     }
+    playCardVisual(cardElement);
+    cardElement.style.position = "relative";
+    cardElement.style.left = "";
+    cardElement.style.top = "";
+    cardElement.style.zIndex = String(index + 1);
     container.appendChild(cardElement);
   });
 }
@@ -60,6 +42,7 @@ function renderDeck(deck, containerId, label) {
   const deckElement = document.createElement("div");
   deckElement.classList.add("draw-deck");
   deckElement.tabIndex = 0;
+  deckElement.style.backgroundImage = 'url("./assets/card_back.jpg")';
 
   const title = document.createElement("strong");
   title.textContent = label;
@@ -161,7 +144,18 @@ function cardRequiresTarget(card) {
     return false;
   }
 
+  return cardCanTargetEnemy(card) || cardCanTargetPlayer(card);
+}
+
+function cardCanTargetEnemy(card) {
   return card.target === "enemy" || card.target === "a" || card.effects?.damage != null;
+}
+
+function cardCanTargetPlayer(card) {
+  return card.target === "player"
+    || card.target === "ally"
+    || card.target === "a"
+    || card.effects?.damage != null;
 }
 
 function handleCardClick(card) {
@@ -207,12 +201,18 @@ function selectCodePosition(position) {
 
   if (cardRequiresTarget(pendingCard.card)) {
     turnIndicator.textContent = `Select a target for ${pendingCard.card.name}`;
-    enemyViews.forEach(({element, character}) => {
-      if (!character.isDead()) {
-        element.classList.add("targetable");
-        element.style.pointerEvents = "auto";
-      }
-    });
+    if (cardCanTargetEnemy(pendingCard.card)) {
+      enemyViews.forEach(({element, character}) => {
+        if (!character.isDead()) {
+          element.classList.add("targetable");
+          element.style.pointerEvents = "auto";
+        }
+      });
+    }
+    if (cardCanTargetPlayer(pendingCard.card)) {
+      playerView.classList.add("targetable");
+      playerView.style.pointerEvents = "auto";
+    }
     renderCode();
     return;
   }
@@ -226,6 +226,10 @@ function clearTargetSelection() {
     element.classList.remove("targetable");
     element.style.pointerEvents = "";
   });
+  if (playerView) {
+    playerView.classList.remove("targetable");
+    playerView.style.pointerEvents = "";
+  }
 }
 
 function playCard(cardIndex, target, location) {
@@ -263,6 +267,13 @@ function renderCharacter(character, container, baseClass, imageClass, label) {
   name.classList.add(`${baseClass}-name`);
   name.textContent = label;
   characterBase.appendChild(name);
+
+  const attribute = document.createElement("p");
+  attribute.classList.add("entity-attribute");
+  attribute.textContent = character.attribute
+    ? character.attribute.charAt(0).toUpperCase() + character.attribute.slice(1)
+    : "Unknown attribute";
+  characterBase.appendChild(attribute);
 
   const healthBar = document.createElement("div");
   healthBar.classList.add("health-bar-base");
@@ -319,8 +330,8 @@ function renderEnemies(enemies) {
     enemyBase.actionLabel = action;
     updateEnemyAction(enemy, enemyBase);
     enemyBase.addEventListener("click", () => {
-      if (pendingCard && !enemy.isDead()) {
-        playCard(pendingCard.cardIndex, enemy);
+      if (pendingCard && !enemy.isDead() && cardCanTargetEnemy(pendingCard.card)) {
+        playCard(pendingCard.cardIndex, enemy, pendingCard.position);
       }
     });
     views.push({character: enemy, element: enemyBase});
@@ -358,6 +369,11 @@ const playerView = renderCharacter(
   "player-image",
   "Player",
 );
+playerView.addEventListener("click", () => {
+  if (pendingCard && cardCanTargetPlayer(pendingCard.card)) {
+    playCard(pendingCard.cardIndex, stage.player, pendingCard.position);
+  }
+});
 const enemyViews = renderEnemies(stage.enemies);
 
 window.refreshHealthBars = () => {

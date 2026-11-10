@@ -5,11 +5,11 @@ const CARD_PRESETS = {
   "empty": [],
   "fireballer": [
     CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Ether Pupil"),
+    CARDLIST.pick("Curse"),
+    CARDLIST.pick("Cure Wound"),
+    CARDLIST.pick("Mind Shock"),
+    CARDLIST.pick("Fuel"),
+    CARDLIST.pick("Bondage"),
   ]
 };
 

@@ -8,8 +8,8 @@ export default class Player extends Entity {
    * @param {SimpleDeck} logicDeck - player's logic cards
    */
   // ASK do players start at max health, or whatever health they ended last stage with?
-  constructor (maxHealth, maxEnergy, cardDeck, logicDeck, items, image="./assets/player.jpg"){
-    super(maxHealth, image);
+  constructor (maxHealth=50, maxEnergy=3, cardDeck, logicDeck, items={}, image="./assets/player.jpg", attribute="natural"){
+    super(maxHealth, image, {}, attribute);
 
     this.maxEnergy = maxEnergy;
     this.energy = maxEnergy;

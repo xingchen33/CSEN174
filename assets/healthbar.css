@@ -5,7 +5,7 @@
 .health-bar-base {
     position: absolute;
     left: 10%;
-    top: 114%;
+    top: 116%;
     width: var(--healthBarWidth);
     height: 1.25rem;
     overflow: hidden;

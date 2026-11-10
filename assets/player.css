@@ -40,7 +40,7 @@
 
 .player-energy {
     position: absolute;
-    top: 124%;
+    top: 130%;
     left: 0;
     width: 100%;
     margin: 0;
@@ -49,4 +49,24 @@
     text-shadow: 0 0.1rem 0.2rem black;
     font-size: 1rem;
     font-weight: bold;
+}
+
+.entity-attribute {
+    position: absolute;
+    top: 108%;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    color: #f5dd9a;
+    text-align: center;
+    text-shadow: 0 0.1rem 0.2rem black;
+    font-size: 0.95rem;
+    font-style: italic;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.player-base.targetable {
+    cursor: crosshair;
+    filter: drop-shadow(0 0 0.75rem #f5dd9a);
 }

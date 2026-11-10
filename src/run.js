@@ -25,6 +25,7 @@ export default class Run {
       cardDeck: new CardDeck(cardPreset),
       maxHealth: 50,
       maxEnergy: 3,
+      attribute: "natural",
       items: {},
     };
 
@@ -65,6 +66,8 @@ export default class Run {
       this.playerInfo.cardDeck,
       this.playerInfo.logicDeck,
       this.playerInfo.items,
+      undefined,
+      this.playerInfo.attribute,
     );
 
     // ASK any ideas about how enemy generation should work?

@@ -1,3 +1,26 @@
+export const DEFAULT_CARD_CUSTOMIZATION = {
+  name: {
+    "bg-color": "linear-gradient(.90turn, #de7e35, #dec535)",
+    "text-color": "#000000",
+  },
+  type: {
+    "bg-color": "linear-gradient(.90turn, #35deab, #35b1de)",
+    "text-color": "#000000",
+  },
+  description: {
+    "bg-color": "linear-gradient(.90turn, #de7e35, #dec535)",
+    "text-color": "#000000",
+  },
+  energy: {
+    "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+    "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+  },
+  block: {
+    "bg-color": "linear-gradient(.90turn, #de7e35, #dec535)",
+    "text-color": "#000000",
+  },
+};
+
 export default class Card {
   /**
    * @param {string} type - The card type ("l" or "s" or "r")
@@ -19,7 +42,17 @@ export default class Card {
     this.target = target 
     this.conditions = conditions
     this.block = block;
-    this.customization = customization
+    this.customization = structuredClone(DEFAULT_CARD_CUSTOMIZATION);
+    for (const [element, styles] of Object.entries(customization ?? {})) {
+      if (
+        styles && typeof styles === "object" && !Array.isArray(styles)
+        && this.customization[element] && typeof this.customization[element] === "object"
+      ) {
+        Object.assign(this.customization[element], styles);
+      } else {
+        this.customization[element] = styles;
+      }
+    }
     this.id = ++Card.nextCardID;
     this.tags = tags
   }
@@ -34,7 +67,7 @@ export default class Card {
   }
 
   getHeal(){
-    let heal = this.effects["heal"];
+    let heal = this.effects["heal"] ?? this.effects["healing"];
 
     return heal || null;
   }
@@ -79,21 +112,35 @@ export const CARDLIST = {
     return card;
   },
   "cards": {
-    "Fireball": new Card("s", "Fireball", "Deal 6 damage", {burn: true, damage: 6}, 1, 'a', 'b', 'c', {
-      "front_img": "../assets/1.webp",
+    "Fireball": new Card("s", "Fireball", "Deal 5 damage.", {burn: true, damage: 5}, 1, "enemy", null, null, {
+      "front_img": "./assets/fireball.png",
       "name": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
       "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
       "description": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}, 
       "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
       "block": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}
     }, {attribute: "natural"}),
+    "Curse": new Card(
+      "r", "Curse", "-2 defense on an enemy.", {enemyDefense: -2}, 1, "enemy", null, null, {}, {attribute: "dark"}
+    ),
     "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, 'a', 'b', 'c',  {
       "name": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000"}, 
       "type": {"bg-color": "linear-gradient(.90turn, #9235de, #de35d0)", "text-color": "#000000"}, 
       "description": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000"}, 
       "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"}
     }, {attribute: "natural"}),
-    "Cure Wound": new Card("s", "Cure Wound", "Heal {heal} HP", {healing: 6}, 1, {}, {attribute: "light"}),
+    "Cure Wound": new Card(
+      "s", "Cure Wound", "Heal {heal} HP.", {healing: 6}, 1, "self", null, null, {}, {attribute: "light"}
+    ),
+    "Mind Shock": new Card(
+      "s", "Mind Shock", "Deal 10 damage to 1 enemy.", {damage: 10}, 2, "enemy", null, null, {}, {attribute: "dark"}
+    ),
+    "Fuel": new Card(
+      "s", "Fuel", "Deal 7 damage, draw 1 card.", {damage: 7, draw: 1}, 1, "enemy", null, null, {}, {attribute: "natural"}
+    ),
+    "Bondage": new Card(
+      "r", "Bondage", "-2 power on an enemy.", {enemyPower: -2}, 1, "enemy", null, null, {}, {attribute: "light"}
+    ),
 
     // Dark cards
     "Hell Reborn": new Card(

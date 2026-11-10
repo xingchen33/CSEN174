@@ -202,7 +202,7 @@
 #action-card-play-hand {
     display: flex;
     align-items: flex-end;
-    gap: 0.5rem;
+    gap: 0;
     height: 25%;
     width: 38%;
     bottom: 1%;
@@ -241,63 +241,20 @@
     text-shadow: 0 0.1rem 0.2rem black;
 }
 
-.hand-card {
+.card-base {
     position: relative;
     flex: 0 0 clamp(100px, 10vw, 150px);
     width: clamp(100px, 10vw, 150px);
-    aspect-ratio: 3 / 4;
-    height: auto;
-    padding: 0.5rem;
-    overflow: hidden;
-    border: 0.15rem solid #171717;
-    border-radius: 0.45rem;
-    background: #f2e6c4;
-    color: #171717;
-    box-sizing: border-box;
-    box-shadow: 0 0.2rem 0.4rem #0008;
-    transition: transform 0.15s ease, z-index 0s;
-}
-
-.hand-card.can-play {
-    cursor: pointer;
-}
-
-.hand-card + .hand-card {
+    height: var(--defaultCardHeight);
     margin-left: clamp(-5rem, -4vw, -2rem);
 }
 
-.hand-card:hover {
-    z-index: 10000;
-    transform: translateY(-15%) scale(1.08);
+.hand-title + .card-base {
+    margin-left: 0;
 }
 
-.hand-card h3,
-.hand-card p,
-.hand-card small {
-    display: block;
-    margin: 0.15rem 0;
-    text-align: center;
-}
-
-.hand-card h3 {
-    font-size: clamp(0.65rem, 1.2vw, 1rem);
-}
-
-.hand-card p {
-    font-size: clamp(0.55rem, 0.9vw, 0.8rem);
-}
-
-.hand-card-energy {
-    position: absolute;
-    top: 0.25rem;
-    left: 0.35rem;
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    background: #af1a8a;
-    color: white;
-    text-align: center;
-    line-height: 1.4rem;
+.card-base.can-play {
+    cursor: pointer;
 }
 
 .draw-deck {
@@ -310,11 +267,27 @@
     justify-content: center;
     border: 0.2rem solid #171717;
     border-radius: 0.5rem;
-    background: #493f75;
+    background-color: #493f75;
+    background-position: center;
+    background-size: cover;
     color: white;
     text-align: center;
     cursor: help;
     box-shadow: 0 0.2rem 0.4rem #0008;
+}
+
+.draw-deck > strong,
+.draw-deck > span,
+.draw-deck > .deck-tooltip {
+    position: relative;
+    z-index: 20;
+}
+
+.draw-deck > strong,
+.draw-deck > span {
+    padding: 0.1rem 0.25rem;
+    border-radius: 0.2rem;
+    background: rgba(20, 12, 42, 0.8);
 }
 
 .draw-deck > span {

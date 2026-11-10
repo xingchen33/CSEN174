@@ -4,11 +4,10 @@ const slimeImage = new URL("../assets/slime.png", import.meta.url).href;
 
 export default class Enemy extends Entity {
   constructor (maxHealth, moves, name, image="./assets/missing.jpg", customization={}){
-    super(maxHealth, image, customization);
+    super(maxHealth, image, customization, customization.attribute ?? null);
 
     this.moves = moves;
     this.name = name;
-    this.attribute = customization.attribute ?? null;
     this.power = 0;
     this.defense = 0;
     this.nextMoveIndex = 0;
