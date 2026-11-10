@@ -22,7 +22,6 @@ export default class Stage {
 
   passTurn() {
     let actions = this.player.useMove();
-    for ( in acts)
     this.enemies = this.enemies.filter((enemy) => !enemy.isDead());
 
     if (this.enemies.length === 0) {
