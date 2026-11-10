@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-    <link rel="shortcut icon" href="#">
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="./assets/inGame.css">
-    <link rel="stylesheet" href="./assets/card.css">
-    <link rel="stylesheet" href="./assets/generalStyle.css">
-    <link rel="stylesheet" href="./assets/player.css">
-    <link rel="stylesheet" href="./assets/enemy.css">
-    <link rel="stylesheet" href="./assets/healthbar.css">
-<head>
-    <title>Warlock War</title>
-</head>
-<body>
-    <script type="module" src="./src/inGame.js"></script>
-    <div id="play-screen">
-        <img id="play-background" src="./assets/missing.jpg">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./assets/inGame.css">
+        <link rel="stylesheet" href="./assets/generalStyle.css">
+        <link rel="stylesheet" href="./assets/enemy.css">
+        <link rel="stylesheet" href="./assets/player.css">
+        <link rel="stylesheet" href="./assets/healthbar.css">
+        <title>Warlock War</title>
+    </head>
+    <body>
+        <div id="play-screen">
+
+        <img id="play-background" src="./assets/background.png" alt="">
         <div id="items-container"></div>
-        <div id="enemy-container"></div>
-        <div id="player-container"></div>
+        <div id="player-container" aria-label="Player"></div>
+        <div id="enemies-container" aria-label="Enemies"></div>
         <div id="logic-card-draw-pile" class="card-holder card-pile"></div>
         <div id="logic-card-play-hand" class="card-holder card-hand"></div>
         <div id="action-card-draw-pile" class="card-holder card-pile"></div>
         <div id="action-card-play-hand" class="card-holder card-hand"></div>
         <div id="energy-indicator">3/3</div>
         <div id="discard-pile" class="card-holder card-pile"></div>
-        <button id="end-turn-button">END TURN</button>
-        <div id="code-zone"></div>
+        <button id="end-turn-button">End Turn</button>
+        <section id="code-zone" aria-label="Code display">
+            <h2>Code</h2>
+            <p>No code assembled</p>
+        </section>
         <p id="turn-indicator">Player Action</p>
-    </div>
-</body>
+        </div>
+        <script type="module" src="./src/inGame.js"></script>
+    </body>
 </html>

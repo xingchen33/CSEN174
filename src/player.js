@@ -8,14 +8,16 @@ export default class Player extends Entity {
    * @param {SimpleDeck} logicDeck - player's logic cards
    */
   // ASK do players start at max health, or whatever health they ended last stage with?
-  constructor (maxHealth, maxEnergy, cardDeck, logicDeck, items, image="./assets/missing.jpg"){
-    super(maxHealth, image);
+  constructor (maxHealth=50, maxEnergy=3, cardDeck, logicDeck, items={}, image="./assets/player.png", attribute="natural"){
+    super(maxHealth, image, {}, attribute);
 
     this.maxEnergy = maxEnergy;
     this.energy = maxEnergy;
 
     this.cardDeck = cardDeck;
+    cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
+    logicDeck.shuffleDeck();
     this.items = items;
 
     // This is an array of objects, some of which are objects
@@ -24,12 +26,30 @@ export default class Player extends Entity {
     this.currentMove = [];
   }
 
-  playCard(pos) {
+  playCard(pos, target = null, location = null) {
     let playing = this.cardDeck.hand[pos];
-    let location = this.getValidPositions(playing.type);
-    if (this.evaluateCard(playing, location)) {
-      this.cardDeck.discard(1, [pos]);
+    if (!playing) {
+      return false;
     }
+
+    if (target !== null) {
+      playing.target = target;
+    }
+
+    const requiresTarget = !["self", "all", "allEnemies"].includes(playing.target)
+      && (playing.target === "enemy" || playing.target === "a" || playing.effects?.damage != null);
+    if (requiresTarget && (typeof playing.target !== "object" || playing.target === null)) {
+      return false;
+    }
+
+    const positionType = {s: "statement", r: "ritual", l: "statement"}[playing.type] ?? playing.type;
+    const selectedLocation = location ?? this.getValidPositions(positionType)[0];
+    if (this.evaluateCard(playing, selectedLocation)) {
+      this.cardDeck.discard(1, [pos]);
+      return true;
+    }
+
+    return false;
   }
 
   // TEST like REALLY REALLY TEST
@@ -78,8 +98,6 @@ export default class Player extends Entity {
 
   // Adding a card to a move
   // "location" is an index set return from getValidPositions
-  // TODO this is also very important
-  
   evaluateCard(card, location) {
     // Can't cast something that costs too much energy
     if (card.getEnergy() > this.energy) {
@@ -91,6 +109,8 @@ export default class Player extends Entity {
     }
     //turning the card into the dictionary
     let dict_to_insert = {};
+    dict_to_insert.name = card.name;
+    dict_to_insert.description = card.getDescription();
     dict_to_insert.type = card.type;
     dict_to_insert.target = card.target;
     dict_to_insert.effects = card.effects;
@@ -114,37 +134,37 @@ export default class Player extends Entity {
         }
       }
       else if(location.type == "target"){
-          //if you want change the target for a condition
-          if(insert == "condition"){
-            //make sure the condition exists
-            if(this.currentMove.condition == null){
-              return false;
-            }
-            else{
-              //change the target for the condition
-              this.currentMove.target = card.target;
-            }
+        //if you want change the target for a condition
+        if(insert == "condition"){
+          //make sure the condition exists
+          if(this.currentMove.condition == null){
+            return false;
           }
           else{
-            //make sure the target exists
-            if(this.currentMove[insert] == null || this.currentMove[insert].target == null){
-              return false;
-            }
-            else{
-              this.currentMove[insert].target = card.target;
-            }
+            //change the target for the condition
+            this.currentMove.target = card.target;
           }
+        }
+        else{
+          //make sure the target exists
+          if(this.currentMove[insert] == null || this.currentMove[insert].target == null){
+            return false;
+          }
+          else{
+            this.currentMove[insert].target = card.target;
+          }
+        }
       }
-        
+
       else if(location.type == "condition"){
-            //make sure the condition exists
-            if(this.currentMove[insert] == null || this.currentMove[insert].condition == null){
-              return false;
-            }
-            //change the condition
-            else{
-              this.currentMove[insert].condition = card.conditions;
-            }
+        //make sure the condition exists
+        if(this.currentMove[insert] == null || this.currentMove[insert].condition == null){
+          return false;
+        }
+        //change the condition
+        else{
+          this.currentMove[insert].condition = card.conditions;
+        }
       }
       //if the location.type is not valid
       else{
@@ -182,12 +202,11 @@ export default class Player extends Entity {
       this.currentMove = root;
       return final_result
     }
- 
+
   }
 
+  // TODO this is the core of the game
   useMove(selectedMove=this.currentMove) {
-    // TODO this is the core of the game
-    
     // Iterate through all elements of the current move
     for (let i = 0; i < selectedMove.length; i++) {
 

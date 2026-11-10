@@ -1,11 +1,16 @@
 import Entity from "./entity.js"
 
+const slimeImage = new URL("../assets/slime.png", import.meta.url).href;
+
 export default class Enemy extends Entity {
   constructor (maxHealth, moves, name, image="./assets/missing.jpg", customization={}){
-    super(maxHealth, image, customization);
+    super(maxHealth, image, customization, customization.attribute ?? null);
 
     this.moves = moves;
     this.name = name;
+    this.power = 0;
+    this.defense = 0;
+    this.nextMoveIndex = 0;
 
     this.getNextMove();
   }
@@ -17,8 +22,9 @@ export default class Enemy extends Entity {
     }
 
     if (n < 0) {
-      // For now: purely random
-      this.nextMove = this.moves[Math.floor(Math.random() * this.moves.length)];
+      this.nextMove = this.moves[this.nextMoveIndex];
+      this.nextMoveIndex++;
+      this.nextMoveIndex %= this.moves.length;
       return;
     }
 
@@ -28,13 +34,13 @@ export default class Enemy extends Entity {
   // TODO you probably need to redo this
   getAttackDamage() {
     let move = this.nextMove;
-    if (move.damage) {
+    if (move && move.damage) {
       let base = move.damage;
       if (this.statuses["reckless"]) {
         base *= 2;
       }
 
-      return base;
+      return base * (move.hits ?? 1);
     }
 
     return 0;
@@ -42,9 +48,26 @@ export default class Enemy extends Entity {
 
   // This passes a Player even though it maybe shouldn't
   useMove(player) {
-    // Deal any damage this does
-    let damage = this.getAttackDamage();
-    player.damage(damage);
+    if (!this.nextMove || this.isDead()) {
+      return;
+    }
+
+    const move = this.nextMove;
+
+    if (move.selfEffects) {
+      this.power += move.selfEffects.power ?? 0;
+      this.defense += move.selfEffects.defense ?? 0;
+    }
+
+    const damage = move.damage ?? 0;
+    const hits = move.hits ?? 1;
+    for (let i = 0; i < hits; i++) {
+      let hitDamage = damage;
+      if (this.statuses["reckless"]) {
+        hitDamage *= 2;
+      }
+      player.damage(hitDamage);
+    }
   }
 
   // TODO you probably need to redo this
@@ -69,5 +92,15 @@ export const ENEMYLIST = {
   // Make sure you add all your enemies to this list!
   "enemies": {
     "Dummy": new Enemy(100, [{"damage": 20}, {"damage": 30}], "Dummy"),
+    "Slime": new Enemy(
+      45,
+      [
+        {damage: 4, selfEffects: {defense: -2, power: 2}},
+        {damage: 3, hits: 2},
+      ],
+      "Slime",
+      slimeImage,
+      {attribute: "void"},
+    ),
   }
 }

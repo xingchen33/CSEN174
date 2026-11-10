@@ -1,9 +1,29 @@
 .enemy-base {
-    height: 100%;
+    width: 22%;
+    max-width: 240px;
     aspect-ratio: 1/1;
     position: absolute;
     display: flex;
     justify-content: center;
+}
+
+.enemy-action {
+    position: absolute;
+    top: -14%;
+    left: -25%;
+    width: 150%;
+    margin: 0;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0.1rem 0.2rem black;
+    font-size: clamp(0.7rem, 1.2vw, 1rem);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.enemy-base.targetable {
+    cursor: crosshair;
+    filter: drop-shadow(0 0 0.75rem #f5dd9a);
 }
 
 .enemy-image {
@@ -11,4 +31,44 @@
     height: 100%;
     aspect-ratio: 256/515;
     position: absolute;
+}
+
+#enemies-container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.enemy-name,
+.enemy-health,
+.enemy-base-name,
+.enemy-base-health,
+.player-base-name,
+.player-base-health {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    color: white;
+    text-align: center;
+    text-shadow: 0 0.1rem 0.2rem black;
+    z-index: 1;
+}
+
+.enemy-name {
+    top: 102%;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.enemy-base-name {
+    top: 102%;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.enemy-health,
+.enemy-base-health {
+    top: 112%;
 }

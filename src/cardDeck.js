@@ -5,11 +5,11 @@ const CARD_PRESETS = {
   "empty": [],
   "fireballer": [
     CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Fireball"),
-    CARDLIST.pick("Ether Pupil"),
+    CARDLIST.pick("Curse"),
+    CARDLIST.pick("Cure Wound"),
+    CARDLIST.pick("Mind Shock"),
+    CARDLIST.pick("Fuel"),
+    CARDLIST.pick("Bondage"),
   ]
 };
 
@@ -71,7 +71,7 @@ export default class CardDeck extends SimpleDeck {
       return;
     }
 
-    if (pos.every((e) => {e < this.hand.length})) {
+    if (pos.some((e) => e < 0 || e >= this.hand.length)) {
       console.log(`Cannot discard at posisition ${pos} when hand has ${this.hand.length} card(s)`);
       return;
     }

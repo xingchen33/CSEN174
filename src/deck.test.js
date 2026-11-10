@@ -70,3 +70,17 @@ test('energy of cards is gettable', () => {
   let deck = new SimpleDeck("fireballer");
   expect(deck.drawPile[0].getEnergy()).not.toBe(undefined);
 });
+
+test('cards can be sorted alphabetically without changing deck order', () => {
+  let deck = new SimpleDeck("fireballer");
+  const originalOrder = deck.hand;
+  deck.hand = [deck.drawPile[2], deck.drawPile[0], deck.drawPile[1]];
+
+  expect(deck.getSortedCards()).toEqual([
+    deck.drawPile[0],
+    deck.drawPile[1],
+    deck.drawPile[2],
+  ]);
+  expect(deck.hand).not.toBe(originalOrder);
+  expect(deck.hand).toEqual([deck.drawPile[2], deck.drawPile[0], deck.drawPile[1]]);
+});

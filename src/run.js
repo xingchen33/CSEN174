@@ -1,8 +1,9 @@
 // Keeps track of all the stages and certain metadata(i.e. damage dealt across all stages)
 import Stage from "./stage.js"
-import { Player, ITEMLIST } from "./player.js"
+import Player, { ITEMLIST } from "./player.js"
 import { CARDLIST } from "./card.js";
 import SimpleDeck from "./simpleDeck.js"
+import CardDeck from "./cardDeck.js"
 import { ENEMYLIST } from "./enemy.js"
 
 export default class Run {
@@ -24,6 +25,7 @@ export default class Run {
       cardDeck: new CardDeck(cardPreset),
       maxHealth: 50,
       maxEnergy: 3,
+      attribute: "natural",
       items: {},
     };
 
@@ -64,20 +66,23 @@ export default class Run {
       this.playerInfo.cardDeck,
       this.playerInfo.logicDeck,
       this.playerInfo.items,
+      undefined,
+      this.playerInfo.attribute,
     );
 
     // ASK any ideas about how enemy generation should work?
     let enemyCount = (Math.random() * this.difficulty) + this.stages.length / 2;
-    enemyCount = max(1, min(5, enemyCount));
+    enemyCount = Math.max(1, Math.min(5, Math.floor(enemyCount)));
     let enemies = [];
     for (let i = 0; i < enemyCount; i++) {
-      enemies.push(ENEMYLIST.pick);
+      enemies.push(ENEMYLIST.pick("Slime"));
     }
 
     let rewards = this.generateRandomRewards(enemies);
 
     let nextStage = new Stage(player, enemies, rewards);
     this.stages.push(nextStage);
+    return nextStage;
   }
 
   // Mostly(?) for debug purposes

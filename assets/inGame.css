@@ -28,11 +28,17 @@
 #turn-indicator{
     z-index: 1;
     font-family: "Apple Chancery", cursive;
-    font-size: 2cqi;
-    width: 20%; 
-    height: 10%;
-    aspect-ratio: 5/2; 
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    width: fit-content;
+    height: fit-content;
+    margin: 1rem;
     text-align: center;
+    padding: 0.5rem 1rem;
+    border: 0.15rem solid #171717;
+    border-radius: 0.5rem;
+    background: rgba(245, 221, 154, 0.9);
+    color: #171717;
+    box-sizing: border-box;
 }
 
 #end-turn-button {
@@ -40,12 +46,21 @@
     width: 10%;
     aspect-ratio: 5/2;
     position: absolute;
-    top: 10%;
-    left: 85%;
-    transition: transform 0.1s ease-in-out;
+    right: 5%;
+    bottom: 5%;
+    padding: 0.6rem 1rem;
+    border: 0.15rem solid #171717;
+    border-radius: 0.4rem;
+    background: #493f75;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
 }
-#end-turn-button:hover {
-    transform: scale(1.2);
+
+#end-turn-button:disabled {
+    cursor: default;
+    opacity: 0.6;
 }
 
 #items-container {
@@ -87,6 +102,102 @@
     position: absolute;
     top: 20%;
     left: 5%
+}
+
+#code-zone {
+    position: absolute;
+    top: 28%;
+    left: 35%;
+    width: 30%;
+    height: 30%;
+    z-index: 1;
+    padding: 1rem;
+    overflow: auto;
+    border: 0.2rem solid #171717;
+    border-radius: 0.6rem;
+    background: rgba(255, 248, 221, 0.9);
+    color: #171717;
+    box-shadow: 0 0.25rem 0.5rem #0008;
+    box-sizing: border-box;
+}
+
+#code-zone h2,
+#code-zone p {
+    margin: 0.25rem;
+    text-align: center;
+}
+
+#code-zone h2 {
+    font-size: 1.3rem;
+}
+
+#code-zone p {
+    color: #555;
+    font-style: italic;
+}
+
+.code-entry {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-left: 0.3rem solid #493f75;
+    border-radius: 0.25rem;
+    background: rgba(255, 255, 255, 0.65);
+}
+
+.code-entry-number {
+    color: #493f75;
+    font-weight: bold;
+}
+
+.code-entry strong,
+.code-entry small {
+    display: block;
+}
+
+.code-entry small {
+    margin-top: 0.15rem;
+    color: #4d4d4d;
+}
+
+.code-entry-target {
+    font-style: italic;
+}
+
+.code-placement-options {
+    margin-top: 0.75rem;
+    padding: 0.5rem;
+    border: 0.1rem dashed #493f75;
+    border-radius: 0.3rem;
+    text-align: center;
+}
+
+.code-placement-options p {
+    margin: 0 0 0.4rem;
+    font-weight: bold;
+}
+
+.code-placement-options button {
+    margin: 0.2rem;
+    padding: 0.3rem 0.5rem;
+    border: 0.1rem solid #493f75;
+    border-radius: 0.25rem;
+    background: #493f75;
+    color: white;
+    cursor: pointer;
+}
+
+.cancel-card-button {
+    display: block;
+    margin: 0.6rem auto 0;
+    padding: 0.3rem 0.6rem;
+    border: 0.1rem solid #7a2730;
+    border-radius: 0.25rem;
+    background: #7a2730;
+    color: white;
+    cursor: pointer;
 }
 
 #logic-card-draw-pile {
@@ -137,7 +248,122 @@
     background-color: rgb(201, 86, 212);
     aspect-ratio: 1/1;
     z-index: 1;
+}
+
+#logic-card-play-hand,
+#action-card-play-hand {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    height: 25%;
+    width: 38%;
+    bottom: 1%;
+}
+
+#logic-card-play-hand {
+    left: 3%;
+}
+
+#action-card-play-hand {
+    left: 43%;
+}
+
+#logic-card-draw-pile,
+#action-card-draw-pile {
+    width: 8%;
+    height: 12%;
+    bottom: 27%;
+}
+
+#logic-card-draw-pile {
+    left: 3%;
+}
+
+#action-card-draw-pile {
+    left: 43%;
+}
+
+.hand-title {
+    position: absolute;
+    top: -2.2rem;
+    left: 0;
+    margin: 0;
+    color: white;
+    font-size: 1rem;
+    text-shadow: 0 0.1rem 0.2rem black;
+}
+
+.card-base {
+    position: relative;
+    flex: 0 0 clamp(100px, 10vw, 150px);
+    width: clamp(100px, 10vw, 150px);
+    height: var(--defaultCardHeight);
+    margin-left: clamp(-5rem, -4vw, -2rem);
+}
+
+.hand-title + .card-base {
+    margin-left: 0;
+}
+
+.card-base.can-play {
+    cursor: pointer;
+}
+
+.draw-deck {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 0.2rem solid #171717;
+    border-radius: 0.5rem;
+    background-color: #493f75;
+    background-position: center;
+    background-size: cover;
+    color: white;
     text-align: center;
-    border-radius: 50%;
-    align-content: center;
+    cursor: help;
+    box-shadow: 0 0.2rem 0.4rem #0008;
+}
+
+.draw-deck > strong,
+.draw-deck > span,
+.draw-deck > .deck-tooltip {
+    position: relative;
+    z-index: 20;
+}
+
+.draw-deck > strong,
+.draw-deck > span {
+    padding: 0.1rem 0.25rem;
+    border-radius: 0.2rem;
+    background: rgba(20, 12, 42, 0.8);
+}
+
+.draw-deck > span {
+    font-size: 0.75rem;
+}
+
+.deck-tooltip {
+    position: absolute;
+    bottom: 105%;
+    left: 0;
+    z-index: 10;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem;
+    white-space: pre-line;
+    border: 0.1rem solid #171717;
+    border-radius: 0.3rem;
+    background: #fff8dd;
+    color: #171717;
+    text-align: left;
+    box-shadow: 0 0.2rem 0.4rem #0008;
+}
+
+.draw-deck:hover .deck-tooltip,
+.draw-deck:focus .deck-tooltip {
+    display: block;
 }

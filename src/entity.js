@@ -1,10 +1,11 @@
 export default class Entity {
-  constructor (maxHealth, image="./assets/missing.jpg", customization={}){
+  constructor (maxHealth, image="./assets/missing.jpg", customization={}, attribute=null){
     this.maxHealth = maxHealth;
     this.health = maxHealth;
 
     this.image = image;
     this.customization = customization;
+    this.attribute = attribute;
 
     // Status name: list starting with length (can have other elements as well)
     this.statuses = {};
