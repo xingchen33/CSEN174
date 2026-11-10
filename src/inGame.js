@@ -333,7 +333,6 @@ function updateHealthBar(character, characterBase) {
   let active_energy = document.getElementById("player-energy")
 
   if (active_energy) {
-    console.log(character.energy)
     active_energy.textContent = `Energy: ${character.energy} / ${character.maxEnergy}`;
   }
 }
