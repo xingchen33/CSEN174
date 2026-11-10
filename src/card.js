@@ -172,3 +172,18 @@ export function get_card_by_id(id, input_player){
     };
   };
 }
+export function get_card_position_by_id(id, input_player){
+  for (const sub_deck of 
+    [input_player.currentMove, 
+      input_player.cardDeck.hand, 
+      input_player.cardDeck.drawPile, 
+      input_player.logicDeck.hand, 
+      input_player.logicDeck.drawPile]){
+        let x = 0;
+    for (const card of sub_deck){
+      if (card.id == id)
+        return x 
+      ++x;
+    };
+  };
+}

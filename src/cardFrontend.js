@@ -1,6 +1,6 @@
-import { addCard, removeCard, get_card_by_id} from './card.js'
+import { addCard, removeCard, get_card_by_id, get_card_position_by_id} from './card.js'
 import {addClass, get_mouse_position, getPosition, setPosition, getDistance, removeClass, fromElement, cutPx} from './generalFrontend.js'
-import { updatePlayerFrontendCards } from './inGame.js'
+import { updatePlayerFrontendCards, adjustEnergyDisplay, getAdjustedEnergy} from './inGame.js'
 
 
 export function generateVisualCard(card) {
@@ -228,7 +228,8 @@ export function card_interaction(){
 }
 
 export function card_drag_and_drop(card_base){
-    let card = get_card_by_id(Number(card_base.id), card_base.user)
+    let player = card_base.user
+    let card = get_card_by_id(Number(card_base.id), player)
     
     let drag_offset = [-3, -10]
 
@@ -246,19 +247,28 @@ export function card_drag_and_drop(card_base){
 
     function card_drop(){
         let codeZone = document.getElementById("code-zone");
-        if (fromElement(codeZone, get_mouse_position()) == 0){
+        if (fromElement(codeZone, get_mouse_position()) == 0 && getAdjustedEnergy(player)-card.getEnergy() >=0){
             codeZone.appendChild(card_base)
             addClass(card_base, "in-code-zone")
             setPosition(card_base, [0,0])
-            removeCard(card, card_base.user)
-            addCard(card, card_base.user, "current")
+            // if (get_card_by_id(card_base.id, player).type != "l"){
+            //     let pos = get_card_position_by_id(card_base.id, player)
+            //     player.playCard(pos);
+            // }
+            // else {
+            
+            removeCard(card, player)
+            addCard(card, player, "current")
+            
+            // }
         }
         else {
-            removeCard(card, card_base.user)
-            addCard(card, card_base.user, "hand")
+            removeCard(card, player)
+            addCard(card, player, "hand")
         }
 
-        updatePlayerFrontendCards(card_base.user)
+        updatePlayerFrontendCards(player)
+        adjustEnergyDisplay(player)
 
         document.onmousemove = null;
         document.ontouchmove = null;

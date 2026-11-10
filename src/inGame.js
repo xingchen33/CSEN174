@@ -7,7 +7,7 @@ import Enemy from './enemy.js'
 let action_cards = new CardDeck("fireballer")
 let logic_cards = new CardDeck("empty")
 
-let current_player = new Player(100, 5, action_cards, logic_cards, [], "./assets/player.png")
+let current_player = new Player(100, 2, action_cards, logic_cards, [], "./assets/player.png")
 
 current_player.cardDeck.draw(3)
 
@@ -24,6 +24,7 @@ export function playerSetup(input_player){
 
     attach_cards_to_player(input_player.cardDeck, input_player)
     attach_cards_to_player(input_player.logicDeck, input_player)
+    adjustEnergyDisplay(input_player)
 }
 
 export function updatePlayerFrontendCards(input_player){
@@ -36,6 +37,24 @@ export function enemySetup(input_enemy){
     setCharacterSide(enemy_base, input_enemy)
 }
 
+export function adjustEnergyDisplay(input_player){
+    let startingEnergy = getAdjustedEnergy(input_player)
+    let energy_indicator = document.getElementById("energy-indicator")
+    energy_indicator.innerText = `${startingEnergy} / ${input_player.maxEnergy}`
+}
+export function getAdjustedEnergy(input_player){
+let startingEnergy = input_player.energy
+    input_player.currentMove.forEach(card => {
+        startingEnergy -= card.getEnergy()
+    });
+    return startingEnergy
+}
+
 playerSetup(current_player)
 
 enemySetup(current_enemy)
+
+let endTurn = document.getElementById("end-turn-button")
+endTurn.addEventListener("click", function(){
+    current_player.useMove()
+})

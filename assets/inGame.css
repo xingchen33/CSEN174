@@ -41,7 +41,11 @@
     aspect-ratio: 5/2;
     position: absolute;
     top: 10%;
-    left: 85%
+    left: 85%;
+    transition: transform 0.1s ease-in-out;
+}
+#end-turn-button:hover {
+    transform: scale(1.2);
 }
 
 #items-container {
