@@ -344,7 +344,8 @@ function renderEnemies(enemies) {
   enemies.forEach((enemy, index) => {
     const enemyBase = renderCharacter(enemy, container, "enemy-base", "enemy-image", enemy.name);
     enemyBase.style.right = "8%";
-    enemyBase.style.top = `${12 + index * 24}%`;
+    // enemyBase.style.top = `${12 + index * 24}%`;
+    enemyBase.style.top = "12%"
     const action = document.createElement("p");
     action.classList.add("enemy-action");
     enemyBase.appendChild(action);

@@ -1,10 +1,11 @@
 .enemy-base {
-    width: 22%;
-    max-width: 240px;
+    height: 100%;
+    max-height: 240px;
     aspect-ratio: 1/1;
     position: absolute;
     display: flex;
     justify-content: center;
+    bottom: 0%;
 }
 
 .enemy-action {
@@ -38,6 +39,8 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
+    width: 50%;
+    left: 50%;
 }
 
 .enemy-name,
