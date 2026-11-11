@@ -8,6 +8,10 @@ export default class Entity {
     this.attribute = attribute;
 
     // Status name: list starting with length (can have other elements as well)
+    // Statues:
+    // ASK fr min 0?
+    // - Power: do this much less damage (min 0)
+    // - Defense : Take this much less damage (min 0)
     this.statuses = {};
   }
 
@@ -30,6 +34,9 @@ export default class Entity {
       n *= 2;
     }
 
+    // TEST defense
+    n = max(0, n - this.statuses["defense"] ?? 0);
+
     let old = this.health;
     this.health = Math.max(0, this.health - n);
     return old - this.health;
@@ -44,28 +51,12 @@ export default class Entity {
     return this.health <= 0;
   }
 
-  // TEST
-  statusDecay() {
-    let thing = {};
-
-    for (let key in this.statuses) {
-      let e = this.statuses[key];
-      let newlen = e[0] - 1;
-      if (newlen > 0) {
-        thing[key] = [e[0] - 1, ...e.slice(1)]
-      }
-    }
-
-    this.statuses = thing;
-  }
-
-  // TEST
-  // As we add more effects this will need to be expanded
-  buff(status, info) {
+  // TEST this hasn't been updated in a billion years
+  buff(status, level) {
     if (!this.statuses[status]) {
-      this.statuses[status] = info;
+      this.statuses[status] = 0;
     }
 
-    this.statuses[status] = this.statuses[status].map((e, i) => { return e + info[i]});
+    this.statuses[status] += level;
   }
 }

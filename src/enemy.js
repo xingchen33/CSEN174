@@ -31,11 +31,14 @@ export default class Enemy extends Entity {
     this.nextMove = this.moves[n];
   }
 
-  // TODO you probably need to redo this
   getAttackDamage() {
     let move = this.nextMove;
     if (move && move.damage) {
       let base = move.damage;
+
+      // TEST power
+      base = max(0, base + this.statuses["power"] ?? 0);
+
       if (this.statuses["reckless"]) {
         base *= 2;
       }

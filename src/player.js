@@ -229,6 +229,8 @@ export default class Player extends Entity {
       else {
         let effects = move.effects;
         if ("damage" in effects) {
+
+          base = max(0, base + this.statuses["power"] ?? 0);
           move.target.damage(effects["damage"]);
         }
 

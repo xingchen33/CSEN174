@@ -10,9 +10,6 @@ Devs:
 - Implement all card effects
 - Implement While/If/Pointer
 
-- Fix deck behavior (talk to Yue)
-- Fix status
-
 - Implement going to next stage (including rewards)
 
 # How I keep track of things
