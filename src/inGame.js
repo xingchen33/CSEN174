@@ -331,9 +331,8 @@ function updateHealthBar(character, characterBase) {
   characterBase.healthBar.label.textContent = `${character.health} / ${character.maxHealth}`;
 
   let active_energy = document.getElementById("player-energy")
-  console.log(active_energy)
+
   if (active_energy) {
-    
     active_energy.textContent = `Energy: ${character.energy} / ${character.maxEnergy}`;
   }
 }

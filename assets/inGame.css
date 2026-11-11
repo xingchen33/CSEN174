@@ -44,7 +44,7 @@
 #player-energy {
     position: absolute;
     bottom: 3%;
-    left: 0;
+    left: 8%;
     width: 5%;
     aspect-ratio: 1/1;
     border-radius: 50%;
@@ -72,11 +72,17 @@
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
+    transition-duration: 100ms;
 }
 
 #end-turn-button:disabled {
     cursor: default;
     opacity: 0.6;
+}
+
+#end-turn-button:hover {
+    transform: scale(1.05);
+    color: var(--defaultHoverColor);
 }
 
 #items-container {
@@ -190,11 +196,11 @@
 }
 
 #logic-card-play-hand {
-    left: 20%;
+    left: 14%;
 }
 
 #action-card-draw-pile {
-    left: 75%;
+    left: 85%;
 }
 
 #action-card-play-hand {
@@ -202,7 +208,6 @@
 }
 
 .card-hand {
-    width: 20%;
     max-height: var(--cardPileMaxHeight);
     height: var(--cardPileHeight);
     bottom: 1%
@@ -211,17 +216,17 @@
 .card-pile {
     width: 5%;
     aspect-ratio: 3/4;
-    bottom: 2%
+    bottom: 2%;
+    z-index: 11;
 }
 
 #discard-pile {
-    left: 90%;
+    left: 91%;
 }
 
 .card-holder {
-    z-index: 1;
+    z-index: 10;
     position: absolute;
-    z-index: 1;
 }
 
 #logic-card-play-hand,
@@ -230,29 +235,22 @@
     align-items: flex-end;
     gap: 0;
     height: 25%;
-    width: 38%;
+    width: 35%;
     bottom: 1%;
 }
 
-#logic-card-play-hand {
-    left: 3%;
-}
 
 #action-card-play-hand {
-    left: 43%;
+    left: 50%;
 }
 
 #logic-card-draw-pile,
 #action-card-draw-pile {
-    bottom: 27%;
+    bottom: 2%;
 }
 
 #logic-card-draw-pile {
-    left: 3%;
-}
-
-#action-card-draw-pile {
-    left: 43%;
+    left: 2%;
 }
 
 .hand-title {
@@ -322,9 +320,8 @@
     position: absolute;
     bottom: 105%;
     left: 0;
-    z-index: 10;
     display: none;
-    min-width: 10rem;
+    min-width: 6rem;
     padding: 0.5rem;
     white-space: pre-line;
     border: 0.1rem solid #171717;
