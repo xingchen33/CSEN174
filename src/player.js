@@ -230,8 +230,8 @@ export default class Player extends Entity {
         let effects = move.effects;
         if ("damage" in effects) {
 
-          base = max(0, base + this.statuses["power"] ?? 0);
-          move.target.damage(effects["damage"]);
+          let base = Math.max(0, effects["damage"] + this.statuses["power"] ?? 0);
+          move.target.damage(base);
         }
 
         if ("healing" in effects) {
@@ -242,7 +242,6 @@ export default class Player extends Entity {
   }
 
   passTurn() {
-    this.statusDecay();
     this.useMove();
 
     this.logicDeck.reshuffleAll();

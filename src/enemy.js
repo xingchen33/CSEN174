@@ -75,7 +75,6 @@ export default class Enemy extends Entity {
 
   // TODO you probably need to redo this
   passTurn() {
-    this.statusDecay();
     this.getNextMove();
   }
 }

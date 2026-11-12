@@ -35,7 +35,7 @@ export default class Entity {
     }
 
     // TEST defense
-    n = max(0, n - this.statuses["defense"] ?? 0);
+    n = Math.max(0, n - this.statuses["defense"] ?? 0);
 
     let old = this.health;
     this.health = Math.max(0, this.health - n);
