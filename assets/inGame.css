@@ -41,6 +41,16 @@
     box-sizing: border-box;
 }
 
+#player-container, #enemies-container {
+    height: 75%;
+    position: absolute;
+}
+
+#player-container {
+    width: 30%;
+    left: 0%
+}
+
 #player-energy {
     position: absolute;
     bottom: 3%;

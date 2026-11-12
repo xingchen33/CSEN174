@@ -8,6 +8,8 @@ export default class Enemy extends Entity {
 
     this.moves = moves;
     this.name = name;
+    this.blockPts = 0;
+
     this.power = 0;
     this.defense = 0;
     this.nextMoveIndex = 0;

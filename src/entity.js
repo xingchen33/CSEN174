@@ -2,6 +2,7 @@ export default class Entity {
   constructor (maxHealth, image="./assets/missing.jpg", customization={}, attribute=null){
     this.maxHealth = maxHealth;
     this.health = maxHealth;
+    this.blockPts = 0;
 
     this.image = image;
     this.customization = customization;
