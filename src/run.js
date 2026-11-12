@@ -36,6 +36,7 @@ export default class Run {
       damageDone: 0,
       damageTaken: 0,
       cardsPlayed: 0,
+      hpHealed: 0,
     };
 
     this.stages = [];

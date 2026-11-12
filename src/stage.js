@@ -12,6 +12,7 @@ export default class Stage {
       damageDone: 0,
       damageTaken: 0,
       cardsPlayed: 0,
+      hpHealed: 0,
     };
   }
 
@@ -76,12 +77,19 @@ export default class Stage {
           }
           if(curr_action.key == "heal"){
             this.player.target.heal(curr_action.value);
+            this.stats.hpHealed += curr_action.value;
           }
           if(curr_action.key == "healSelf"){
             this.player.heal(curr_action.value);
+            this.stats.hpHealed += curr_action.value;
           }
           if(curr_action.key == "block"){
             this.player.block += curr_action.value;
+          }
+          if(curr.action.key == "damagePerBattleHealing"){
+            damage_done = this.stats.hpHealed * curr_action.value;
+            curr_action.target.damage(damage_done);
+            this.stats.damageDone += damage_done;
           }
 
         }
