@@ -33,7 +33,7 @@ export default class Card {
    * @param {object} tags - Tags associated with the card
    */  
   static nextCardID = 0;
-  constructor (type, name, description, effects, energy, target, conditions, block ,customization={}, tags={}){
+  constructor (type, name, description, effects, energy, target, conditions, block ,customization={}, tags={}, ){
     this.type = type
     this.name = name 
     this.description = description
@@ -202,7 +202,7 @@ export const CARDLIST = {
     ),
     "Love and Rage": new Card(
       "s", "Love and Rage", "Heal 3. For each 1 HP healed this battle, deal 5 damage.",
-      {heal: 3, damagePerBattleHealing: 5}, 2, "self", null, null, {}, {attribute: "light"}
+      {healSelf: 3, damagePerBattleHealing: 5}, 2, "enemy", null, null, {}, {attribute: "light"}
     ),
 
     // Natural cards

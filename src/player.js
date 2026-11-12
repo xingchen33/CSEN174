@@ -20,6 +20,8 @@ export default class Player extends Entity {
     this.cardDeck = cardDeck;
     cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
+    this.blockPts = 0;
+    this.defense = 0;
     logicDeck.shuffleDeck();
 
     this.cardDeck.draw(this.startingSpellCount);
@@ -216,32 +218,35 @@ export default class Player extends Entity {
   // TODO this is the core of the game
   useMove(selectedMove=this.currentMove) {
     // Iterate through all elements of the current move
+    let steps_of_effects = [];
     for (let i = 0; i < selectedMove.length; i++) {
 
       let move = selectedMove[i];
       // If the statement is a logic block, check condition
       if (move.type == "If") {
-        
+        base = max(0, base + this.statuses["power"] ?? 0);
+        move.target.damage(effects["damage"]);
+
       }
       else if (move.type == "While") {
+        move.target.heal(effects["healing"]);
+        
         
       }
       else {
         let effects = move.effects;
-        if ("damage" in effects) {
-
-          base = max(0, base + this.statuses["power"] ?? 0);
-          move.target.damage(effects["damage"]);
+        keys = Object.keys(effects);
+        for(j = 0; j < keys.length; i++){
+          let key = keys[j];
+          let value = effects[key];
+          steps_of_effects.push({key: key, value: value, target: move.target});
         }
-
-        if ("healing" in effects) {
-          move.target.heal(effects["healing"]);
-        }
-      }
     }
   }
+  return steps_of_effects; 
+}
 
-  passTurn() {
+  passTurn(){
     this.statusDecay();
     this.useMove();
 
@@ -252,10 +257,7 @@ export default class Player extends Entity {
     this.cardDeck.draw(this.startingSpellCount);
 
     this.energy = this.maxEnergy;
-
-    this.previousMoves.push(this.currentMove);
-    this.currentMove = [];
-  }
+}
 }
 
 export const ITEMLIST = {
