@@ -125,7 +125,14 @@ export const CARDLIST = {
       "block": {"bg-color": "linear-gradient(.90turn, #de7e35, #dec535)", "text-color": "#000000"}
     }, {attribute: "natural"}),
     "Curse": new Card(
-      "r", "Curse", "-2 defense on an enemy.", {enemyDefense: -2}, 1, "enemy", null, null, {}, {attribute: "dark"}
+      "r", "Curse", "-2 defense on an enemy.", {enemyDefense: -2}, 1, "enemy", null, null, {
+        "front_img": "./assets/curse.png",
+        "name": {"bg-color": "linear-gradient(.90turn, #4c2d56, #9a35de)", "text-color": "#000000"}, 
+        "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
+        "description": {"bg-color": "linear-gradient(.90turn, #4c2d56, #9a35de)", "text-color": "#000000"}, 
+        "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
+        "block": {"bg-color": "linear-gradient(.90turn, #4c2d56, #9a35de)", "text-color": "#000000"}
+      }, {attribute: "dark"}
     ),
     "Ether Pupil": new Card("r", "Ether Pupil", "Play a natural card from your hand", {playNatural: 1}, 1, 'a', 'b', 'c',  {
       "name": {"bg-color": "linear-gradient(.90turn, #a935de, #35de6d)", "text-color": "#000000"}, 
@@ -144,49 +151,85 @@ export const CARDLIST = {
     }
     ),
     "Mind Shock": new Card(
-      "s", "Mind Shock", "Deal 10 damage to 1 enemy.", {damage: 10}, 2, "enemy", null, null, {}, {attribute: "dark"}
+      "s", "Mind Shock", "Deal 10 damage to 1 enemy.", {damage: 10}, 2, "enemy", null, null, {
+        "front_img": "./assets/mindshock.png",
+        "name": {"bg-color": "linear-gradient(.90turn, #35ded0, #54de35)", "text-color": "#000000"}, 
+        "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
+        "description": {"bg-color": "linear-gradient(.90turn, #35ded0, #54de35)", "text-color": "#000000"}, 
+        "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
+        "block": {"bg-color": "linear-gradient(.90turn, #35ded0, #54de35)", "text-color": "#000000"}
+      }, {attribute: "dark"}
     ),
     "Fuel": new Card(
-      "s", "Fuel", "Deal 7 damage, draw 1 card.", {damage: 7, draw: 1}, 1, "enemy", null, null, {}, {attribute: "natural"}
+      "s", "Fuel", "Deal 7 damage, draw 1 card.", {damage: 7, draw: 1}, 1, "enemy", null, null, {
+        "front_img": "./assets/fuel.png",
+        "name": {"bg-color": "linear-gradient(.90turn, #d8de35, #54de35)", "text-color": "#000000"}, 
+        "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
+        "description": {"bg-color": "linear-gradient(.90turn, #d8de35, #54de35)", "text-color": "#000000"}, 
+        "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
+        "block": {"bg-color": "linear-gradient(.90turn, #d8de35, #54de35)", "text-color": "#000000"}
+      }, {attribute: "natural"}
     ),
     "Bondage": new Card(
-      "r", "Bondage", "-2 power on an enemy.", {enemyPower: -2}, 1, "enemy", null, null, {}, {attribute: "light"}
+      "r", "Bondage", "-2 power on an enemy.", {enemyPower: -2}, 1, "enemy", null, null, {
+        "front_img": "./assets/bondage.png",
+        "name": {"bg-color": "linear-gradient(.90turn, #55562d, #de9d35)", "text-color": "#000000"}, 
+        "type": {"bg-color": "linear-gradient(.90turn, #35deab, #35b1de)", "text-color": "#000000"}, 
+        "description": {"bg-color": "linear-gradient(.90turn, #55562d, #de9d35)", "text-color": "#000000"}, 
+        "energy": {"bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)", "text-color": "linear-gradient(.25turn, #760505, #0c0235)"},
+        "block": {"bg-color": "linear-gradient(.90turn, #55562d, #de9d35)", "text-color": "#000000"}
+      }, {attribute: "light"}
     ),
 
     // Dark cards
     "Hell Reborn": new Card(
       "r", "Hell Reborn", "Change your attribute to dark. All enemies lose 3 HP.",
-      {changeAttribute: "dark", allEnemiesDamage: 3}, 1, "allEnemies", null, null, {}, {attribute: "dark"}
+      {changeAttribute: "dark", allEnemiesDamage: 3}, 1, "allEnemies", null, null, {
+        "front_img": "./assets/hellreborn.png",
+      }, {attribute: "dark"}
     ),
     "Demon's Hand": new Card(
       "r", "Demon's Hand", "Lose 8 HP. You can play a dark spell card from your trash.",
-      {selfDamage: 8, playFromTrash: {attribute: "dark", type: "s"}}, 2, "self", null, null, {}, {attribute: "dark"}
+      {selfDamage: 8, playFromTrash: {attribute: "dark", type: "s"}}, 2, "self", null, null, {
+        "front_img": "./assets/demonshand.png",
+      }, {attribute: "dark"}
     ),
     "Feed": new Card(
       "r", "Feed", "Draw 1 card, trash 1 card.",
-      {draw: 1, trash: 1}, 0, "self", null, null, {}, {attribute: "dark"}
+      {draw: 1, trash: 1}, 0, "self", null, null, {
+        "front_img": "./assets/feed.png",
+      }, {attribute: "dark"}
     ),
     "Transfer Contract": new Card(
       "r", "Transfer Contract", "Gives enemy power +1 and defense -3.",
-      {enemyPower: 1, enemyDefense: -3}, 1, "enemy", null, null, {}, {attribute: "dark"}
+      {enemyPower: 1, enemyDefense: -3}, 1, "enemy", null, null, {
+        "front_img": "./assets/transfercontract.png",
+      }, {attribute: "dark"}
     ),
     "Seducing Lie": new Card(
       "s", "Seducing Lie", "Gives enemy power +1, deals 12 damage.",
-      {enemyPower: 1, damage: 12}, 1, "enemy", null, null, {}, {attribute: "dark"}
+      {enemyPower: 1, damage: 12}, 1, "enemy", null, null, {
+        "front_img": "./assets/seducinglie.png",
+      }, {attribute: "dark"}
     ),
     "Eating Whole": new Card(
       "r", "Eating Whole", "Gain 20 block points. This turn, when attacked, give enemy power -2 and gain power +2.",
-      {block: 20, onAttacked: {enemyPower: -2, power: 2}}, 3, "self", null, null, {}, {attribute: "dark"}
+      {block: 20, onAttacked: {enemyPower: -2, power: 2}}, 3, "self", null, null, {
+        "front_img": "./assets/eatingwhole.png",
+      }, {attribute: "dark"}
     ),
 
     // Light cards
     "Purification": new Card(
       "r", "Purification", "Change your attribute to light. All your negative buffs lose one layer.",
-      {changeAttribute: "light", removeNegativeBuffLayers: 1}, 1, "self", null, null, {}, {attribute: "light"}
+      {changeAttribute: "light", removeNegativeBuffLayers: 1}, 1, "self", null, null, {
+        "front_img": "./assets/purification.png",
+      }, {attribute: "light"}
     ),
     "Light Rain": new Card(
       "s", "Light Rain", "Deals 2 x 3 damage to all enemies.",
-      {damage: 2, hits: 3}, 1, "allEnemies", null, null, {}, {attribute: "light"}
+      {damage: 2, hits: 3}, 1, "allEnemies", null, null, {
+      }, {attribute: "light"}
     ),
     "Palms": new Card(
       "r", "Palms", "Gives enemy attack -1, heal 5.",

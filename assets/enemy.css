@@ -1,7 +1,7 @@
 .enemy-base {
     height: 100%;
-    max-height: 240px;
-    aspect-ratio: 1/1;
+    max-height: 280px;
+    aspect-ratio: 2/3;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -30,7 +30,7 @@
 .enemy-image {
     top: 0%;
     height: 100%;
-    aspect-ratio: 256/515;
+    /* aspect-ratio: 256/515; */
     position: absolute;
 }
 
