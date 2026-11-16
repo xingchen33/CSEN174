@@ -1,5 +1,6 @@
 import Run from "./run.js";
 import { generateVisualCard, playCardVisual } from "./cardFrontend.js";
+import Player from "./player.js";
 
 // The game entry point creates one run and starts its first stage when the
 // player arrives from the main menu.
@@ -332,8 +333,8 @@ function updateHealthBar(character, characterBase) {
 
   let active_energy = document.getElementById("player-energy")
 
-  if (active_energy) {
-    active_energy.textContent = `Energy: ${character.energy} / ${character.maxEnergy}`;
+  if (character instanceof(Player)) {
+    active_energy.textContent = `${character.energy} / ${character.maxEnergy}`;
   }
 }
 

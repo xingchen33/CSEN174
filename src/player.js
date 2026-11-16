@@ -235,8 +235,8 @@ export default class Player extends Entity {
       }
       else {
         let effects = move.effects;
-        keys = Object.keys(effects);
-        for(j = 0; j < keys.length; i++){
+        let keys = Object.keys(effects);
+        for(let j = 0; j < keys.length; j++){
           let key = keys[j];
           let value = effects[key];
           steps_of_effects.push({key: key, value: value, target: move.target});
