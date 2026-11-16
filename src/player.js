@@ -223,10 +223,10 @@ export default class Player extends Entity {
 
       let move = selectedMove[i];
       // If the statement is a logic block, check condition
+      console.log(move.type)
       if (move.type == "If") {
-        base = max(0, base + this.statuses["power"] ?? 0);
+        base = max(0, base + (this.statuses["power"] ?? 0));
         move.target.damage(effects["damage"]);
-
       }
       else if (move.type == "While") {
         move.target.heal(effects["healing"]);
