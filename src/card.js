@@ -44,6 +44,7 @@ export default class Card {
     block,
     customization = {},
     tags = {},
+    counters = null,
   ) {
     this.type = type;
     this.name = name;
@@ -53,8 +54,8 @@ export default class Card {
     this.target = target;
     this.conditions = conditions;
     this.block = block;
+    this.counters = counters;
     this.customization = structuredClone(DEFAULT_CARD_CUSTOMIZATION);
-    console.log(customization);
     for (const [element, styles] of Object.entries(customization ?? {})) {
       if (
         styles &&
@@ -630,6 +631,28 @@ export const CARDLIST = {
   },
 };
 
+// Counter conditions are kept separate from a card's normal target. A
+// counter target is selected when the ritual is used as a condition.
+const CARD_COUNTERS = {
+  "Hell Reborn": { trigger: "attack", requiresTarget: true },
+  "Demon's Hand": { trigger: "attack", requiresTarget: true },
+  Feed: { trigger: "action ends", requiresTarget: false },
+  "Transfer Contract": { trigger: "have attacked", requiresTarget: true },
+  "Seducing Lie": { trigger: "have attacked", requiresTarget: true },
+  "Eating Whole": { trigger: "attack", requiresTarget: true },
+  Purification: { trigger: "attack", requiresTarget: true },
+  Palms: { trigger: "attack", requiresTarget: true },
+  "Holy Water": { trigger: "gains power-", requiresTarget: true },
+  "Breathe Exchange": { trigger: "attack", requiresTarget: true },
+  "Rock Armor": { trigger: "attack", requiresTarget: true },
+  Synchronization: { trigger: "have attacked", requiresTarget: true },
+  "Self-Collapase": { trigger: "attribute changed", requiresTarget: false },
+};
+
+for (const [name, counters] of Object.entries(CARD_COUNTERS)) {
+  CARDLIST.cards[name].counters = counters;
+}
+
 export const LOGICLIST = {
   pick: (name) => {
     const card = structuredClone(LOGICLIST.cards[name]);
@@ -650,7 +673,7 @@ export const LOGICLIST = {
       {},
       0,
       null,
-      null,
+      false,
       [],
       {
         front_img: "./assets/if.png",
@@ -664,7 +687,7 @@ export const LOGICLIST = {
       {},
       0,
       null,
-      null,
+      false,
       [],
       {
         front_img: "./assets/demonshand.png",

@@ -15,11 +15,6 @@ export default class Entity {
     this.power = 0;
     this.defense = 0;
 
-    // Status name: list starting with length (can have other elements as well)
-    // Statues:
-    // ASK fr min 0?
-    // - Power: do this much less damage (min 0)
-    // - Defense : Take this much less damage (min 0)
     this.statuses = {};
   }
 
@@ -36,10 +31,6 @@ export default class Entity {
   damage(n) {
     if (this.isDead()) {
       return;
-    }
-
-    if (this.statuses["reckless"]) {
-      n *= 2;
     }
 
     const blocked = Math.min(this.blockPts, n);

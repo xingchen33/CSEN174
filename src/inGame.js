@@ -24,9 +24,9 @@ function renderHand(deck, containerId, label) {
 
   deck.getSortedCards(deck.hand).forEach((card, index) => {
     const cardElement = renderCard(card);
-    if (deck === stage.player.cardDeck) {
+    if (deck === stage.player.cardDeck || deck === stage.player.logicDeck) {
       cardElement.classList.add("can-play");
-      cardElement.addEventListener("click", () => handleCardClick(card));
+      cardElement.addEventListener("click", () => handleCardClick(card, deck));
     }
     playCardVisual(cardElement);
     cardElement.style.position = "relative";
@@ -93,13 +93,13 @@ function renderCode() {
     }
   }
 
-  stage.player.currentMove.forEach((move, index) => {
+  function appendMove(move, path, parent) {
     const entry = document.createElement("div");
     entry.classList.add("code-entry");
 
     const number = document.createElement("span");
     number.classList.add("code-entry-number");
-    number.textContent = `${index + 1}.`;
+    number.textContent = `${path.join(".")}.`;
     entry.appendChild(number);
 
     const details = document.createElement("div");
@@ -118,9 +118,46 @@ function renderCode() {
       details.appendChild(target);
     }
 
+    const isConditionalBlock =
+      move.name === "If" || move.name === "While";
+    if (isConditionalBlock || move.condition != null) {
+      const condition = document.createElement("small");
+      condition.classList.add("code-entry-condition");
+      condition.textContent = `Condition: ${formatCodeValue(
+        move.condition ?? false,
+      )}`;
+      details.appendChild(condition);
+    }
+
     entry.appendChild(details);
-    codeZone.appendChild(entry);
+    parent.appendChild(entry);
+
+    if (Array.isArray(move.block)) {
+      const block = document.createElement("div");
+      block.classList.add("code-entry-block");
+      move.block.forEach((nestedMove, nestedIndex) => {
+        appendMove(nestedMove, [...path, nestedIndex + 1], block);
+      });
+      if (move.block.length === 0) {
+        const emptyBlock = document.createElement("small");
+        emptyBlock.classList.add("code-entry-empty-block");
+        emptyBlock.textContent = "Empty block";
+        block.appendChild(emptyBlock);
+      }
+      parent.appendChild(block);
+    }
+  }
+
+  stage.player.currentMove.forEach((move, index) => {
+    appendMove(move, [index + 1], codeZone);
   });
+
+  function formatCodeValue(value) {
+    if (value && typeof value === "object") {
+      return value.name ?? value.description ?? JSON.stringify(value);
+    }
+    return String(value);
+  }
 
   if (pendingCard) {
     const cancelButton = document.createElement("button");
@@ -142,7 +179,8 @@ function renderCode() {
     pendingCard.positions.forEach((position, index) => {
       const button = document.createElement("button");
       button.type = "button";
-      button.textContent = `Position ${index + 1}`;
+      const displayPosition = position.index.map((part) => part + 1).join(".");
+      button.textContent = `Position ${displayPosition || index + 1}`;
       button.addEventListener("click", () => selectCodePosition(position));
       options.appendChild(button);
     });
@@ -170,12 +208,12 @@ function cardCanTargetPlayer(card) {
     || card.effects?.damage != null;
 }
 
-function handleCardClick(card) {
+function handleCardClick(card, deck = stage.player.cardDeck) {
   if (pendingCard) {
     return;
   }
 
-  const cardIndex = stage.player.cardDeck.hand.indexOf(card);
+  const cardIndex = deck.hand.indexOf(card);
   if (cardIndex < 0) {
     return;
   }
@@ -183,6 +221,7 @@ function handleCardClick(card) {
   if (cardRequiresTarget(card)) {
     pendingCard = {
       card,
+      deck,
       cardIndex,
       positions: getCardPositions(card),
     };
@@ -193,6 +232,7 @@ function handleCardClick(card) {
 
   pendingCard = {
     card,
+    deck,
     cardIndex,
     positions: getCardPositions(card),
   };
@@ -229,7 +269,12 @@ function selectCodePosition(position) {
     return;
   }
 
-  playCard(pendingCard.cardIndex, pendingCard.card.target === "self" ? stage.player : null, position);
+  playCard(
+    pendingCard.cardIndex,
+    pendingCard.card.target === "self" ? stage.player : null,
+    position,
+    pendingCard.deck,
+  );
 }
 
 function clearTargetSelection() {
@@ -254,8 +299,8 @@ function cancelPendingCard() {
   turnIndicator.textContent = "Player Action";
 }
 
-function playCard(cardIndex, target, location) {
-  const played = stage.player.playCard(cardIndex, target, location);
+function playCard(cardIndex, target, location, deck = stage.player.cardDeck) {
+  const played = stage.player.playCard(cardIndex, target, location, deck);
 
   if (played) {
     clearTargetSelection();
@@ -322,6 +367,9 @@ function renderCharacter(character, container, baseClass, imageClass, label) {
     let playScreen = document.getElementById("play-screen")
     const energy = document.createElement("div");
     energy.id = "player-energy";
+    const energyLabel = document.createElement("p");
+    energyLabel.innerHTML = "Energy";
+    energy.appendChild(energyLabel);
     playScreen.appendChild(energy);
   }
 
@@ -394,7 +442,6 @@ function renderEnemies(enemies) {
     const enemyBase = renderCharacter(enemy, container, "enemy-base", "enemy-image", enemy.name);
     // enemyBase.style.right = "8%";
     enemyBase.style.right = `${12 + index * 24}%`;
-    enemyBase.style.top = "22%"
     const action = document.createElement("p");
     action.classList.add("enemy-action");
     enemyBase.appendChild(action);

@@ -33,8 +33,8 @@ test("base attack damage works", () => {
 test("attack damage takes status into account", () => {
   const enemy = ENEMYLIST.pick("Dummy");
   enemy.getNextMove(0);
-  enemy.buff("reckless", [3]);
-  expect(enemy.getAttackDamage()).toBe(40);
+  enemy.buff("power", 5);
+  expect(enemy.getAttackDamage()).toBe(25);
 });
 
 test("Slime has its configured health, attribute, and actions", () => {

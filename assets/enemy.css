@@ -1,6 +1,6 @@
 .enemy-base {
-    height: 100%;
-    max-height: 280px;
+    height: 50%;
+    top: 28%;
     aspect-ratio: 2/3;
     position: absolute;
     display: flex;
@@ -24,7 +24,7 @@
 
 .entity-statuses {
     position: absolute;
-    top: 30%;
+    top: 118%;
     left: -25%;
     width: 150%;
     display: flex;

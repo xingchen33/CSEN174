@@ -37,16 +37,13 @@ export default class Enemy extends Entity {
     this.nextMove = this.moves[n];
   }
 
-  // ONLY WORKS FOR A SINGLE HIT
+  // Only gets damage for a single attack
   getAttackDamage() {
     let move = this.nextMove;
     if (move && move.damage) {
       let base = move.damage;
 
       base = Math.max(0, base + (this.statuses["power"] ?? 0) + (this.statuses["attack"] ?? 0));
-      if (this.statuses["reckless"]) {
-        base *= 2;
-      }
 
       return base;
     }
@@ -54,10 +51,14 @@ export default class Enemy extends Entity {
     return 0;
   }
 
-  // This passes a Player even though it maybe shouldn't
   useMove(player) {
     if (!this.nextMove || this.isDead()) {
       return;
+    }
+
+    // Pick a non-random attack
+    while(this.nextMove.random) {
+      this.nextMove = this.moves[Math.floor(Math.random() * this.moves.length)];
     }
 
     const move = this.nextMove;
@@ -65,9 +66,6 @@ export default class Enemy extends Entity {
     const hits = move.hits ?? 1;
     for (let i = 0; i < hits; i++) {
       let hitDamage = move.damage ?? 0;
-      if (this.statuses["reckless"]) {
-        hitDamage *= 2;
-      }
       player.damage(hitDamage);
     }
 
@@ -106,6 +104,18 @@ export const ENEMYLIST = {
     Dummy: new Enemy(100, [{ damage: 20 }, { damage: 30 }], "Dummy"),
     Slime: new Enemy(
       45,
+      [
+        { damage: 4},
+        {selfEffects: { defense: -2, power: 2 }},
+        { random: true },
+        { damage: 3, hits: 2 },
+      ],
+      "Slime",
+      slimeImage,
+      { attribute: "void" },
+    ),
+    Imp: new Enemy(
+      20,
       [
         { damage: 4, selfEffects: { defense: -2, power: 2 } },
         { damage: 3, hits: 2 },

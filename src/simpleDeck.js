@@ -70,13 +70,9 @@ export default class SimpleDeck {
       return;
     }
 
-    if (
-      pos.every((e) => {
-        e < this.hand.length;
-      })
-    ) {
+    if (pos.some((e) => e < 0 || e >= this.hand.length)) {
       console.log(
-        `Cannot discard at posisition ${pos} when hand has ${this.hand.length} card(s)`,
+        `Cannot discard at position ${pos} when hand has ${this.hand.length} card(s)`,
       );
       return;
     }

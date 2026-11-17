@@ -47,9 +47,9 @@ export default class Player extends Entity {
     this.lastPlayError = null;
   }
 
-  playCard(pos, target = null, location = null) {
+  playCard(pos, target = null, location = null, deck = this.cardDeck) {
     this.lastPlayError = null;
-    let playing = this.cardDeck.hand[pos];
+    let playing = deck?.hand[pos];
     if (!playing) {
       this.lastPlayError = "That card is no longer in your hand.";
       return false;
@@ -92,7 +92,7 @@ export default class Player extends Entity {
       return false;
     }
     if (this.evaluateCard(playing, selectedLocation)) {
-      this.cardDeck.discard(1, [pos]);
+      deck.discard(1, [pos]);
       return true;
     }
 
@@ -234,7 +234,7 @@ export default class Player extends Entity {
       if (
         destination[index] == null ||
         !this.isLogicMove(destination[index]) ||
-        destination[index].condition == null
+        !("condition" in destination[index])
       ) {
         return false;
       }
