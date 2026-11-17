@@ -22,6 +22,9 @@ export default class Player extends Entity {
     this.logicDeck = logicDeck;
     this.blockPts = 0;
     this.defense = 0;
+    this.spellDamageBonus = null;
+    this.onAttackedEffects = null;
+    this.nextTurnEnergy = 0;
     logicDeck.shuffleDeck();
 
     this.cardDeck.draw(this.startingSpellCount);
@@ -215,36 +218,72 @@ export default class Player extends Entity {
 
   }
 
-  // TODO this is the core of the game
-  useMove(selectedMove=this.currentMove) {
-    // Iterate through all elements of the current move
-    let steps_of_effects = [];
-    for (let i = 0; i < selectedMove.length; i++) {
-
-      let move = selectedMove[i];
-      // If the statement is a logic block, check condition
-      console.log(move.type)
-      if (move.type == "If") {
-        base = max(0, base + (this.statuses["power"] ?? 0));
-        move.target.damage(effects["damage"]);
-      }
-      else if (move.type == "While") {
-        move.target.heal(effects["healing"]);
-        
-        
-      }
-      else {
-        let effects = move.effects;
-        let keys = Object.keys(effects);
-        for(let j = 0; j < keys.length; j++){
-          let key = keys[j];
-          let value = effects[key];
-          steps_of_effects.push({key: key, value: value, target: move.target});
-        }
+ evaluateCondition(condition, target){
+  if(condition == "power-" || condition == "enemyPowerNegative"){
+    if(target == null){
+      return false;
     }
+    return target.power < 0;  
   }
-  return steps_of_effects; 
+  return false;
+ }
+
+  // TODO this is the core of the game
+  
+useMove(selectedMove = this.currentMove) {
+  // Iterate through all elements of the current move
+  let steps_of_effects = [];
+
+  for (let i = 0; i < selectedMove.length; i++) {
+    let move = selectedMove[i];
+
+    // If the statement is a logic block, check condition
+    if (move.type == "If" || move.type == "While") {
+      let condition = move.condition;
+
+      if (condition != null) {
+        let condition_satisfied = this.evaluateCondition(condition, move.target);
+
+        if (condition_satisfied) {
+          let steps = this.useMove(move.block);
+
+          for (let j = 0; j < steps.length; j++) {
+            steps_of_effects.push(steps[j]);
+          }
+        }
+      }
+    }
+
+    else {
+      let effects = move.effects;
+      let keys = Object.keys(effects);
+      for (let j = 0; j < keys.length; j++) {
+        let key = keys[j];
+        let value = effects[key];
+
+        if (key.startsWith("conditional")) {
+          let condition_satisfied = this.evaluateCondition(value.requires,move.target);
+
+          if (condition_satisfied) {
+            let effect_name = key.replace("conditional", "");
+            effect_name = effect_name.charAt(0).toLowerCase() + effect_name.slice(1);
+
+            steps_of_effects.push({key: effect_name, value: value.amount, target: move.target, type: move.type});
+          }
+        }
+
+        else if (key != "condition" && key != "duration") {
+          steps_of_effects.push({key: key, value: value, target: move.target, hits: effects.hits, duration: effects.duration, condition: effects.condition, type: move.type
+          });
+        }
+      }
+    }
+    
+  }
+
+  return steps_of_effects;
 }
+
 
   passTurn(){
     this.useMove();

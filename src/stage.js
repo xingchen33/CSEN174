@@ -86,7 +86,7 @@ export default class Stage {
           if(curr_action.key == "block"){
             this.player.block += curr_action.value;
           }
-          if(curr.action.key == "damagePerBattleHealing"){
+          if(curr_action.key == "damagePerBattleHealing"){
             damage_done = this.stats.hpHealed * curr_action.value;
             curr_action.target.damage(damage_done);
             this.stats.damageDone += damage_done;
@@ -102,13 +102,17 @@ export default class Stage {
             card_attribute = curr_action.value.atrribute;
             card_type = curr_action.value.type;
             for(let j = 0; j < this.player.cardDeck.graveyard.length; j++){
-              let card = this.player.cardDeck.graveyard[j];
               if(card.attribute == card_attribute && card.type == card_type){
-                this.player.useMove(card);
+                let card_action = {type: card.type, effects: card.effects,target: card.target};
+                let card_effects = this.player.useMove([card_action]);
+                for(let k = 0; k < card_effects.length; k++){
+                  actions.push(card_effects[k]);
+                }
+                this.player.cardDeck.graveyard.splice(j, 1);
                 break;
-              }
-          }
-        }
+            }
+            }
+      }
           if(curr_action.key == "trash"){
             count = curr_action.value;
             let positions = [];
@@ -116,6 +120,9 @@ export default class Stage {
               if(this.player.cardDeck.hand.length > 0){
                 positions.push(j);
               }
+            }
+            if(positions.length > 0){
+              this.player.cardDeck.discard(positions.length, positions);
             }
           }
           if(curr_action.key == "block"){
@@ -134,8 +141,19 @@ export default class Stage {
             this.player.cardDeck.draw(curr_action.value);
           }
           if(curr_action.key == "nextTurnEnergy"){
-            this.player.energy += curr_action.value;
+            this.player.nextTurnEnergy += curr_action.value;
           }
+          if(curr_action.key == "spellDamageBonus"){
+            this.player.spellDamageBonus = {
+              amount: curr_action.value,
+              condition: curr_action.condition,
+              duration: curr_action.duration
+            };
+          }
+          if(curr_action.key == "onAttacked"){
+            this.player.onAttackedEffects = curr_action.value;
+          }
+          
         }
         if(curr_action.target == "all"){
           if(curr_action.key == "changeAttribute"){
@@ -163,6 +181,9 @@ export default class Stage {
     if (this.player.isDead()) {
       return "loss";
     }
+    if(this.player.spellDamageBonus != null && this.player.spellDamageBonus.duration == "turn"){
+     this.player.spellDamageBonus = null;
+   }
 
     this.player.passTurn();
     this.enemies.forEach((enemy) => enemy.passTurn());
