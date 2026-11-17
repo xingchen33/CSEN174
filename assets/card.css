@@ -12,8 +12,6 @@
     aspect-ratio: 3 / 4;
     text-decoration: none;
     transform-style: preserve-3d;
-    position: absolute;
-    z-index: 10;
 }
 
 .card-front-contents {

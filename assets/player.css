@@ -26,7 +26,7 @@
 }
 
 .player-base-name {
-    top: 102%;
+    top: -20%;
     font-size: 1.25rem;
     font-weight: bold;
 }
@@ -37,7 +37,7 @@
 
 .entity-attribute {
     position: absolute;
-    top: 112%;
+    top: -10%;
     left: 0;
     width: 100%;
     margin: 0;
@@ -58,10 +58,17 @@
 }
 
 .player-base .health-bar-base {
-    top: 124%;
+    top: 100%;
 }
 
 .player-base.targetable {
     cursor: crosshair;
     filter: drop-shadow(0 0 0.75rem #f5dd9a);
+}
+
+.player-image:hover ~ .player-base-name, .player-image:hover ~ .entity-attribute{
+    opacity: 1;
+}
+.player-base-name, .entity-attribute{
+    opacity: 0;
 }
