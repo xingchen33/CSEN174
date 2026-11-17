@@ -1,10 +1,10 @@
 // Keeps track of all the stages and certain metadata(i.e. damage dealt across all stages)
-import Stage from "./stage.js"
-import Player, { ITEMLIST } from "./player.js"
+import Stage from "./stage.js";
+import Player, { ITEMLIST } from "./player.js";
 import { CARDLIST } from "./card.js";
-import SimpleDeck from "./simpleDeck.js"
-import CardDeck from "./cardDeck.js"
-import { ENEMYLIST } from "./enemy.js"
+import SimpleDeck from "./simpleDeck.js";
+import CardDeck from "./cardDeck.js";
+import { ENEMYLIST } from "./enemy.js";
 
 export default class Run {
   /**
@@ -49,10 +49,9 @@ export default class Run {
       let reward;
       // ASK this probably should change, just prototyping here
       if (Math.random() > 0.8) {
-        reward = {"item": ITEMLIST.pickRandom()};
-      }
-      else {
-        reward = {"card": CARDLIST.pickRandom()};
+        reward = { item: ITEMLIST.pickRandom() };
+      } else {
+        reward = { card: CARDLIST.pickRandom() };
       }
 
       rewards.push(reward);
@@ -76,7 +75,7 @@ export default class Run {
     );
 
     // ASK any ideas about how enemy generation should work?
-    let enemyCount = (Math.random() * this.difficulty) + this.stages.length / 2;
+    let enemyCount = Math.random() * this.difficulty + this.stages.length / 2;
     enemyCount = Math.max(1, Math.min(5, Math.floor(enemyCount)));
     let enemies = [];
     for (let i = 0; i < enemyCount; i++) {
@@ -100,14 +99,13 @@ export default class Run {
     for (const prop in increment) {
       if (prop in this.stats) {
         this.stats[prop] += increment[prop];
-      }
-      else {
+      } else {
         this.stats[prop] = increment[prop];
       }
     }
 
     for (const prop in replace) {
-        this.stats[prop] = replace[prop];
+      this.stats[prop] = replace[prop];
     }
   }
 

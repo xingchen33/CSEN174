@@ -1,9 +1,15 @@
-import Entity from "./entity.js"
+import Entity from "./entity.js";
 
 const slimeImage = new URL("../assets/slime.png", import.meta.url).href;
 
 export default class Enemy extends Entity {
-  constructor (maxHealth, moves, name, image="./assets/missing.jpg", customization={}){
+  constructor(
+    maxHealth,
+    moves,
+    name,
+    image = "./assets/missing.jpg",
+    customization = {},
+  ) {
     super(maxHealth, image, customization, customization.attribute ?? null);
 
     this.moves = moves;
@@ -17,7 +23,7 @@ export default class Enemy extends Entity {
     this.getNextMove();
   }
 
-  getNextMove(n=-1) {
+  getNextMove(n = -1) {
     if (this.isDead()) {
       this.nextMove = null;
       return;
@@ -82,29 +88,29 @@ export default class Enemy extends Entity {
 }
 
 export const ENEMYLIST = {
-  "pick": (name) => {
+  pick: (name) => {
     const enemy = structuredClone(ENEMYLIST.enemies[name]);
     Object.setPrototypeOf(enemy, Enemy.prototype);
     return enemy;
   },
-  "pickRandom": () => {
+  pickRandom: () => {
     var keys = Object.keys(ENEMYLIST.cards);
-    const enemy = ENEMYLIST.cards[keys[keys.length * Math.random() << 0]];
+    const enemy = ENEMYLIST.cards[keys[(keys.length * Math.random()) << 0]];
     Object.setPrototypeOf(enemy, Enemy.prototype);
     return card;
   },
   // Make sure you add all your enemies to this list!
-  "enemies": {
-    "Dummy": new Enemy(100, [{"damage": 20}, {"damage": 30}], "Dummy"),
-    "Slime": new Enemy(
+  enemies: {
+    Dummy: new Enemy(100, [{ damage: 20 }, { damage: 30 }], "Dummy"),
+    Slime: new Enemy(
       45,
       [
-        {damage: 4, selfEffects: {defense: -2, power: 2}},
-        {damage: 3, hits: 2},
+        { damage: 4, selfEffects: { defense: -2, power: 2 } },
+        { damage: 3, hits: 2 },
       ],
       "Slime",
       slimeImage,
-      {attribute: "void"},
+      { attribute: "void" },
     ),
-  }
-}
+  },
+};

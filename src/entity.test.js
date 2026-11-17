@@ -1,12 +1,11 @@
 import Entity from "./entity.js";
 
-
-test('entities start at full health', () => {
+test("entities start at full health", () => {
   const defaultEnt = new Entity(100);
   expect(defaultEnt.health).toEqual(defaultEnt.maxHealth);
 });
 
-test('damaging entities reduces health but not max health', () => {
+test("damaging entities reduces health but not max health", () => {
   const defaultEnt = new Entity(100);
   defaultEnt.damage(25);
 
@@ -14,7 +13,7 @@ test('damaging entities reduces health but not max health', () => {
   expect(defaultEnt.maxHealth).toBe(100);
 });
 
-test('entities cannot be healed past max health', () => {
+test("entities cannot be healed past max health", () => {
   const defaultEnt = new Entity(100);
   defaultEnt.damage(25);
   let gain = defaultEnt.heal(40);
@@ -24,7 +23,7 @@ test('entities cannot be healed past max health', () => {
   expect(gain).toBe(25);
 });
 
-test('boosting health increases health and maximum health', () => {
+test("boosting health increases health and maximum health", () => {
   const defaultEnt = new Entity(100);
   defaultEnt.boostHealth(35);
 
@@ -32,7 +31,7 @@ test('boosting health increases health and maximum health', () => {
   expect(defaultEnt.health).toBe(defaultEnt.maxHealth);
 });
 
-test('entities with no health are dead', () => {
+test("entities with no health are dead", () => {
   const defaultEnt = new Entity(100);
   defaultEnt.damage(100);
 

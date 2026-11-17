@@ -1,19 +1,20 @@
 import { LOGICLIST } from "./card.js";
 
 const LOGIC_PRESETS = {
-  "empty": [],
-  "basic": [
-    LOGICLIST.pick("If"),
+  empty: [],
+  all: [
     LOGICLIST.pick("If"),
     LOGICLIST.pick("While"),
-  ]
+    LOGICLIST.pick("Pointer"),
+  ],
+  basic: [LOGICLIST.pick("If")],
 };
 
 export default class SimpleDeck {
   /**
    * @param {number} preset - Which of the deck presets to use
    */
-  constructor (preset){
+  constructor(preset) {
     this.preset = preset;
 
     // It is POSSIBLE this is more structured cloning than needs to happen
@@ -38,7 +39,10 @@ export default class SimpleDeck {
     // Retrieved 2026-10-24, License - CC BY-SA 4.0
     for (let i = this.drawPile.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.drawPile[i], this.drawPile[j]] = [this.drawPile[j], this.drawPile[i]];
+      [this.drawPile[i], this.drawPile[j]] = [
+        this.drawPile[j],
+        this.drawPile[i],
+      ];
     }
   }
 
@@ -47,14 +51,14 @@ export default class SimpleDeck {
   }
 
   // ASK about hand limit mechanics
-  draw(n){
+  draw(n) {
     // Normal behavior
     if (n <= this.drawPile.length) {
       this.hand.push(...this.drawPile.slice(0, n));
       this.drawPile = this.drawPile.slice(n);
       return;
     }
-    
+
     // Draw everything you can
     this.hand.push(...this.drawPile);
     this.drawPile = [];
@@ -66,12 +70,24 @@ export default class SimpleDeck {
       return;
     }
 
-    if (pos.every((e) => {e < this.hand.length})) {
-      console.log(`Cannot discard at posisition ${pos} when hand has ${this.hand.length} card(s)`);
+    if (
+      pos.every((e) => {
+        e < this.hand.length;
+      })
+    ) {
+      console.log(
+        `Cannot discard at posisition ${pos} when hand has ${this.hand.length} card(s)`,
+      );
       return;
     }
 
-    this.drawPile.push(...this.hand.filter((_, i) => { return pos.includes(i) }));
-    this.hand = this.hand.filter((_, i) => { return !pos.includes(i) });
+    this.drawPile.push(
+      ...this.hand.filter((_, i) => {
+        return pos.includes(i);
+      }),
+    );
+    this.hand = this.hand.filter((_, i) => {
+      return !pos.includes(i);
+    });
   }
 }

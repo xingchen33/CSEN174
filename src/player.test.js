@@ -1,12 +1,12 @@
-import Player from "./player.js"
+import Player from "./player.js";
 import SimpleDeck from "./simpleDeck.js";
 import CardDeck from "./cardDeck.js";
 
-const target = {damage() {}};
+const target = { damage() {} };
 
-test('damaging/healing works as expected', () => {
+test("damaging/healing works as expected", () => {
   const card_deck = new CardDeck("basic");
-  const logic_deck = new SimpleDeck("basic")
+  const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.damage(20);
@@ -15,9 +15,9 @@ test('damaging/healing works as expected', () => {
   expect(player.health).toBe(95);
 });
 
-test('energy depletes when playing cards', () => {
+test("energy depletes when playing cards", () => {
   const card_deck = new CardDeck("basic");
-  const logic_deck = new SimpleDeck("basic")
+  const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(1);
@@ -26,9 +26,9 @@ test('energy depletes when playing cards', () => {
   expect(player.energy).toBeLessThan(5);
 });
 
-test('energy comes back after passing', () => {
+test("energy comes back after passing", () => {
   const card_deck = new CardDeck("basic");
-  const logic_deck = new SimpleDeck("basic")
+  const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(1);
@@ -38,9 +38,9 @@ test('energy comes back after passing', () => {
   expect(player.energy).toBe(5);
 });
 
-test('playing a card removes it from your hand', () => {
+test("playing a card removes it from your hand", () => {
   const card_deck = new CardDeck("basic");
-  const logic_deck = new SimpleDeck("basic")
+  const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(3);
@@ -49,9 +49,9 @@ test('playing a card removes it from your hand', () => {
   expect(player.cardDeck.hand.length).toBe(2);
 });
 
-test('failing to play a card does not remove it from your hand', () => {
+test("failing to play a card does not remove it from your hand", () => {
   const card_deck = new CardDeck("basic");
-  const logic_deck = new SimpleDeck("basic")
+  const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(6);
@@ -61,4 +61,3 @@ test('failing to play a card does not remove it from your hand', () => {
 
   expect(player.cardDeck.hand.length).toBeGreaterThan(0);
 });
-

@@ -2,19 +2,19 @@ import { CARDLIST } from "./card.js";
 import SimpleDeck from "./simpleDeck.js";
 
 const CARD_PRESETS = {
-  "empty": [],
-  "basic": [
+  empty: [],
+  basic: [
     CARDLIST.pick("Fireball"),
     CARDLIST.pick("Curse"),
     CARDLIST.pick("Cure Wound"),
     CARDLIST.pick("Mind Shock"),
     CARDLIST.pick("Fuel"),
     CARDLIST.pick("Bondage"),
-  ]
+  ],
 };
 
 export default class CardDeck extends SimpleDeck {
-  constructor (preset){
+  constructor(preset) {
     super("empty");
 
     // It is POSSIBLE this is more structured cloning than needs to happen
@@ -38,7 +38,7 @@ export default class CardDeck extends SimpleDeck {
   /**
    * @param {number} refill - Should the graveyard be shuffled back into the deck?
    */
-  draw(n){
+  draw(n) {
     // Normal behavior
     if (n <= this.drawPile.length) {
       this.hand.push(...this.drawPile.slice(0, n));
@@ -77,11 +77,19 @@ export default class CardDeck extends SimpleDeck {
     }
 
     if (pos.some((e) => e < 0 || e >= this.hand.length)) {
-      console.log(`Cannot discard at posisition ${pos} when hand has ${this.hand.length} card(s)`);
+      console.log(
+        `Cannot discard at posisition ${pos} when hand has ${this.hand.length} card(s)`,
+      );
       return;
     }
 
-    this.graveyard.push(...this.hand.filter((_, i) => { return pos.includes(i) }));
-    this.hand = this.hand.filter((_, i) => { return !pos.includes(i) });
+    this.graveyard.push(
+      ...this.hand.filter((_, i) => {
+        return pos.includes(i);
+      }),
+    );
+    this.hand = this.hand.filter((_, i) => {
+      return !pos.includes(i);
+    });
   }
 }

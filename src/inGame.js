@@ -295,6 +295,10 @@ function renderCharacter(character, container, baseClass, imageClass, label) {
     : "Unknown attribute";
   characterBase.appendChild(attribute);
 
+  const statuses = document.createElement("div");
+  statuses.classList.add("entity-statuses");
+  characterBase.appendChild(statuses);
+
   const healthBar = document.createElement("div");
   healthBar.classList.add("health-bar-base");
 
@@ -308,6 +312,7 @@ function renderCharacter(character, container, baseClass, imageClass, label) {
   characterBase.appendChild(healthBar);
 
   characterBase.healthBar = {fill: healthFill, label: healthLabel};
+  characterBase.statusDisplay = statuses;
 
   if (baseClass === "player-base") {
     let playScreen = document.getElementById("play-screen")
@@ -330,12 +335,51 @@ function updateHealthBar(character, characterBase) {
   const percentage = Math.max(0, Math.min(100, (character.health / character.maxHealth) * 100));
   characterBase.healthBar.fill.style.width = `${percentage}%`;
   characterBase.healthBar.label.textContent = `${character.health} / ${character.maxHealth}`;
+  updateStatusDisplay(character, characterBase);
 
   let active_energy = document.getElementById("player-energy")
 
   if (character instanceof(Player)) {
     active_energy.textContent = `${character.energy} / ${character.maxEnergy}`;
   }
+}
+
+function formatStatusName(status) {
+  return status
+    .replace(/[-_]/g, " ")
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (letter) => letter.toUpperCase())
+    .trim();
+}
+
+function getStatusLevel(value) {
+  if (Array.isArray(value)) {
+    return value[0] ?? 0;
+  }
+
+  if (value && typeof value === "object") {
+    return value.level ?? value.value ?? value.amount ?? JSON.stringify(value);
+  }
+
+  return value;
+}
+
+function updateStatusDisplay(character, characterBase) {
+  const display = characterBase?.statusDisplay;
+  if (!display) {
+    return;
+  }
+
+  display.replaceChildren();
+  const statuses = Object.entries(character.statuses ?? {});
+  display.classList.toggle("hidden", statuses.length === 0);
+
+  statuses.forEach(([status, value]) => {
+    const statusElement = document.createElement("span");
+    statusElement.classList.add("entity-status");
+    statusElement.textContent = `${formatStatusName(status)}: ${getStatusLevel(value)}`;
+    display.appendChild(statusElement);
+  });
 }
 
 function renderEnemies(enemies) {

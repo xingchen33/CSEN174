@@ -311,8 +311,7 @@
 }
 
 .draw-deck > strong,
-.draw-deck > span,
-.draw-deck > .deck-tooltip {
+.draw-deck > span {
     position: relative;
     z-index: 20;
 }
@@ -332,6 +331,7 @@
     position: absolute;
     bottom: 105%;
     left: 0;
+    z-index: 20;
     display: none;
     min-width: 6rem;
     padding: 0.5rem;

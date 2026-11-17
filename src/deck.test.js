@@ -1,8 +1,7 @@
 import SimpleDeck from "./simpleDeck.js";
 import CardDeck from "./cardDeck.js";
 
-
-test('decks should be made with the right card counts', () => {
+test("decks should be made with the right card counts", () => {
   const deck1 = new SimpleDeck("basic");
   expect(deck1.drawPile.length).toBe(3);
 
@@ -10,15 +9,18 @@ test('decks should be made with the right card counts', () => {
   expect(deck2.drawPile.length).toBe(0);
 });
 
-test('modifying a card should only change that card (not others of the same name)', () => {
+test("modifying a card should only change that card (not others of the same name)", () => {
   let deck = new SimpleDeck("basic");
   deck.drawPile[0].customization["overcharged"] = true;
 
-  let ocCount = deck.drawPile.reduce((count, card) => count + (card.customization.overcharged === true ? 1 : 0), 0);
+  let ocCount = deck.drawPile.reduce(
+    (count, card) => count + (card.customization.overcharged === true ? 1 : 0),
+    0,
+  );
   expect(ocCount).toBe(1);
 });
 
-test('drawing decreases drawPile size + increases hand size', () => {
+test("drawing decreases drawPile size + increases hand size", () => {
   let deck = new SimpleDeck("basic");
   deck.draw(2);
 
@@ -26,16 +28,16 @@ test('drawing decreases drawPile size + increases hand size', () => {
   expect(deck.hand.length).toBe(2);
 });
 
-test('discarding decreases hand size and increases graveyard size', () => {
+test("discarding decreases hand size and increases graveyard size", () => {
   let deck = new CardDeck("basic");
   deck.draw(3);
-  deck.discard(2, [0,2]);
+  deck.discard(2, [0, 2]);
 
   expect(deck.hand.length).toBe(1);
   expect(deck.graveyard.length).toBe(2);
 });
 
-test('drawing from a deck which doesn\'t have enough cards works okay', () => {
+test("drawing from a deck which doesn't have enough cards works okay", () => {
   const deck = new CardDeck("empty");
   deck.draw(3);
 
@@ -44,7 +46,7 @@ test('drawing from a deck which doesn\'t have enough cards works okay', () => {
   expect(deck.graveyard.length).toBe(0);
 });
 
-test('drawing from a deck which doesn\'t have enough cards works okay', () => {
+test("drawing from a deck which doesn't have enough cards works okay", () => {
   const deck = new CardDeck("basic");
   deck.draw(3);
 
@@ -53,12 +55,10 @@ test('drawing from a deck which doesn\'t have enough cards works okay', () => {
   expect(deck.graveyard.length).toBe(0);
 });
 
-
-
-test('drawing from a deck which would usually have enough cards reshuffles', () => {
+test("drawing from a deck which would usually have enough cards reshuffles", () => {
   let deck = new CardDeck("basic");
   deck.draw(4);
-  deck.discard(3, [0,1,2]);
+  deck.discard(3, [0, 1, 2]);
   deck.draw(3);
 
   expect(deck.hand.length).toBe(4);
@@ -66,12 +66,12 @@ test('drawing from a deck which would usually have enough cards reshuffles', () 
   expect(deck.graveyard.length).toBe(0);
 });
 
-test('energy of cards is gettable', () => {
+test("energy of cards is gettable", () => {
   let deck = new SimpleDeck("basic");
   expect(deck.drawPile[0].getEnergy()).not.toBe(undefined);
 });
 
-test('cards can be sorted alphabetically without changing deck order', () => {
+test("cards can be sorted alphabetically without changing deck order", () => {
   let deck = new SimpleDeck("basic");
   const originalOrder = deck.hand;
   deck.hand = [deck.drawPile[2], deck.drawPile[0], deck.drawPile[1]];
@@ -82,5 +82,9 @@ test('cards can be sorted alphabetically without changing deck order', () => {
     deck.drawPile[2],
   ]);
   expect(deck.hand).not.toBe(originalOrder);
-  expect(deck.hand).toEqual([deck.drawPile[2], deck.drawPile[0], deck.drawPile[1]]);
+  expect(deck.hand).toEqual([
+    deck.drawPile[2],
+    deck.drawPile[0],
+    deck.drawPile[1],
+  ]);
 });

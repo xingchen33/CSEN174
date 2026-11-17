@@ -51,6 +51,17 @@
     z-index: 1;
 }
 
+.player-base .entity-statuses {
+    position: absolute;
+    top: 114%;
+    left: 0;
+    width: 100%;
+}
+
+.player-base .health-bar-base {
+    top: 124%;
+}
+
 .player-base.targetable {
     cursor: crosshair;
     filter: drop-shadow(0 0 0.75rem #f5dd9a);

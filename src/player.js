@@ -1,6 +1,6 @@
-import Entity from "./entity.js"
+import Entity from "./entity.js";
 export default class Player extends Entity {
-  /** 
+  /**
    * @param {*} image - player's image icon
    * @param {int} maxHealth
    * @param {int} maxEnergy
@@ -8,7 +8,17 @@ export default class Player extends Entity {
    * @param {SimpleDeck} logicDeck - player's logic cards
    */
   // ASK do players start at max health, or whatever health they ended last stage with?
-  constructor (maxHealth=50, maxEnergy=3, cardDeck, logicDeck, startingSpellCount=3, startingLogicCount=3, items={}, image="./assets/player.png", attribute="natural"){
+  constructor(
+    maxHealth = 50,
+    maxEnergy = 3,
+    cardDeck,
+    logicDeck,
+    startingSpellCount = 3,
+    startingLogicCount = 3,
+    items = {},
+    image = "./assets/player.png",
+    attribute = "natural",
+  ) {
     super(maxHealth, image, {}, attribute);
 
     this.maxEnergy = maxEnergy;
@@ -21,10 +31,6 @@ export default class Player extends Entity {
     cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
     this.blockPts = 0;
-    this.defense = 0;
-    this.spellDamageBonus = null;
-    this.onAttackedEffects = null;
-    this.nextTurnEnergy = 0;
     logicDeck.shuffleDeck();
 
     this.cardDeck.draw(this.startingSpellCount);
@@ -49,14 +55,23 @@ export default class Player extends Entity {
       playing.target = target;
     }
 
-    const requiresTarget = !["self", "all", "allEnemies"].includes(playing.target)
-      && (playing.target === "enemy" || playing.target === "a" || playing.effects?.damage != null);
-    if (requiresTarget && (typeof playing.target !== "object" || playing.target === null)) {
+    const requiresTarget =
+      !["self", "all", "allEnemies"].includes(playing.target) &&
+      (playing.target === "enemy" ||
+        playing.target === "a" ||
+        playing.effects?.damage != null);
+    if (
+      requiresTarget &&
+      (typeof playing.target !== "object" || playing.target === null)
+    ) {
       return false;
     }
 
-    const positionType = {s: "statement", r: "ritual", l: "statement"}[playing.type] ?? playing.type;
-    const selectedLocation = location ?? this.getValidPositions(positionType)[0];
+    const positionType =
+      { s: "statement", r: "ritual", l: "statement" }[playing.type] ??
+      playing.type;
+    const selectedLocation =
+      location ?? this.getValidPositions(positionType)[0];
     if (this.evaluateCard(playing, selectedLocation)) {
       this.cardDeck.discard(1, [pos]);
       return true;
@@ -69,7 +84,7 @@ export default class Player extends Entity {
   // Should return the list of places that one could put a card of the specified type
   // Valid types: statement, ritual, target
   // Returns an object showing the type (target / statement / condition) of the element and the indexing required to change that element (for arrays, the index which it will occupy)
-  getValidPositions(type, current=this.currentMove, indexset=[]) {
+  getValidPositions(type, current = this.currentMove, indexset = []) {
     let positions = [];
     for (let i = 0; i < current.length; i++) {
       let e = current[i];
@@ -78,34 +93,41 @@ export default class Player extends Entity {
       // Anything with a condition can have that condition's target overridden
       if (type == "target") {
         if ("target" in e) {
-          positions.push({type: "target", index: [...indexset, i]});
-        }
-        else if (e.condition != null) {
-          positions.push({type: "target", index: [...indexset, i, "condition"]});
+          positions.push({ type: "target", index: [...indexset, i] });
+        } else if (e.condition != null) {
+          positions.push({
+            type: "target",
+            index: [...indexset, i, "condition"],
+          });
         }
       }
 
       // You can put a statement at any index
       if (type == "statement" || type == "ritual") {
-        positions.push({type: "statement", index: [...indexset, i]});
+        positions.push({ type: "statement", index: [...indexset, i] });
       }
 
       // Any logic block has a condition
       if (type == "ritual") {
-        positions.push({type: "condition", index: [...indexset, i]});
+        positions.push({ type: "condition", index: [...indexset, i] });
       }
 
       if (e.type == "logic" && e.block != null) {
-        // If this was a logic statement, we recurse and prepend the index of this 
-        positions.push(...this.getValidPositions(type, e.block, [...indexset, i]));
+        // If this was a logic statement, we recurse and prepend the index of this
+        positions.push(
+          ...this.getValidPositions(type, e.block, [...indexset, i]),
+        );
       }
     }
 
     // Statements can go at the end of things
     if (type == "statement" || type == "ritual") {
-      positions.push({type: "statement", index: [...indexset, current.length]})
+      positions.push({
+        type: "statement",
+        index: [...indexset, current.length],
+      });
     }
-    
+
     return positions;
   }
 
@@ -117,7 +139,11 @@ export default class Player extends Entity {
       return false;
     }
     //checks on the location
-    if(location == null || location.index == null || location.index.length == 0) {
+    if (
+      location == null ||
+      location.index == null ||
+      location.index.length == 0
+    ) {
       return false;
     }
     //turning the card into the dictionary
@@ -130,165 +156,175 @@ export default class Player extends Entity {
     dict_to_insert.condition = card.conditions;
     dict_to_insert.block = card.block;
     //base case
-    if(location.index.length == 1){
+    if (location.index.length == 1) {
       let insert = location.index[0];
-      if(location.type == "statement"){
+      if (location.type == "statement") {
         //check the index is valid
-        if(insert < 0 || insert > this.currentMove.length){
+        if (insert < 0 || insert > this.currentMove.length) {
           return false;
-        }
-        else{
+        } else {
           //shift all the statements
-          for(let i = this.currentMove.length; i > insert; i--){
-            this.currentMove[i] = this.currentMove[i-1];
+          for (let i = this.currentMove.length; i > insert; i--) {
+            this.currentMove[i] = this.currentMove[i - 1];
           }
           //add the statement in the right position
           this.currentMove[insert] = dict_to_insert;
         }
-      }
-      else if(location.type == "target"){
+      } else if (location.type == "target") {
         //if you want change the target for a condition
-        if(insert == "condition"){
+        if (insert == "condition") {
           //make sure the condition exists
-          if(this.currentMove.condition == null){
+          if (this.currentMove.condition == null) {
             return false;
-          }
-          else{
+          } else {
             //change the target for the condition
             this.currentMove.target = card.target;
           }
-        }
-        else{
+        } else {
           //make sure the target exists
-          if(this.currentMove[insert] == null || this.currentMove[insert].target == null){
+          if (
+            this.currentMove[insert] == null ||
+            this.currentMove[insert].target == null
+          ) {
             return false;
-          }
-          else{
+          } else {
             this.currentMove[insert].target = card.target;
           }
         }
-      }
-
-      else if(location.type == "condition"){
+      } else if (location.type == "condition") {
         //make sure the condition exists
-        if(this.currentMove[insert] == null || this.currentMove[insert].condition == null){
+        if (
+          this.currentMove[insert] == null ||
+          this.currentMove[insert].condition == null
+        ) {
           return false;
         }
         //change the condition
-        else{
+        else {
           this.currentMove[insert].condition = card.conditions;
         }
       }
       //if the location.type is not valid
-      else{
+      else {
         return false;
       }
       //subtract the energy
       this.energy -= card.getEnergy();
       return true;
-    }
-    else{
+    } else {
       //recursive case
       let first_index = location.index[0];
-      if(this.currentMove[first_index] == null){
+      if (this.currentMove[first_index] == null) {
         return false;
       }
       let root = this.currentMove;
       let next = root[first_index];
       //check if we are adding a statement in an if/while block
-      if(next.block != null){
+      if (next.block != null) {
         this.currentMove = next.block;
-
-      }
-      else{
+      } else {
         this.currentMove = next;
       }
       //come up with the new location
       let new_location_index = [];
-      for(let i = 1; i < location.index.length; i++){
+      for (let i = 1; i < location.index.length; i++) {
         new_location_index.push(location.index[i]);
       }
-      let new_location = {type: location.type, index: new_location_index};
+      let new_location = { type: location.type, index: new_location_index };
       //call the function recursively on the new function
       let final_result = this.evaluateCard(card, new_location);
       //set the current move back to the root
       this.currentMove = root;
-      return final_result
+      return final_result;
     }
-
   }
 
- evaluateCondition(condition, target){
-  if(condition == "power-" || condition == "enemyPowerNegative"){
-    if(target == null){
-      return false;
+  evaluateCondition(condition, target) {
+    if (condition == "power-" || condition == "enemyPowerNegative") {
+      if (target == null) {
+        return false;
+      }
+      return target.power < 0;
     }
-    return target.power < 0;  
+    return false;
   }
-  return false;
- }
 
   // TODO this is the core of the game
-  
-useMove(selectedMove = this.currentMove) {
-  // Iterate through all elements of the current move
-  let steps_of_effects = [];
 
-  for (let i = 0; i < selectedMove.length; i++) {
-    let move = selectedMove[i];
+  useMove(selectedMove = this.currentMove) {
+    // Iterate through all elements of the current move
+    let steps_of_effects = [];
 
-    // If the statement is a logic block, check condition
-    if (move.type == "If" || move.type == "While") {
-      let condition = move.condition;
+    for (let i = 0; i < selectedMove.length; i++) {
+      let move = selectedMove[i];
 
-      if (condition != null) {
-        let condition_satisfied = this.evaluateCondition(condition, move.target);
+      // If the statement is a logic block, check condition
+      if (move.type == "If" || move.type == "While") {
+        let condition = move.condition;
 
-        if (condition_satisfied) {
-          let steps = this.useMove(move.block);
-
-          for (let j = 0; j < steps.length; j++) {
-            steps_of_effects.push(steps[j]);
-          }
-        }
-      }
-    }
-
-    else {
-      let effects = move.effects;
-      let keys = Object.keys(effects);
-      for (let j = 0; j < keys.length; j++) {
-        let key = keys[j];
-        let value = effects[key];
-
-        if (key.startsWith("conditional")) {
-          let condition_satisfied = this.evaluateCondition(value.requires,move.target);
+        if (condition != null) {
+          let condition_satisfied = this.evaluateCondition(
+            condition,
+            move.target,
+          );
 
           if (condition_satisfied) {
-            let effect_name = key.replace("conditional", "");
-            effect_name = effect_name.charAt(0).toLowerCase() + effect_name.slice(1);
+            let steps = this.useMove(move.block);
 
-            steps_of_effects.push({key: effect_name, value: value.amount, target: move.target, type: move.type});
+            for (let j = 0; j < steps.length; j++) {
+              steps_of_effects.push(steps[j]);
+            }
           }
         }
+      } else {
+        let effects = move.effects;
+        let keys = Object.keys(effects);
+        for (let j = 0; j < keys.length; j++) {
+          let key = keys[j];
+          let value = effects[key];
 
-        else if (key != "condition" && key != "duration") {
-          steps_of_effects.push({key: key, value: value, target: move.target, hits: effects.hits, duration: effects.duration, condition: effects.condition, type: move.type
-          });
+          if (key.startsWith("conditional")) {
+            let condition_satisfied = this.evaluateCondition(
+              value.requires,
+              move.target,
+            );
+
+            if (condition_satisfied) {
+              let effect_name = key.replace("conditional", "");
+              effect_name =
+                effect_name.charAt(0).toLowerCase() + effect_name.slice(1);
+
+              steps_of_effects.push({
+                key: effect_name,
+                value: value.amount,
+                target: move.target,
+                type: move.type,
+              });
+            }
+          } else if (key != "condition" && key != "duration") {
+            steps_of_effects.push({
+              key: key,
+              value: value,
+              target: move.target,
+              hits: effects.hits,
+              duration: effects.duration,
+              condition: effects.condition,
+              type: move.type,
+            });
+          }
         }
       }
     }
-    
+
+    return steps_of_effects;
   }
 
-  return steps_of_effects;
-}
-
-
-  passTurn(){
+  passTurn() {
     // OPT You might not need to structuredClone this, should figure out
-    this.previousMoves.append(structuredClone(this.currentMove));
+    this.previousMoves.push(structuredClone(this.currentMove));
     this.currentMove = [];
+
+    this.blockPts = 0;
 
     this.logicDeck.reshuffleAll();
     this.logicDeck.draw(this.startingLogicCount);
@@ -297,19 +333,19 @@ useMove(selectedMove = this.currentMove) {
     this.cardDeck.draw(this.startingSpellCount);
 
     this.energy = this.maxEnergy;
-}
+  }
 }
 
 export const ITEMLIST = {
-  "pick": (name) => {
+  pick: (name) => {
     return structuredClone(ITEMLIST.items[name]);
   },
-  "pickRandom": () => {
+  pickRandom: () => {
     var keys = Object.keys(ITEMLIST.items);
-    const item = ITEMLIST.items[keys[keys.length * Math.random() << 0]];
+    const item = ITEMLIST.items[keys[(keys.length * Math.random()) << 0]];
     return item;
   },
-  "items": {
+  items: {
     "Rubber Duck": { name: "Rubber Duck" },
-  }
+  },
 };

@@ -1,7 +1,7 @@
-import Player from "./player.js"
-import CardDeck from "./simpleDeck.js"
+import Player from "./player.js";
+import CardDeck from "./simpleDeck.js";
 
-test('with an empty main attack, only statements should be playable', () => {
+test("with an empty main attack, only statements should be playable", () => {
   const deck = new CardDeck("basic");
   const player = new Player(100, 5, deck);
 
