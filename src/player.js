@@ -30,7 +30,6 @@ export default class Player extends Entity {
     this.cardDeck = cardDeck;
     cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
-    this.blockPts = 0;
     this.extraDraws = 0;
     logicDeck.shuffleDeck();
 
@@ -56,11 +55,15 @@ export default class Player extends Entity {
     }
 
     const originalTarget = playing.target;
+    const placingCounter = location?.type === "condition";
+    const counterNeedsTarget =
+      placingCounter && playing.counters?.requiresTarget === true;
     if (target !== null) {
       playing.target = target;
     }
 
     const requiresTarget =
+      !placingCounter &&
       !["self", "all", "allEnemies"].includes(playing.target) &&
       (playing.target === "enemy" ||
         playing.target === "a" ||
@@ -72,6 +75,11 @@ export default class Player extends Entity {
       (typeof playing.target !== "object" || playing.target === null)
     ) {
       this.lastPlayError = "This card needs a valid target.";
+      playing.target = originalTarget;
+      return false;
+    }
+    if (counterNeedsTarget && (target == null || typeof target !== "object")) {
+      this.lastPlayError = "This counter needs a valid target.";
       playing.target = originalTarget;
       return false;
     }
@@ -238,7 +246,15 @@ export default class Player extends Entity {
       ) {
         return false;
       }
-      destination[index].condition = structuredClone(card.conditions);
+      if (card.counters == null) {
+        return false;
+      }
+
+      const counter = structuredClone(card.counters);
+      if (counter.requiresTarget) {
+        counter.target = card.target;
+      }
+      destination[index].condition = counter;
     }
 
     this.energy -= card.getEnergy();
@@ -331,7 +347,7 @@ export default class Player extends Entity {
     this.previousMoves.push(structuredClone(this.currentMove));
     this.currentMove = [];
 
-    this.blockPts = 0;
+    this.block = 0;
 
     this.logicDeck.reshuffleAll();
     this.logicDeck.draw(this.startingLogicCount);

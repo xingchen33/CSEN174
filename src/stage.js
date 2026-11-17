@@ -7,7 +7,6 @@ export default class Stage {
     this.turnCount = 0;
     this.turn = "player";
 
-    // TODO this should match the stats object in run
     this.stats = {
       damageDone: 0,
       damageTaken: 0,
@@ -190,7 +189,7 @@ export default class Stage {
 
     this.enemies.forEach((enemy) => {
       const healthBeforeAttack = this.player.health;
-      enemy.useMove(this.player);
+      enemy.useMove(this.player, this.enemies);
       this.stats.damageTaken += Math.max(0, healthBeforeAttack - this.player.health);
       if (this.player.onAttackedEffects) {
         for (const [effect, amount] of Object.entries(this.player.onAttackedEffects)) {

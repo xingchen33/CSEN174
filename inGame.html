@@ -28,6 +28,23 @@
             <p>No code assembled</p>
         </section>
         <p id="turn-indicator">Player Action</p>
+        <section id="game-over-screen" hidden aria-live="assertive">
+            <div id="game-over-panel">
+                <h1>Defeat</h1>
+                <p>The run has ended.</p>
+                <dl id="run-stats-list"></dl>
+                <button id="play-again-button" type="button">Play Again</button>
+            </div>
+        </section>
+        <section id="reward-screen" hidden aria-live="assertive">
+            <div id="reward-panel">
+                <h1>Victory</h1>
+                <p>Choose a reward.</p>
+                <div id="reward-options"></div>
+                <p id="reward-status" aria-live="polite"></p>
+                <button id="skip-rewards-button" type="button">Skip Rewards</button>
+            </div>
+        </section>
         </div>
         <script type="module" src="./src/inGame.js"></script>
     </body>

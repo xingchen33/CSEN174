@@ -74,18 +74,9 @@ export default class Run {
       this.playerInfo.attribute,
     );
 
-    // ASK any ideas about how enemy generation should work?
-    let enemyCount = Math.random() * this.difficulty + this.stages.length / 2;
-    enemyCount = Math.max(1, Math.min(5, Math.floor(enemyCount)));
-    let enemies = [];
-    for (let i = 0; i < enemyCount; i++) {
-      enemies.push(ENEMYLIST.pick("Slime"));
-    }
-
-    let rewards = this.generateRandomRewards(enemies);
-
-    let nextStage = new Stage(player, enemies, rewards);
+    let nextStage = new Stage(player, ENEMIES[this.stages.length], REWARDS[this.stages.length]);
     this.stages.push(nextStage);
+
     return nextStage;
   }
 
@@ -128,3 +119,12 @@ export default class Run {
     }
   }
 }
+
+const REWARDS = [
+];
+
+const ENEMIES = [
+  [ENEMYLIST.pick("Slime")],
+  [ENEMYLIST.pick("Imp"), ENEMYLIST.pick("Bell"), ENEMYLIST.pick("Raven")],
+  [ENEMYLIST.pick("Warlock"), ENEMYLIST.pick("Etherbeast"), ENEMYLIST.pick("Experimentsubject")],
+];

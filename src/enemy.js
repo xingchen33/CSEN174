@@ -1,7 +1,5 @@
 import Entity from "./entity.js";
 
-const slimeImage = new URL("../assets/slime.png", import.meta.url).href;
-
 export default class Enemy extends Entity {
   constructor(
     maxHealth,
@@ -14,7 +12,6 @@ export default class Enemy extends Entity {
 
     this.moves = moves;
     this.name = name;
-    this.blockPts = 0;
 
     this.nextMoveIndex = 0;
 
@@ -43,7 +40,10 @@ export default class Enemy extends Entity {
     if (move && move.damage) {
       let base = move.damage;
 
-      base = Math.max(0, base + (this.statuses["power"] ?? 0) + (this.statuses["attack"] ?? 0));
+      base = Math.max(
+        0,
+        base + (this.statuses["power"] ?? 0) + (this.statuses["attack"] ?? 0),
+      );
 
       return base;
     }
@@ -51,13 +51,13 @@ export default class Enemy extends Entity {
     return 0;
   }
 
-  useMove(player) {
+  useMove(player, enemies) {
     if (!this.nextMove || this.isDead()) {
       return;
     }
 
     // Pick a non-random attack
-    while(this.nextMove.random) {
+    while (this.nextMove.random) {
       this.nextMove = this.moves[Math.floor(Math.random() * this.moves.length)];
     }
 
@@ -69,15 +69,49 @@ export default class Enemy extends Entity {
       player.damage(hitDamage);
     }
 
+    if (move.heal) {
+      this.heal(move.heal);
+    }
+
+    if (move.block) {
+      this.block += move.block;
+    }
+
+    if (move.playerEffects) {
+      if (move.playerEffects.power) {
+        player.buff("power", move.playerEffects.power);
+      }
+      if (move.playerEffects.defense) {
+        player.buff("defense", move.playerEffects.defense);
+      }
+    }
+
     if (move.selfEffects) {
       if (move.selfEffects.power) {
         this.buff("power", move.selfEffects.power);
-        this.power += move.selfEffects.power;
       }
       if (move.selfEffects.defense) {
         this.buff("defense", move.selfEffects.defense);
-        this.defense += move.selfEffects.defense;
       }
+    }
+
+    if (move.allEnemies) {
+      if (move.allEnemies.power) {
+        enemies.forEach((enemy) => {
+          enemy.buff("power", move.allEnemies.power);
+        });
+      }
+      if (move.allEnemies.defense) {
+        enemies.forEach((enemy) => {
+          enemy.buff("defense", move.allEnemies.power);
+        });
+      }
+    }
+
+    if (move.healEnemies) {
+      enemies.forEach((enemy) => {
+        enemy.heal(move.healEnemies);
+      });
     }
   }
 
@@ -105,24 +139,86 @@ export const ENEMYLIST = {
     Slime: new Enemy(
       45,
       [
-        { damage: 4},
-        {selfEffects: { defense: -2, power: 2 }},
+        { damage: 4 },
+        { selfEffects: { defense: -2, power: 2 } },
         { random: true },
         { damage: 3, hits: 2 },
       ],
       "Slime",
-      slimeImage,
+      "./assets/slime.png",
       { attribute: "void" },
     ),
     Imp: new Enemy(
       20,
       [
-        { damage: 4, selfEffects: { defense: -2, power: 2 } },
+        { playerEffects: { power: -3 } },
+        { damage: 3 },
+        { selfEffects: { power: 3 } },
         { damage: 3, hits: 2 },
+        { random: true },
       ],
-      "Slime",
-      slimeImage,
-      { attribute: "void" },
+      "Imp",
+      "./assets/imp.png",
+      { attribute: "dark" },
+    ),
+    Bell: new Enemy(
+      35,
+      [
+        { damage: 6 },
+        { damage: 10 },
+        { heal: 8 },
+        { random: true },
+      ],
+      "Bell",
+      "./assets/bell.png",
+      { attribute: "light" },
+    ),
+    Raven: new Enemy(
+      28,
+      [
+        { damage: 4 },
+      ],
+      "Raven",
+      "./assets/raven.png",
+      { attribute: "natural" },
+    ),
+    Warlock: new Enemy(
+      25,
+      [
+        { allEnemies: { power: 2 } },
+        { playerEffects: { power: -2, defense: -2 } },
+        { random: true },
+        { damage: 2, hits: 8 },
+        { damage: 1, hits: 3 },
+        { random: true },
+      ],
+      "Warlock",
+      "./assets/warlock.png",
+      { attribute: "dark" },
+    ),
+    Etherbeast: new Enemy(
+      55,
+      [
+        { block: 10 },
+        { damage: 10 },
+        { random: true },
+      ],
+      "Ethereal Beast",
+      "./assets/etherbeast.png",
+      { attribute: "natural" },
+    ),
+    Experimentsubject: new Enemy(
+      28,
+      [
+        { playerEffects: { power: -3 } },
+        { random: true },
+        { playerEffects: { defense: -3 } },
+        { healEnemies: 4 },
+        { random: true },
+      ],
+      "Experiment Subject",
+      "./assets/experimentsubject.png",
+      { attribute: "light" },
     ),
   },
 };

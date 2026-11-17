@@ -41,6 +41,144 @@
     box-sizing: border-box;
 }
 
+#game-over-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(12, 8, 24, 0.72);
+}
+
+#game-over-screen[hidden] {
+    display: none;
+}
+
+#game-over-panel {
+    min-width: min(24rem, 80vw);
+    padding: 2rem;
+    border: 0.2rem solid #171717;
+    border-radius: 0.7rem;
+    background: rgba(255, 248, 221, 0.98);
+    color: #171717;
+    text-align: center;
+    box-shadow: 0 0.5rem 1rem #000a;
+}
+
+#game-over-panel h1,
+#game-over-panel p {
+    margin: 0.35rem 0;
+}
+
+#run-stats-list {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem 1.5rem;
+    margin: 1.5rem auto;
+    text-align: left;
+}
+
+#run-stats-list dd {
+    margin: 0;
+    font-weight: bold;
+    text-align: right;
+}
+
+#play-again-button {
+    padding: 0.65rem 1.2rem;
+    border: 0.15rem solid #171717;
+    border-radius: 0.4rem;
+    background: #493f75;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#reward-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(12, 8, 24, 0.72);
+}
+
+#reward-screen[hidden] {
+    display: none;
+}
+
+#reward-panel {
+    width: min(54rem, 90vw);
+    max-height: 85vh;
+    overflow: auto;
+    padding: 2rem;
+    border: 0.2rem solid #171717;
+    border-radius: 0.7rem;
+    background: rgba(255, 248, 221, 0.98);
+    color: #171717;
+    text-align: center;
+    box-shadow: 0 0.5rem 1rem #000a;
+}
+
+#reward-panel h1,
+#reward-panel p {
+    margin: 0.35rem 0;
+}
+
+#reward-options {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.reward-option {
+    display: flex;
+    min-width: 9rem;
+    min-height: 5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border: 0.15rem solid #493f75;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.7);
+    color: #171717;
+    cursor: pointer;
+}
+
+.reward-option:hover,
+.reward-option.selected {
+    background: #e5d9f0;
+    box-shadow: 0 0 0.5rem #493f75;
+}
+
+.reward-option .card-base {
+    cursor: pointer;
+}
+
+.reward-item-name {
+    font-weight: bold;
+}
+
+#reward-status {
+    min-height: 1.3rem;
+    color: #493f75;
+    font-weight: bold;
+}
+
+#skip-rewards-button {
+    padding: 0.55rem 1rem;
+    border: 0.1rem solid #493f75;
+    border-radius: 0.35rem;
+    background: transparent;
+    color: #493f75;
+    cursor: pointer;
+}
+
 #player-container, #enemies-container {
     height: 75%;
     position: absolute;
@@ -110,7 +248,7 @@
 #code-zone {
     position: absolute;
     top: 28%;
-    left: 35%;
+    left: 25%;
     width: 30%;
     height: 30%;
     z-index: 1;

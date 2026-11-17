@@ -7,13 +7,11 @@ export default class Entity {
   ) {
     this.maxHealth = maxHealth;
     this.health = maxHealth;
-    this.blockPts = 0;
+    this.block = 0;
 
     this.image = image;
     this.customization = customization;
     this.attribute = attribute;
-    this.power = 0;
-    this.defense = 0;
 
     this.statuses = {};
   }
@@ -33,8 +31,8 @@ export default class Entity {
       return;
     }
 
-    const blocked = Math.min(this.blockPts, n);
-    this.blockPts -= blocked;
+    const blocked = Math.min(this.block, n);
+    this.block -= blocked;
     n -= blocked;
 
     n = Math.max(0, n - (this.statuses["defense"] ?? 0));

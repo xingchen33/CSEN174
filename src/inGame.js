@@ -5,8 +5,10 @@ import Player from "./player.js";
 // The game entry point creates one run and starts its first stage when the
 // player arrives from the main menu.
 const run = new Run("basic", "basic", 2);
-const stage = run.createNextStage();
+let stage = run.createNextStage();
 let pendingCard = null;
+let playerView = null;
+let enemyViews = [];
 
 function renderCard(card) {
   return generateVisualCard(card);
@@ -14,7 +16,7 @@ function renderCard(card) {
 
 function renderHand(deck, containerId, label) {
   const container = document.getElementById(containerId);
-  container.innerHTML = '';
+  container.innerHTML = "";
   container.replaceChildren();
 
   const heading = document.createElement("h2");
@@ -58,7 +60,10 @@ function renderDeck(deck, containerId, label) {
   tooltip.classList.add("deck-tooltip");
   tooltip.setAttribute("role", "tooltip");
   tooltip.textContent = deck.drawPile.length
-    ? deck.getSortedCards(deck.drawPile).map((card) => card.name).join("\n")
+    ? deck
+        .getSortedCards(deck.drawPile)
+        .map((card) => card.name)
+        .join("\n")
     : "Empty";
   deckElement.appendChild(tooltip);
 
@@ -118,8 +123,7 @@ function renderCode() {
       details.appendChild(target);
     }
 
-    const isConditionalBlock =
-      move.name === "If" || move.name === "While";
+    const isConditionalBlock = move.name === "If" || move.name === "While";
     if (isConditionalBlock || move.condition != null) {
       const condition = document.createElement("small");
       condition.classList.add("code-entry-condition");
@@ -154,6 +158,11 @@ function renderCode() {
 
   function formatCodeValue(value) {
     if (value && typeof value === "object") {
+      if (value.trigger) {
+        const target =
+          value.target?.name ?? (value.target ? "selected target" : "");
+        return target ? `${value.trigger} (${target})` : value.trigger;
+      }
       return value.name ?? value.description ?? JSON.stringify(value);
     }
     return String(value);
@@ -180,7 +189,10 @@ function renderCode() {
       const button = document.createElement("button");
       button.type = "button";
       const displayPosition = position.index.map((part) => part + 1).join(".");
-      button.textContent = `Position ${displayPosition || index + 1}`;
+      button.textContent =
+        position.type === "condition"
+          ? `Condition for ${displayPosition}`
+          : `Position ${displayPosition || index + 1}`;
       button.addEventListener("click", () => selectCodePosition(position));
       options.appendChild(button);
     });
@@ -189,7 +201,11 @@ function renderCode() {
   }
 }
 
-function cardRequiresTarget(card) {
+function cardRequiresTarget(card, location = null) {
+  if (location?.type === "condition") {
+    return card.counters?.requiresTarget === true;
+  }
+
   if (["self", "all", "allEnemies"].includes(card.target)) {
     return false;
   }
@@ -197,15 +213,29 @@ function cardRequiresTarget(card) {
   return cardCanTargetEnemy(card) || cardCanTargetPlayer(card);
 }
 
-function cardCanTargetEnemy(card) {
-  return card.target === "enemy" || card.target === "a" || card.effects?.damage != null;
+function cardCanTargetEnemy(card, location = null) {
+  if (location?.type === "condition" && card.counters?.requiresTarget) {
+    return true;
+  }
+
+  return (
+    card.target === "enemy" ||
+    card.target === "a" ||
+    card.effects?.damage != null
+  );
 }
 
-function cardCanTargetPlayer(card) {
-  return card.target === "player"
-    || card.target === "ally"
-    || card.target === "a"
-    || card.effects?.damage != null;
+function cardCanTargetPlayer(card, location = null) {
+  if (location?.type === "condition" && card.counters?.requiresTarget) {
+    return true;
+  }
+
+  return (
+    card.target === "player" ||
+    card.target === "ally" ||
+    card.target === "a" ||
+    card.effects?.damage != null
+  );
 }
 
 function handleCardClick(card, deck = stage.player.cardDeck) {
@@ -240,7 +270,8 @@ function handleCardClick(card, deck = stage.player.cardDeck) {
 }
 
 function getCardPositions(card) {
-  const positionType = {s: "statement", r: "ritual", l: "statement"}[card.type] ?? card.type;
+  const positionType =
+    { s: "statement", r: "ritual", l: "statement" }[card.type] ?? card.type;
   return stage.player.getValidPositions(positionType);
 }
 
@@ -251,17 +282,17 @@ function selectCodePosition(position) {
 
   pendingCard.position = position;
 
-  if (cardRequiresTarget(pendingCard.card)) {
+  if (cardRequiresTarget(pendingCard.card, position)) {
     turnIndicator.textContent = `Select a target for ${pendingCard.card.name}`;
-    if (cardCanTargetEnemy(pendingCard.card)) {
-      enemyViews.forEach(({element, character}) => {
+    if (cardCanTargetEnemy(pendingCard.card, position)) {
+      enemyViews.forEach(({ element, character }) => {
         if (!character.isDead()) {
           element.classList.add("targetable");
           element.style.pointerEvents = "auto";
         }
       });
     }
-    if (cardCanTargetPlayer(pendingCard.card)) {
+    if (cardCanTargetPlayer(pendingCard.card, position)) {
       playerView.classList.add("targetable");
       playerView.style.pointerEvents = "auto";
     }
@@ -279,7 +310,7 @@ function selectCodePosition(position) {
 
 function clearTargetSelection() {
   pendingCard = null;
-  enemyViews.forEach(({element}) => {
+  enemyViews.forEach(({ element }) => {
     element.classList.remove("targetable");
     element.style.pointerEvents = "";
   });
@@ -310,8 +341,9 @@ function playCard(cardIndex, target, location, deck = stage.player.cardDeck) {
     turnIndicator.textContent = "Player Action";
   } else {
     // Keep the card pending so the player can try again or use Cancel Card.
-    turnIndicator.textContent = stage.player.lastPlayError
-      ?? "The card could not be played. Choose again or cancel.";
+    turnIndicator.textContent =
+      stage.player.lastPlayError ??
+      "The card could not be played. Choose again or cancel.";
   }
 }
 
@@ -360,11 +392,12 @@ function renderCharacter(character, container, baseClass, imageClass, label) {
   healthBar.appendChild(healthLabel);
   characterBase.appendChild(healthBar);
 
-  characterBase.healthBar = {fill: healthFill, label: healthLabel};
+  characterBase.healthBar = { fill: healthFill, label: healthLabel };
   characterBase.statusDisplay = statuses;
 
   if (baseClass === "player-base") {
-    let playScreen = document.getElementById("play-screen")
+    document.getElementById("player-energy")?.remove();
+    let playScreen = document.getElementById("play-screen");
     const energy = document.createElement("div");
     energy.id = "player-energy";
     const energyLabel = document.createElement("p");
@@ -384,14 +417,17 @@ function updateHealthBar(character, characterBase) {
     return;
   }
 
-  const percentage = Math.max(0, Math.min(100, (character.health / character.maxHealth) * 100));
+  const percentage = Math.max(
+    0,
+    Math.min(100, (character.health / character.maxHealth) * 100),
+  );
   characterBase.healthBar.fill.style.width = `${percentage}%`;
   characterBase.healthBar.label.textContent = `${character.health} / ${character.maxHealth}`;
   updateStatusDisplay(character, characterBase);
 
-  let active_energy = document.getElementById("player-energy")
+  let active_energy = document.getElementById("player-energy");
 
-  if (character instanceof(Player)) {
+  if (character instanceof Player) {
     active_energy.textContent = `${character.energy} / ${character.maxEnergy}`;
   }
 }
@@ -439,7 +475,13 @@ function renderEnemies(enemies) {
   const views = [];
 
   enemies.forEach((enemy, index) => {
-    const enemyBase = renderCharacter(enemy, container, "enemy-base", "enemy-image", enemy.name);
+    const enemyBase = renderCharacter(
+      enemy,
+      container,
+      "enemy-base",
+      "enemy-image",
+      enemy.name,
+    );
     // enemyBase.style.right = "8%";
     enemyBase.style.right = `${12 + index * 24}%`;
     const action = document.createElement("p");
@@ -448,11 +490,15 @@ function renderEnemies(enemies) {
     enemyBase.actionLabel = action;
     updateEnemyAction(enemy, enemyBase);
     enemyBase.addEventListener("click", () => {
-      if (pendingCard && !enemy.isDead() && cardCanTargetEnemy(pendingCard.card)) {
+      if (
+        pendingCard &&
+        !enemy.isDead() &&
+        cardCanTargetEnemy(pendingCard.card, pendingCard.position)
+      ) {
         playCard(pendingCard.cardIndex, enemy, pendingCard.position);
       }
     });
-    views.push({character: enemy, element: enemyBase});
+    views.push({ character: enemy, element: enemyBase });
   });
 
   return views;
@@ -467,36 +513,69 @@ function updateEnemyAction(enemy, enemyElement) {
 
   const actionParts = [];
   if (move.damage != null) {
-    actionParts.push(`Attack ${move.damage}${move.hits > 1 ? ` x${move.hits}` : ""}`);
+    actionParts.push(
+      `Attack ${move.damage}${move.hits > 1 ? ` x${move.hits}` : ""}`,
+    );
   }
 
   if (move.selfEffects) {
     for (const [stat, amount] of Object.entries(move.selfEffects)) {
       const label = stat.charAt(0).toUpperCase() + stat.slice(1);
-      actionParts.push(`${label} ${amount >= 0 ? "+" : ""}${amount}`);
+      actionParts.push(`Self: ${label} ${amount >= 0 ? "+" : ""}${amount}`);
     }
   }
 
-  enemyElement.actionLabel.textContent = actionParts.join(" · ") || "Unknown action";
+  if (move.playerEffects) {
+    for (const [stat, amount] of Object.entries(move.playerEffects)) {
+      const label = stat.charAt(0).toUpperCase() + stat.slice(1);
+      actionParts.push(`Player: ${label} ${amount >= 0 ? "+" : ""}${amount}`);
+    }
+  }
+
+  if (move.heal) {
+    actionParts.push(`Heal ${amount}`);
+  }
+
+  enemyElement.actionLabel.textContent =
+    actionParts.join(" · ") || "Unknown action";
 }
 
-const playerView = renderCharacter(
-  stage.player,
-  document.getElementById("player-container"),
-  "player-base",
-  "player-image",
-  "Player",
-);
-playerView.addEventListener("click", () => {
-  if (pendingCard && cardCanTargetPlayer(pendingCard.card)) {
-    playCard(pendingCard.cardIndex, stage.player, pendingCard.position);
-  }
-});
-const enemyViews = renderEnemies(stage.enemies);
+function renderStageViews() {
+  const playerContainer = document.getElementById("player-container");
+  const enemiesContainer = document.getElementById("enemies-container");
+  playerContainer.replaceChildren();
+  enemiesContainer.replaceChildren();
+
+  playerView = renderCharacter(
+    stage.player,
+    playerContainer,
+    "player-base",
+    "player-image",
+    "Player",
+  );
+  playerView.addEventListener("click", () => {
+    if (
+      pendingCard &&
+      cardCanTargetPlayer(pendingCard.card, pendingCard.position)
+    ) {
+      playCard(
+        pendingCard.cardIndex,
+        stage.player,
+        pendingCard.position,
+        pendingCard.deck,
+      );
+    }
+  });
+  enemyViews = renderEnemies(stage.enemies);
+}
+
+renderStageViews();
 
 window.refreshHealthBars = () => {
   updateHealthBar(stage.player, playerView);
-  enemyViews.forEach(({character, element}) => updateHealthBar(character, element));
+  enemyViews.forEach(({ character, element }) =>
+    updateHealthBar(character, element),
+  );
 };
 window.refreshHands = renderHands;
 
@@ -511,6 +590,142 @@ if (turnIndicator) {
 }
 
 const endTurnButton = document.getElementById("end-turn-button");
+const gameOverScreen = document.getElementById("game-over-screen");
+const runStatsList = document.getElementById("run-stats-list");
+const playAgainButton = document.getElementById("play-again-button");
+const rewardScreen = document.getElementById("reward-screen");
+const rewardOptions = document.getElementById("reward-options");
+const rewardStatus = document.getElementById("reward-status");
+const skipRewardsButton = document.getElementById("skip-rewards-button");
+
+function showDefeatScreen() {
+  if (!gameOverScreen || !runStatsList) {
+    return;
+  }
+
+  const stats = {
+    "Turns survived": stage.turnCount,
+    "Damage dealt": stage.stats.damageDone,
+    "Damage taken": stage.stats.damageTaken,
+    "HP healed": stage.stats.hpHealed,
+    "Cards played": stage.stats.cardsPlayed,
+  };
+
+  runStatsList.replaceChildren();
+  for (const [label, value] of Object.entries(stats)) {
+    const name = document.createElement("dt");
+    name.textContent = label;
+    const amount = document.createElement("dd");
+    amount.textContent = value;
+    runStatsList.append(name, amount);
+  }
+
+  gameOverScreen.hidden = false;
+}
+
+if (playAgainButton) {
+  playAgainButton.addEventListener("click", () => {
+    // Reloading the game entry point constructs a fresh Run and Stage.
+    window.location.reload();
+  });
+}
+
+function rewardLabel(reward) {
+  if (reward?.card) {
+    return reward.card.name;
+  }
+  if (reward?.item) {
+    return reward.item.name ?? "Item";
+  }
+  return "Unknown reward";
+}
+
+function selectReward(reward, option) {
+  if (stage.selectedReward) {
+    return;
+  }
+
+  if (reward.card) {
+    stage.player.cardDeck.drawPile.push(reward.card);
+  } else if (reward.item) {
+    stage.player.items[reward.item.name] = reward.item;
+  }
+
+  stage.selectedReward = reward;
+  option.classList.add("selected");
+  rewardStatus.textContent = `Selected: ${rewardLabel(reward)}`;
+  [...rewardOptions.children].forEach((child) => {
+    child.style.pointerEvents = "none";
+  });
+  startNextStage();
+}
+
+function startNextStage() {
+  // A won stage has not called Player.passTurn(), so clear its active hand
+  // before reusing the run's decks for the next stage.
+  stage.player.cardDeck.discardHand();
+  stage.player.logicDeck.reshuffleAll();
+  clearTargetSelection();
+  stage = run.createNextStage();
+
+  gameOverScreen.hidden = true;
+  rewardScreen.hidden = true;
+  endTurnButton.disabled = false;
+  turnIndicator.textContent = `Player Action · Turn ${stage.turnCount + 1}`;
+  window.currentStage = stage;
+  renderStageViews();
+  window.refreshHealthBars();
+  window.refreshHands();
+  window.refreshCode();
+}
+
+function skipRewards() {
+  if (!stage.selectedReward) {
+    startNextStage();
+  }
+}
+
+if (skipRewardsButton) {
+  skipRewardsButton.addEventListener("click", skipRewards);
+}
+
+function showRewards() {
+  if (!rewardScreen || !rewardOptions) {
+    return;
+  }
+
+  rewardOptions.replaceChildren();
+  rewardStatus.textContent = "";
+  stage.rewards.forEach((reward) => {
+    const option = document.createElement("div");
+    option.classList.add("reward-option");
+    option.tabIndex = 0;
+    option.setAttribute("role", "button");
+
+    if (reward.card) {
+      const cardElement = generateVisualCard(reward.card);
+      playCardVisual(cardElement);
+      option.appendChild(cardElement);
+    } else {
+      const itemName = document.createElement("span");
+      itemName.classList.add("reward-item-name");
+      itemName.textContent = rewardLabel(reward);
+      option.appendChild(itemName);
+    }
+
+    option.addEventListener("click", () => selectReward(reward, option));
+    option.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        selectReward(reward, option);
+      }
+    });
+    rewardOptions.appendChild(option);
+  });
+
+  rewardScreen.hidden = false;
+}
+
 if (endTurnButton) {
   endTurnButton.textContent = "End Turn";
   endTurnButton.addEventListener("click", () => {
@@ -519,7 +734,7 @@ if (endTurnButton) {
     window.refreshHands();
     window.refreshCode();
 
-    enemyViews.forEach(({character, element}) => {
+    enemyViews.forEach(({ character, element }) => {
       element.hidden = character.isDead();
       updateEnemyAction(character, element);
     });
@@ -527,11 +742,11 @@ if (endTurnButton) {
     if (result === "win") {
       turnIndicator.textContent = "Victory";
       endTurnButton.disabled = true;
-      // TODO display rewards and button to go to next stage
+      showRewards();
     } else if (result === "loss") {
       turnIndicator.textContent = "Defeat";
       endTurnButton.disabled = true;
-      // TODO display stats and allow for repeat
+      showDefeatScreen();
     } else {
       turnIndicator.textContent = `Player Action · Turn ${stage.turnCount + 1}`;
     }

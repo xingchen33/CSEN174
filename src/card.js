@@ -634,6 +634,8 @@ export const CARDLIST = {
 // Counter conditions are kept separate from a card's normal target. A
 // counter target is selected when the ritual is used as a condition.
 const CARD_COUNTERS = {
+  Curse: { trigger: "attack", requiresTarget: true },
+  Bondage: { trigger: "attack", requiresTarget: true },
   "Hell Reborn": { trigger: "attack", requiresTarget: true },
   "Demon's Hand": { trigger: "attack", requiresTarget: true },
   Feed: { trigger: "action ends", requiresTarget: false },
