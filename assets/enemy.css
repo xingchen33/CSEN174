@@ -51,19 +51,10 @@
 }
 
 .enemy-image {
-    top: 0%;
     height: 100%;
     position: absolute;
     display: block;
     margin: auto;
-}
-
-#enemies-container {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    width: 50%;
-    left: 50%;
 }
 
 .enemy-name,

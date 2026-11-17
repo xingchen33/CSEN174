@@ -189,6 +189,12 @@
     left: 0%
 }
 
+#enemies-container {
+    inset: 0;
+    width: 50%;
+    left: 50%;
+}
+
 #player-energy {
     position: absolute;
     bottom: 3%;

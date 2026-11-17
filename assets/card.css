@@ -1,5 +1,5 @@
 :root {
-    --defaultCardMaxHeight: 100%;
+    --defaultCardMaxHeight: 120%;
     --defaultCardHeight: 225px;
     --cardMaxHeightScaled: calc(0.75*var(--defaultCardMaxHeight));
     --cardHeightScaled: calc(0.75*var(--defaultCardHeight));
