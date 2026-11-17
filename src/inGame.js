@@ -44,7 +44,7 @@ function renderDeck(deck, containerId, label) {
   const deckElement = document.createElement("div");
   deckElement.classList.add("draw-deck");
   deckElement.tabIndex = 0;
-  deckElement.style.backgroundImage = 'url("./assets/card_back.jpg")';
+  deckElement.style.backgroundImage = 'url("./assets/cardBack1.png")';
 
   const title = document.createElement("strong");
   title.textContent = label;

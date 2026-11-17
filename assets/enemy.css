@@ -6,6 +6,7 @@
     display: flex;
     justify-content: center;
     bottom: 0%;
+    z-index: 2;
 }
 
 .enemy-action {
@@ -52,15 +53,15 @@
 .enemy-image {
     top: 0%;
     height: 100%;
-    /* aspect-ratio: 256/515; */
     position: absolute;
+    display: block;
+    margin: auto;
 }
 
 #enemies-container {
     position: absolute;
     inset: 0;
     z-index: 1;
-    pointer-events: none;
     width: 50%;
     left: 50%;
 }
@@ -82,18 +83,25 @@
 }
 
 .enemy-name {
-    top: 102%;
+    top: 100%;
     font-size: 1.25rem;
     font-weight: bold;
 }
 
 .enemy-base-name {
-    top: 102%;
+    top: -20%;
     font-size: 1.25rem;
     font-weight: bold;
 }
 
 .enemy-health,
 .enemy-base-health {
-    top: 112%;
+    top: 102%;
+}
+
+.enemy-image:hover ~ .enemy-base-name, .enemy-image:hover ~ .entity-attribute{
+    opacity: 1;
+}
+.enemy-base-name, .entity-attribute{
+    opacity: 0;
 }
