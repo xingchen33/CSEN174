@@ -10,7 +10,7 @@
 
 .enemy-action {
     position: absolute;
-    top: -14%;
+    top: 40%;
     left: -25%;
     width: 150%;
     margin: 0;
@@ -24,7 +24,7 @@
 
 .entity-statuses {
     position: absolute;
-    top: -7%;
+    top: 30%;
     left: -25%;
     width: 150%;
     display: flex;

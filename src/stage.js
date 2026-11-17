@@ -21,176 +21,198 @@ export default class Stage {
     this.enemies.push(enemy);
   }
 
-  passTurn() {
-    let actions = this.player.useMove();
-    for (let i = 0; i < actions.length; i++) {
-      let curr_action = actions[i];
-      if (curr_action.target == "allEnemies") {
-        if (curr_action.key == "changeAttribute") {
-          this.player.attribute = curr_action.value;
-        }
-        if (curr_action.key == "allEnemiesDamage") {
-          for (let j = 0; j < this.enemies.length; j++) {
-            this.enemies[j].damage(curr_action.value);
-            this.stats.damageDone += curr_action.value;
-          }
-        }
-        if (curr_action.key == "damage") {
-          let hit = 1;
-          let damage = curr_action.value;
-          if (curr_action.hits != null) {
-            hit = curr_action.hits;
-          }
-          for (let j = 0; j < this.enemies.length; j++) {
-            this.enemies[j].damage(damage * hit);
-            this.stats.damageDone += damage * hit;
-          }
-        }
-        if (curr_action.key == "block") {
-          this.player.blockPts += curr_action.action.value;
-        }
-        if (curr_action.key == "damagePerBlock") {
-          damage_done =
-            (curr_action.value.amount / curr_action.value.every) *
-            curr_player.block;
-          for (let j = 0; j < this.enemies.length; j++) {
-            this.enemies[j].damage(damage_done);
-            this.stats.damageDone += damage_done;
-          }
-        }
+  getTargets(target) {
+    if (target === "all") {
+      return [this.player, ...this.enemies];
+    }
+    if (target === "allEnemies") {
+      return this.enemies;
+    }
+    if (target === "self") {
+      return [this.player];
+    }
+    return target && typeof target === "object" ? [target] : [];
+  }
+
+  changeStatus(target, status, amount) {
+    if (!target || typeof amount !== "number") {
+      return;
+    }
+
+    target.buff(status, amount);
+    if (status === "power" || status === "defense") {
+      target[status] = (target[status] ?? 0) + amount;
+    }
+  }
+
+  dealDamage(target, amount, hits = 1, actionType = "s") {
+    if (!target || typeof target.damage !== "function") {
+      return;
+    }
+
+    let totalDamage = 0;
+    for (let hit = 0; hit < hits; hit++) {
+      let damage = amount;
+      if (target !== this.player) {
+        damage += this.player.power ?? 0;
       }
-      if (curr_action.target == "enemy") {
-        if (curr_action.key == "enemy_attack") {
-          this.player.damage(curr_action.value);
-          this.stats.damageTaken += curr_action.value;
-        }
-        if (curr_action.key == "damage") {
-          this.curr_action.target.damage(curr_action.value);
-          this.stats.damageDone += curr_action.value;
-        }
-        if (curr_action.key == "enemyDefense") {
-          this.curr_action.target.block += curr_action.value;
-        }
-        if (curr_action.key == "draw") {
-          this.player.cardDeck.draw(curr_action.value);
-        }
-        if (curr_action.key == "enemyPower") {
-          this.curr_action.target.power += curr_action.value;
-        }
-        if (curr_action.key == "heal") {
-          this.player.target.heal(curr_action.value);
-          this.stats.hpHealed += curr_action.value;
-        }
-        if (curr_action.key == "healSelf") {
-          this.player.heal(curr_action.value);
-          this.stats.hpHealed += curr_action.value;
-        }
-        if (curr_action.key == "block") {
-          this.player.block += curr_action.value;
-        }
-        if (curr_action.key == "damagePerBattleHealing") {
-          damage_done = this.stats.hpHealed * curr_action.value;
-          curr_action.target.damage(damage_done);
-          this.stats.damageDone += damage_done;
-        }
+      const bonus = this.player.spellDamageBonus;
+      if (
+        actionType === "s" &&
+        bonus &&
+        target !== this.player &&
+        target.power < 0
+      ) {
+        damage += bonus.amount;
       }
-      if (curr_action.target == "self") {
-        if (curr_action.key == "selfDamage") {
-          this.player.damage(curr_action.value);
-          this.stats.damageTaken += curr_action.value;
-        }
-        if (curr_action.key == "playfromTrash") {
-          card_attribute = curr_action.value.atrribute;
-          card_type = curr_action.value.type;
-          for (let j = 0; j < this.player.cardDeck.graveyard.length; j++) {
-            if (card.attribute == card_attribute && card.type == card_type) {
-              let card_action = {
-                type: card.type,
-                effects: card.effects,
-                target: card.target,
-              };
-              let card_effects = this.player.useMove([card_action]);
-              for (let k = 0; k < card_effects.length; k++) {
-                actions.push(card_effects[k]);
-              }
-              this.player.cardDeck.graveyard.splice(j, 1);
-              break;
-            }
-          }
-        }
-        if (curr_action.key == "trash") {
-          count = curr_action.value;
-          let positions = [];
-          for (let j = 0; j < count; j++) {
-            if (this.player.cardDeck.hand.length > 0) {
-              positions.push(j);
-            }
-          }
-          if (positions.length > 0) {
-            this.player.cardDeck.discard(positions.length, positions);
-          }
-        }
-        if (curr_action.key == "block") {
-          this.player.blockPts += curr_action.value;
-        }
-        if (curr_action.key == "power") {
-          this.player.power += curr_action.value;
-        }
-        if (curr_action.key == "selfDefense") {
-          this.player.defense += curr_action.value;
-        }
-        if (curr_action.key == "changeAttribute") {
-          this.player.attribute = curr_action.value;
-        }
-        if (curr_action.key == "draw") {
-          this.player.cardDeck.draw(curr_action.value);
-        }
-        if (curr_action.key == "nextTurnEnergy") {
-          this.player.nextTurnEnergy += curr_action.value;
-        }
-        if (curr_action.key == "spellDamageBonus") {
-          this.player.spellDamageBonus = {
-            amount: curr_action.value,
-            condition: curr_action.condition,
-            duration: curr_action.duration,
-          };
-        }
-        if (curr_action.key == "onAttacked") {
-          this.player.onAttackedEffects = curr_action.value;
-        }
-      }
-      if (curr_action.target == "all") {
-        if (curr_action.key == "changeAttribute") {
-          this.player.attribute = curr_action.value;
-        }
-        if (curr_action.key == "selfDefense") {
-          this.player.defense += curr_action.value;
-        }
-        if (curr_action.key == "enemyDefense") {
-          for (let j = 0; j < this.enemies.length; j++) {
-            this.enemies[j].defense += curr_action.value;
-          }
+      damage = Math.max(0, damage);
+
+      const dealt = target.damage(damage) ?? 0;
+      totalDamage += dealt;
+      this.stats.damageDone += target === this.player ? 0 : dealt;
+      this.stats.damageTaken += target === this.player ? dealt : 0;
+    }
+    return totalDamage;
+  }
+
+  healTarget(target, amount) {
+    if (!target || typeof target.heal !== "function") {
+      return;
+    }
+
+    const healed = target.heal(amount) ?? 0;
+    if (target === this.player) {
+      this.stats.hpHealed += healed;
+    }
+  }
+
+  removeNegativeStatuses(target, layers) {
+    if (!target?.statuses) {
+      return;
+    }
+
+    for (const [status, value] of Object.entries(target.statuses)) {
+      if (typeof value === "number" && value < 0) {
+        const nextValue = Math.min(0, value + layers);
+        target.statuses[status] = nextValue;
+        if (status === "power" || status === "defense") {
+          target[status] = nextValue;
         }
       }
     }
+  }
+
+  resolveAction(action) {
+    const {key, value, target} = action;
+    const targets = this.getTargets(target);
+
+    if (key === "damage") {
+      targets.forEach((entity) => this.dealDamage(entity, value, action.hits ?? 1, action.type));
+    } else if (key === "allEnemiesDamage") {
+      this.enemies.forEach((enemy) => this.dealDamage(enemy, value, 1, action.type));
+    } else if (key === "healing") {
+      targets.forEach((entity) => this.healTarget(entity, value));
+    } else if (key === "heal") {
+      this.healTarget(this.player, value);
+    } else if (key === "healSelf") {
+      this.healTarget(this.player, value);
+    } else if (key === "selfDamage") {
+      this.dealDamage(this.player, value, 1, "r");
+    } else if (key === "block") {
+      this.player.blockPts = (this.player.blockPts ?? 0) + value;
+    } else if (key === "enemyPower" || key === "power") {
+      targets.forEach((entity) => this.changeStatus(entity, "power", value));
+    } else if (key === "enemyDefense" || key === "defense") {
+      targets.forEach((entity) => this.changeStatus(entity, "defense", value));
+    } else if (key === "enemyAttack") {
+      targets.forEach((entity) => this.changeStatus(entity, "attack", value));
+    } else if (key === "selfDefense") {
+      this.changeStatus(this.player, "defense", value);
+    } else if (key === "allEnemiesDefense") {
+      this.enemies.forEach((enemy) => this.changeStatus(enemy, "defense", value));
+    } else if (key === "changeAttribute") {
+      this.player.attribute = value;
+    } else if (key === "removeNegativeBuffLayers") {
+      this.removeNegativeStatuses(this.player, value);
+    } else if (key === "draw") {
+      this.player.extraDraws += value;
+    } else if (key === "trash") {
+      const count = Math.min(value, this.player.cardDeck.hand.length);
+      this.player.cardDeck.discard(count, Array.from({length: count}, (_, i) => i));
+    } else if (key === "damagePerBlock") {
+      const damage = Math.floor((this.player.blockPts ?? 0) / value.every) * value.amount;
+      this.enemies.forEach((enemy) => this.dealDamage(enemy, damage, 1, action.type));
+    } else if (key === "damagePerBattleHealing") {
+      targets.forEach((entity) => this.dealDamage(entity, this.stats.hpHealed * value, 1, action.type));
+    } else if (key === "spellDamageBonus") {
+      this.player.spellDamageBonus = {
+        amount: value,
+        condition: action.condition,
+        duration: action.duration ?? "turn",
+      };
+    } else if (key === "nextTurnEnergy") {
+      this.player.nextTurnEnergy = (this.player.nextTurnEnergy ?? 0) + value;
+    } else if (key === "onAttacked") {
+      this.player.onAttackedEffects = value;
+    } else if (key === "playFromTrash") {
+      const index = this.player.cardDeck.graveyard.findIndex((card) =>
+        card.tags?.attribute === value.attribute && card.type === value.type,
+      );
+      if (index >= 0) {
+        this.player.cardDeck.hand.push(this.player.cardDeck.graveyard.splice(index, 1)[0]);
+      }
+    } else if (key === "playNatural") {
+      const index = this.player.cardDeck.hand.findIndex(
+        (card) => card.tags?.attribute === "natural",
+      );
+      if (index >= 0) {
+        const card = this.player.cardDeck.hand.splice(index, 1)[0];
+        this.player.cardDeck.graveyard.push(card);
+        const nestedActions = this.player.useMove([{
+          type: card.type,
+          effects: card.effects,
+          target,
+        }]);
+        nestedActions.forEach((nestedAction) => this.resolveAction(nestedAction));
+      }
+    }
+  }
+
+  passTurn() {
+    const actions = this.player.useMove();
+    actions.forEach((action) => this.resolveAction(action));
+
     this.enemies = this.enemies.filter((enemy) => !enemy.isDead());
 
     if (this.enemies.length === 0) {
       return "win";
     }
 
-    this.enemies.forEach((enemy) => enemy.useMove(this.player));
+    this.enemies.forEach((enemy) => {
+      const healthBeforeAttack = this.player.health;
+      enemy.useMove(this.player);
+      this.stats.damageTaken += Math.max(0, healthBeforeAttack - this.player.health);
+      if (this.player.onAttackedEffects) {
+        for (const [effect, amount] of Object.entries(this.player.onAttackedEffects)) {
+          if (effect === "enemyPower") {
+            this.changeStatus(enemy, "power", amount);
+          } else if (effect === "power") {
+            this.changeStatus(this.player, "power", amount);
+          }
+        }
+      }
+    });
     if (this.player.isDead()) {
       return "loss";
     }
-    if (
-      this.player.spellDamageBonus != null &&
-      this.player.spellDamageBonus.duration == "turn"
-    ) {
-      this.player.spellDamageBonus = null;
-    }
 
+    const extraEnergy = this.player.nextTurnEnergy ?? 0;
     this.player.passTurn();
+    this.player.energy += extraEnergy;
+    this.player.nextTurnEnergy = 0;
+    this.player.onAttackedEffects = null;
+    this.player.spellDamageBonus = null;
+    this.player.extraDraws = 0;
     this.enemies.forEach((enemy) => enemy.passTurn());
     this.turnCount += 1;
     this.turn = "player";

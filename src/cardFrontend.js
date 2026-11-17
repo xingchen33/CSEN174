@@ -80,6 +80,8 @@ export function generateVisualCard(card) {
     ? `${typeLabel}, ${card.tags.attribute}`
     : typeLabel;
   image.src = assetPath(card.getImage());
+  console.log("Displaying!");
+  console.log(card);
   back.src = assetPath(
     card.customization?.back_img ?? "./assets/card_back.jpg",
   );

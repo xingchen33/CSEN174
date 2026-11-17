@@ -16,8 +16,6 @@ export default class Enemy extends Entity {
     this.name = name;
     this.blockPts = 0;
 
-    this.power = 0;
-    this.defense = 0;
     this.nextMoveIndex = 0;
 
     this.getNextMove();
@@ -39,19 +37,18 @@ export default class Enemy extends Entity {
     this.nextMove = this.moves[n];
   }
 
+  // ONLY WORKS FOR A SINGLE HIT
   getAttackDamage() {
     let move = this.nextMove;
     if (move && move.damage) {
       let base = move.damage;
 
-      // TEST power
-      base = max(0, base + this.statuses["power"] ?? 0);
-
+      base = Math.max(0, base + (this.statuses["power"] ?? 0) + (this.statuses["attack"] ?? 0));
       if (this.statuses["reckless"]) {
         base *= 2;
       }
 
-      return base * (move.hits ?? 1);
+      return base;
     }
 
     return 0;
@@ -65,19 +62,24 @@ export default class Enemy extends Entity {
 
     const move = this.nextMove;
 
-    if (move.selfEffects) {
-      this.power += move.selfEffects.power ?? 0;
-      this.defense += move.selfEffects.defense ?? 0;
-    }
-
-    const damage = move.damage ?? 0;
     const hits = move.hits ?? 1;
     for (let i = 0; i < hits; i++) {
-      let hitDamage = damage;
+      let hitDamage = move.damage ?? 0;
       if (this.statuses["reckless"]) {
         hitDamage *= 2;
       }
       player.damage(hitDamage);
+    }
+
+    if (move.selfEffects) {
+      if (move.selfEffects.power) {
+        this.buff("power", move.selfEffects.power);
+        this.power += move.selfEffects.power;
+      }
+      if (move.selfEffects.defense) {
+        this.buff("defense", move.selfEffects.defense);
+        this.defense += move.selfEffects.defense;
+      }
     }
   }
 

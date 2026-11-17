@@ -54,6 +54,7 @@ export default class Card {
     this.conditions = conditions;
     this.block = block;
     this.customization = structuredClone(DEFAULT_CARD_CUSTOMIZATION);
+    console.log(customization);
     for (const [element, styles] of Object.entries(customization ?? {})) {
       if (
         styles &&
@@ -213,9 +214,9 @@ export const CARDLIST = {
       "Play a natural card from your hand",
       { playNatural: 1 },
       1,
-      "a",
-      "b",
-      "c",
+      "enemy",
+      null,
+      null,
       {
         name: {
           "bg-color": "linear-gradient(.90turn, #a935de, #35de6d)",
@@ -646,27 +647,42 @@ export const LOGICLIST = {
       "l",
       "If",
       "Execute actions FOR FREE if a condition is met",
-      { condition: null },
-      0,
       {},
+      0,
+      null,
+      null,
+      [],
+      {
+        front_img: "./assets/if.png",
+      },
       {},
     ),
     While: new Card(
       "l",
       "While",
       "Execute actions FOR FREE while a condition is met. Don't go infinite!",
-      { condition: null },
-      0,
       {},
+      0,
+      null,
+      null,
+      [],
+      {
+        front_img: "./assets/demonshand.png",
+      },
       {},
     ),
     Pointer: new Card(
       "l",
       "Pointer",
       "Pick a target",
-      { condition: null },
-      0,
       {},
+      0,
+      null,
+      null,
+      [],
+      {
+        front_img: "./assets/demonshand.png",
+      },
       {},
     ),
   },

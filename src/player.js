@@ -31,6 +31,7 @@ export default class Player extends Entity {
     cardDeck.shuffleDeck();
     this.logicDeck = logicDeck;
     this.blockPts = 0;
+    this.extraDraws = 0;
     logicDeck.shuffleDeck();
 
     this.cardDeck.draw(this.startingSpellCount);
@@ -43,14 +44,18 @@ export default class Player extends Entity {
     // Logic cards have conditions and subarrays
     this.currentMove = [];
     this.previousMoves = [];
+    this.lastPlayError = null;
   }
 
   playCard(pos, target = null, location = null) {
+    this.lastPlayError = null;
     let playing = this.cardDeck.hand[pos];
     if (!playing) {
+      this.lastPlayError = "That card is no longer in your hand.";
       return false;
     }
 
+    const originalTarget = playing.target;
     if (target !== null) {
       playing.target = target;
     }
@@ -59,11 +64,15 @@ export default class Player extends Entity {
       !["self", "all", "allEnemies"].includes(playing.target) &&
       (playing.target === "enemy" ||
         playing.target === "a" ||
+        playing.target === "player" ||
+        playing.target === "ally" ||
         playing.effects?.damage != null);
     if (
       requiresTarget &&
       (typeof playing.target !== "object" || playing.target === null)
     ) {
+      this.lastPlayError = "This card needs a valid target.";
+      playing.target = originalTarget;
       return false;
     }
 
@@ -72,12 +81,37 @@ export default class Player extends Entity {
       playing.type;
     const selectedLocation =
       location ?? this.getValidPositions(positionType)[0];
+    if (playing.getEnergy() > this.energy) {
+      this.lastPlayError = `You need ${playing.getEnergy()} energy, but only have ${this.energy}.`;
+      playing.target = originalTarget;
+      return false;
+    }
+    if (!selectedLocation) {
+      this.lastPlayError = "There is no valid position for this card.";
+      playing.target = originalTarget;
+      return false;
+    }
     if (this.evaluateCard(playing, selectedLocation)) {
       this.cardDeck.discard(1, [pos]);
       return true;
     }
 
+    // Target selection must be transactional. A failed play should not leave
+    // the card permanently pointed at the attempted target.
+    playing.target = originalTarget;
+    this.lastPlayError = "That card cannot be placed in the selected position.";
     return false;
+  }
+
+  isLogicMove(move) {
+    return (
+      move != null &&
+      (move.type === "l" ||
+        move.type === "logic" ||
+        move.name === "If" ||
+        move.name === "While" ||
+        move.name === "Pointer")
+    );
   }
 
   // TEST like REALLY REALLY TEST
@@ -86,19 +120,21 @@ export default class Player extends Entity {
   // Returns an object showing the type (target / statement / condition) of the element and the indexing required to change that element (for arrays, the index which it will occupy)
   getValidPositions(type, current = this.currentMove, indexset = []) {
     let positions = [];
+    if (!Array.isArray(current)) {
+      return positions;
+    }
+
     for (let i = 0; i < current.length; i++) {
       let e = current[i];
+      if (e == null || typeof e !== "object") {
+        continue;
+      }
 
       // Anything with a "target" can have that overridden
       // Anything with a condition can have that condition's target overridden
       if (type == "target") {
-        if ("target" in e) {
+        if ("target" in e || (this.isLogicMove(e) && e.condition != null)) {
           positions.push({ type: "target", index: [...indexset, i] });
-        } else if (e.condition != null) {
-          positions.push({
-            type: "target",
-            index: [...indexset, i, "condition"],
-          });
         }
       }
 
@@ -108,11 +144,11 @@ export default class Player extends Entity {
       }
 
       // Any logic block has a condition
-      if (type == "ritual") {
+      if (type == "ritual" && this.isLogicMove(e)) {
         positions.push({ type: "condition", index: [...indexset, i] });
       }
 
-      if (e.type == "logic" && e.block != null) {
+      if (this.isLogicMove(e) && Array.isArray(e.block)) {
         // If this was a logic statement, we recurse and prepend the index of this
         positions.push(
           ...this.getValidPositions(type, e.block, [...indexset, i]),
@@ -141,102 +177,72 @@ export default class Player extends Entity {
     //checks on the location
     if (
       location == null ||
-      location.index == null ||
-      location.index.length == 0
+      !["statement", "target", "condition"].includes(location.type) ||
+      !Array.isArray(location.index) ||
+      location.index.length === 0
     ) {
       return false;
     }
-    //turning the card into the dictionary
-    let dict_to_insert = {};
-    dict_to_insert.name = card.name;
-    dict_to_insert.description = card.getDescription();
-    dict_to_insert.type = card.type;
-    dict_to_insert.target = card.target;
-    dict_to_insert.effects = card.effects;
-    dict_to_insert.condition = card.conditions;
-    dict_to_insert.block = card.block;
-    //base case
-    if (location.index.length == 1) {
-      let insert = location.index[0];
-      if (location.type == "statement") {
-        //check the index is valid
-        if (insert < 0 || insert > this.currentMove.length) {
-          return false;
-        } else {
-          //shift all the statements
-          for (let i = this.currentMove.length; i > insert; i--) {
-            this.currentMove[i] = this.currentMove[i - 1];
-          }
-          //add the statement in the right position
-          this.currentMove[insert] = dict_to_insert;
-        }
-      } else if (location.type == "target") {
-        //if you want change the target for a condition
-        if (insert == "condition") {
-          //make sure the condition exists
-          if (this.currentMove.condition == null) {
-            return false;
-          } else {
-            //change the target for the condition
-            this.currentMove.target = card.target;
-          }
-        } else {
-          //make sure the target exists
-          if (
-            this.currentMove[insert] == null ||
-            this.currentMove[insert].target == null
-          ) {
-            return false;
-          } else {
-            this.currentMove[insert].target = card.target;
-          }
-        }
-      } else if (location.type == "condition") {
-        //make sure the condition exists
-        if (
-          this.currentMove[insert] == null ||
-          this.currentMove[insert].condition == null
-        ) {
-          return false;
-        }
-        //change the condition
-        else {
-          this.currentMove[insert].condition = card.conditions;
-        }
-      }
-      //if the location.type is not valid
-      else {
+
+    const dictToInsert = {
+      name: card.name,
+      description: card.getDescription(),
+      type: card.type,
+      target: card.target,
+      // Keep targets as entity references, but don't share mutable effect data.
+      effects: structuredClone(card.effects),
+      condition: structuredClone(card.conditions),
+      block: card.block == null ? card.block : structuredClone(card.block),
+    };
+
+    // Walk through logic blocks without temporarily replacing currentMove.
+    let destination = this.currentMove;
+    for (let i = 0; i < location.index.length - 1; i++) {
+      const index = location.index[i];
+      if (
+        !Array.isArray(destination) ||
+        !Number.isInteger(index) ||
+        !this.isLogicMove(destination[index]) ||
+        !Array.isArray(destination[index].block)
+      ) {
         return false;
       }
-      //subtract the energy
-      this.energy -= card.getEnergy();
-      return true;
-    } else {
-      //recursive case
-      let first_index = location.index[0];
-      if (this.currentMove[first_index] == null) {
-        return false;
-      }
-      let root = this.currentMove;
-      let next = root[first_index];
-      //check if we are adding a statement in an if/while block
-      if (next.block != null) {
-        this.currentMove = next.block;
-      } else {
-        this.currentMove = next;
-      }
-      //come up with the new location
-      let new_location_index = [];
-      for (let i = 1; i < location.index.length; i++) {
-        new_location_index.push(location.index[i]);
-      }
-      let new_location = { type: location.type, index: new_location_index };
-      //call the function recursively on the new function
-      let final_result = this.evaluateCard(card, new_location);
-      //set the current move back to the root
-      this.currentMove = root;
-      return final_result;
+      destination = destination[index].block;
     }
+
+    const index = location.index[location.index.length - 1];
+    if (!Array.isArray(destination) || !Number.isInteger(index)) {
+      return false;
+    }
+
+    if (location.type === "statement") {
+      if (index < 0 || index > destination.length) {
+        return false;
+      }
+      destination.splice(index, 0, dictToInsert);
+    } else if (location.type === "target") {
+      if (
+        destination[index] == null ||
+        (!("target" in destination[index]) &&
+          !(this.isLogicMove(destination[index]) &&
+            destination[index].condition != null))
+      ) {
+        return false;
+      }
+      destination[index].target = card.target;
+    } else if (location.type === "condition") {
+      if (
+        destination[index] == null ||
+        !this.isLogicMove(destination[index]) ||
+        destination[index].condition == null
+      ) {
+        return false;
+      }
+      destination[index].condition = structuredClone(card.conditions);
+    }
+
+    this.energy -= card.getEnergy();
+    return true;
   }
 
   evaluateCondition(condition, target) {
@@ -249,8 +255,6 @@ export default class Player extends Entity {
     return false;
   }
 
-  // TODO this is the core of the game
-
   useMove(selectedMove = this.currentMove) {
     // Iterate through all elements of the current move
     let steps_of_effects = [];
@@ -259,7 +263,10 @@ export default class Player extends Entity {
       let move = selectedMove[i];
 
       // If the statement is a logic block, check condition
-      if (move.type == "If" || move.type == "While") {
+      if (
+        this.isLogicMove(move) &&
+        (move.name == "If" || move.name == "While")
+      ) {
         let condition = move.condition;
 
         if (condition != null) {
@@ -330,7 +337,7 @@ export default class Player extends Entity {
     this.logicDeck.draw(this.startingLogicCount);
 
     this.cardDeck.discardHand();
-    this.cardDeck.draw(this.startingSpellCount);
+    this.cardDeck.draw(this.startingSpellCount + this.extraDraws);
 
     this.energy = this.maxEnergy;
   }

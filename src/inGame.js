@@ -256,13 +256,17 @@ function cancelPendingCard() {
 
 function playCard(cardIndex, target, location) {
   const played = stage.player.playCard(cardIndex, target, location);
-  clearTargetSelection();
 
   if (played) {
+    clearTargetSelection();
     renderHands();
     renderCode();
     window.refreshHealthBars();
     turnIndicator.textContent = "Player Action";
+  } else {
+    // Keep the card pending so the player can try again or use Cancel Card.
+    turnIndicator.textContent = stage.player.lastPlayError
+      ?? "The card could not be played. Choose again or cancel.";
   }
 }
 
@@ -476,9 +480,11 @@ if (endTurnButton) {
     if (result === "win") {
       turnIndicator.textContent = "Victory";
       endTurnButton.disabled = true;
+      // TODO display rewards and button to go to next stage
     } else if (result === "loss") {
       turnIndicator.textContent = "Defeat";
       endTurnButton.disabled = true;
+      // TODO display stats and allow for repeat
     } else {
       turnIndicator.textContent = `Player Action · Turn ${stage.turnCount + 1}`;
     }

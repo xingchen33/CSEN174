@@ -12,6 +12,8 @@ export default class Entity {
     this.image = image;
     this.customization = customization;
     this.attribute = attribute;
+    this.power = 0;
+    this.defense = 0;
 
     // Status name: list starting with length (can have other elements as well)
     // Statues:
@@ -40,7 +42,10 @@ export default class Entity {
       n *= 2;
     }
 
-    // TEST defense
+    const blocked = Math.min(this.blockPts, n);
+    this.blockPts -= blocked;
+    n -= blocked;
+
     n = Math.max(0, n - (this.statuses["defense"] ?? 0));
 
     let old = this.health;
