@@ -286,7 +286,9 @@ useMove(selectedMove = this.currentMove) {
 
 
   passTurn(){
-    this.useMove();
+    // OPT You might not need to structuredClone this, should figure out
+    this.previousMoves.append(structuredClone(this.currentMove));
+    this.currentMove = [];
 
     this.logicDeck.reshuffleAll();
     this.logicDeck.draw(this.startingLogicCount);
