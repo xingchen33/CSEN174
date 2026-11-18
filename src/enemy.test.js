@@ -40,10 +40,12 @@ test("attack damage takes status into account", () => {
 test("Slime has its configured health, attribute, and actions", () => {
   const slime = ENEMYLIST.pick("Slime");
 
-  expect(slime.health).toBe(45);
+  expect(slime.health).toEqual(45);
   expect(slime.attribute).toBe("void");
   expect(slime.moves).toEqual([
-    { damage: 4, selfEffects: { defense: -2, power: 2 } },
+    { damage: 4 },
+    { selfEffects: { defense: -2, power: 2 } },
+    { random: true },
     { damage: 3, hits: 2 },
   ]);
 });
@@ -59,11 +61,14 @@ test("Slime applies self effects and multi-hit damage", () => {
 
   slime.getNextMove(0);
   slime.useMove(player);
+  expect(player.health).toBe(16);
+  slime.getNextMove(1);
+  slime.useMove(player);
   expect(slime.defense).toBe(-2);
   expect(slime.power).toBe(2);
   expect(player.health).toBe(16);
 
-  slime.getNextMove(1);
+  slime.getNextMove(3);
   slime.useMove(player);
   expect(player.health).toBe(10);
 });

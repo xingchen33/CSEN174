@@ -1,9 +1,11 @@
 import Player from "./player.js";
+import SimpleDeck from "./simpleDeck.js";
 import CardDeck from "./simpleDeck.js";
 
 test("with an empty main attack, only statements should be playable", () => {
   const deck = new CardDeck("basic");
-  const player = new Player(100, 5, deck);
+  const logicDeck = new SimpleDeck("basic");
+  const player = new Player(100, 5, deck, logicDeck);
 
   player.damage(20);
   expect(player.health).toBe(80);

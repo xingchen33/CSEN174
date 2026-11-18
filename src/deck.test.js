@@ -73,18 +73,14 @@ test("energy of cards is gettable", () => {
 
 test("cards can be sorted alphabetically without changing deck order", () => {
   let deck = new SimpleDeck("basic");
-  const originalOrder = deck.hand;
   deck.hand = [deck.drawPile[2], deck.drawPile[0], deck.drawPile[1]];
+  const originalOrder = [...deck.hand];
 
   expect(deck.getSortedCards()).toEqual([
     deck.drawPile[0],
-    deck.drawPile[1],
     deck.drawPile[2],
+    deck.drawPile[1],
   ]);
   expect(deck.hand).not.toBe(originalOrder);
-  expect(deck.hand).toEqual([
-    deck.drawPile[2],
-    deck.drawPile[0],
-    deck.drawPile[1],
-  ]);
+  expect(deck.hand).toEqual(originalOrder);
 });

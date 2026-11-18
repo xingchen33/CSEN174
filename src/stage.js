@@ -186,7 +186,9 @@ export default class Stage {
     if (this.enemies.length === 0) {
       return "win";
     }
-
+    
+    
+    this.turn = "enemy";
     this.enemies.forEach((enemy) => {
       const healthBeforeAttack = this.player.health;
       enemy.useMove(this.player, this.enemies);
@@ -214,7 +216,7 @@ export default class Stage {
     this.player.extraDraws = 0;
     this.enemies.forEach((enemy) => enemy.passTurn());
     this.turnCount += 1;
-    this.turn = "player";
+    this.turn = this.enemies[0];
     return "continue";
   }
 

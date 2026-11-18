@@ -343,8 +343,7 @@ export default class Player extends Entity {
   }
 
   passTurn() {
-    // OPT You might not need to structuredClone this, should figure out
-    this.previousMoves.push(structuredClone(this.currentMove));
+    this.previousMoves.push(this.currentMove);
     this.currentMove = [];
 
     this.block = 0;
