@@ -236,7 +236,7 @@
     opacity: 0.6;
 }
 
-#end-turn-button:hover {
+#end-turn-button:not(:disabled):hover {
     transform: scale(1.05);
     color: var(--defaultHoverColor);
 }

@@ -17,3 +17,25 @@
         background-color: var(--healthBarColor);
     }
 }
+
+.inflictedDamage {
+    animation: damageFlick 1s reverse infinite;
+}
+
+@keyframes damageFlick {
+    30% {
+        transform: translateY(0%);
+    }
+    40% {
+        transform: translateY(-300%);
+    }
+    50% {
+        transform: translateY(-500%);
+    }
+    60% {
+        transform: translateY(-300%);
+    }
+    70% {
+        transform: translateY(0%);
+    }
+}
