@@ -12,7 +12,9 @@ export default class Enemy extends Entity {
 
     this.moves = moves;
     this.name = name;
-
+    this.blockPts = 0;
+    this.defense = 0;
+    this.power = 0;
     this.nextMoveIndex = 0;
 
     this.getNextMove();
@@ -89,9 +91,11 @@ export default class Enemy extends Entity {
     if (move.selfEffects) {
       if (move.selfEffects.power) {
         this.buff("power", move.selfEffects.power);
+        this.power += move.selfEffects.power;
       }
       if (move.selfEffects.defense) {
         this.buff("defense", move.selfEffects.defense);
+        this.defense += move.selfEffects.defense;
       }
     }
 

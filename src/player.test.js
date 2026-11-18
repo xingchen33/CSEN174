@@ -1,6 +1,9 @@
 import Player from "./player.js";
 import SimpleDeck from "./simpleDeck.js";
 import CardDeck from "./cardDeck.js";
+import { ENEMYLIST } from "./enemy.js";
+import { CARDLIST } from "./card.js";
+
 
 const target = { damage() {} };
 
@@ -81,3 +84,33 @@ test('evaluateCard works as expected', () => {
   expect(player2.energy).toBe(10);
 });
 
+//testing useMove
+test('useMove works as expected for conditionals', () => {
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic");
+  const player = new Player(100, 5, card_deck, logic_deck);
+  const enemy = ENEMYLIST.pick("Slime");
+  enemy.power = -5;
+  const holyArrow = CARDLIST.pick("Holy Arrow");
+  player.currentMove = [{effects: holyArrow.effects, target: enemy}];
+  const actions = player.useMove();
+  expect(actions).toEqual(expect.arrayContaining([expect.objectContaining({key: "damage",value: 6,}),expect.objectContaining({key: "enemyPower",value: -5,})]));
+  
+});
+
+
+//testing useMove for for statement cards
+test('useMove works as expected for for statement cards', () => {
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic");
+  const player = new Player(100, 5, card_deck, logic_deck);
+  const enemy = ENEMYLIST.pick("Slime");
+  const statement_card = CARDLIST.pick("Transfer Contract");
+  player.currentMove = [{effects: statement_card.effects, target: enemy}];
+  const actions = player.useMove();
+  expect(actions).toEqual(expect.arrayContaining([expect.objectContaining({key: "enemyPower",value: 1,}),expect.objectContaining({key: "enemyDefense", value: -3})]));
+
+
+
+
+});
