@@ -1,3 +1,19 @@
 .hidden {
     display: none !important;
 }
+
+.lowHealth {
+    animation: healthFlash 2s alternate infinite;
+}
+
+@keyframes healthFlash {
+    30% {
+        background-color: var(--healthBarColor);
+    }
+    50% {
+        background-color: rgb(243, 135, 135);
+    }
+    70% {
+        background-color: var(--healthBarColor);
+    }
+}

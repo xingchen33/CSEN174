@@ -1,5 +1,6 @@
 :root {
     --healthBarWidth: 80%;
+    --healthBarColor: #35bd55;
 }
 
 .health-bar-base {
@@ -21,7 +22,7 @@
     left: 0%;
     top: 0;
     height: 100%;
-    background: #35bd55;
+    background: var(--healthBarColor);
     transition: width 0.2s ease;
 }
 
