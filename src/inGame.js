@@ -729,6 +729,9 @@ function showRewards() {
 if (endTurnButton) {
   endTurnButton.textContent = "End Turn";
   endTurnButton.addEventListener("click", () => {
+    if (pendingCard) {
+      clearTargetSelection();
+    }
     const result = stage.passTurn();
     window.refreshHealthBars();
     window.refreshHands();

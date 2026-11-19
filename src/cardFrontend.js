@@ -69,7 +69,15 @@ export function generateVisualCard(card) {
   base.append(contents, back, block);
 
   name.textContent = card.name;
-  description.textContent = card.getDescription();
+  description.replaceChildren();
+  if (card.counters) {
+    const counter = document.createElement("strong");
+    const targetMarker = card.counters.requiresTarget ? "? " : "";
+    counter.textContent = `Counter: ${targetMarker}${card.counters.trigger}.`;
+    description.appendChild(counter);
+    description.appendChild(document.createElement("br"));
+  }
+  description.appendChild(document.createTextNode(card.getDescription()));
   energy.textContent = card.getEnergy();
   if (card.type === "l") {
     energy.classList.add("hidden");

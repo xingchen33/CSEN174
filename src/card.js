@@ -671,7 +671,7 @@ export const LOGICLIST = {
     If: new Card(
       "l",
       "If",
-      "Execute actions FOR FREE if a condition is met",
+      "Execute actions if a condition is met",
       {},
       0,
       null,
@@ -685,7 +685,7 @@ export const LOGICLIST = {
     While: new Card(
       "l",
       "While",
-      "Execute actions FOR FREE while a condition is met. Don't go infinite!",
+      "Execute actions at no additional cost while a condition is met. Don't go infinite!",
       {},
       0,
       null,

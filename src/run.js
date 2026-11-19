@@ -121,6 +121,9 @@ export default class Run {
 }
 
 const REWARDS = [
+  [],
+  [],
+  [],
 ];
 
 const ENEMIES = [

@@ -262,6 +262,14 @@ export default class Player extends Entity {
   }
 
   evaluateCondition(condition, target) {
+    if (condition && typeof condition === "object") {
+      const conditionTarget = condition.target ?? target;
+      if (condition.trigger === "attack") {
+        return conditionTarget?.nextMove?.damage > 0;
+      }
+      return false;
+    }
+
     if (condition == "power-" || condition == "enemyPowerNegative") {
       if (target == null) {
         return false;
@@ -288,7 +296,7 @@ export default class Player extends Entity {
         if (condition != null) {
           let condition_satisfied = this.evaluateCondition(
             condition,
-            move.target,
+            condition.target ?? move.target,
           );
 
           if (condition_satisfied) {
