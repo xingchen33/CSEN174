@@ -13,19 +13,19 @@ export default class Enemy extends Entity {
     this.moves = moves;
     this.name = name;
     this.blockPts = 0;
-    this.defense = 0;
-    this.power = 0;
     this.nextMoveIndex = 0;
 
     this.getNextMove();
   }
 
+  // Move selection with n exists for debug purposes
   getNextMove(n = -1) {
     if (this.isDead()) {
       this.nextMove = null;
       return;
     }
 
+    // Moves happen in order and wrap around
     if (n < 0) {
       this.nextMove = this.moves[this.nextMoveIndex];
       this.nextMoveIndex++;
@@ -36,7 +36,7 @@ export default class Enemy extends Entity {
     this.nextMove = this.moves[n];
   }
 
-  // Only gets damage for a single attack
+  // Only gets damage for a single attack; multiple hits are handled elsewhere
   getAttackDamage() {
     let move = this.nextMove;
     if (move && move.damage) {
@@ -59,6 +59,7 @@ export default class Enemy extends Entity {
     }
 
     // Pick a non-random attack
+    // Stall time from this is negligable
     while (this.nextMove.random) {
       this.nextMove = this.moves[Math.floor(Math.random() * this.moves.length)];
     }
@@ -91,11 +92,11 @@ export default class Enemy extends Entity {
     if (move.selfEffects) {
       if (move.selfEffects.power) {
         this.buff("power", move.selfEffects.power);
-        this.power += move.selfEffects.power;
+        this.buff("power", move.selfEffects.power);
       }
       if (move.selfEffects.defense) {
         this.buff("defense", move.selfEffects.defense);
-        this.defense += move.selfEffects.defense;
+        this.buff("defense", move.selfEffects.power);
       }
     }
 

@@ -122,7 +122,6 @@ export default class Player extends Entity {
     );
   }
 
-  // TEST like REALLY REALLY TEST
   // Should return the list of places that one could put a card of the specified type
   // Valid types: statement, ritual, target
   // Returns an object showing the type (target / statement / condition) of the element and the indexing required to change that element (for arrays, the index which it will occupy)

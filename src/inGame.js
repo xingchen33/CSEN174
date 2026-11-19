@@ -269,6 +269,7 @@ function handleCardClick(card, deck = stage.player.cardDeck) {
   renderCode();
 }
 
+// TODO add Pointer support here
 function getCardPositions(card) {
   const positionType =
     { s: "statement", r: "ritual", l: "statement" }[card.type] ?? card.type;

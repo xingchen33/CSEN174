@@ -64,8 +64,8 @@ test("Slime applies self effects and multi-hit damage", () => {
   expect(player.health).toBe(16);
   slime.getNextMove(1);
   slime.useMove(player);
-  expect(slime.defense).toBe(-2);
-  expect(slime.power).toBe(2);
+  expect(slime.statuses.defense).toBe(-2);
+  expect(slime.statuses.power).toBe(2);
   expect(player.health).toBe(16);
 
   slime.getNextMove(3);

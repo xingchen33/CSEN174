@@ -26,7 +26,7 @@ export default class Entity {
     return this.health - old;
   }
 
-  damage(n) {
+  damage(n, attr = "void") {
     if (this.isDead()) {
       return;
     }
@@ -51,7 +51,6 @@ export default class Entity {
     return this.health <= 0;
   }
 
-  // TEST this hasn't been updated in a billion years
   buff(status, level) {
     if (!this.statuses[status]) {
       this.statuses[status] = 0;

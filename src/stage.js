@@ -44,6 +44,7 @@ export default class Stage {
     }
   }
 
+  // TODO why does this exist; is this not handled elsewhere? 
   dealDamage(target, amount, hits = 1, actionType = "s") {
     if (!target || typeof target.damage !== "function") {
       return;
@@ -53,14 +54,13 @@ export default class Stage {
     for (let hit = 0; hit < hits; hit++) {
       let damage = amount;
       if (target !== this.player) {
-        damage += this.player.power ?? 0;
+        damage += this.player.statuses.power ?? 0;
       }
       const bonus = this.player.spellDamageBonus;
       if (
         actionType === "s" &&
         bonus &&
-        target !== this.player &&
-        target.power < 0
+        target !== this.player
       ) {
         damage += bonus.amount;
       }
@@ -101,6 +101,7 @@ export default class Stage {
     }
   }
 
+  // TODO this suspiciously doesn't use many other functions
   resolveAction(action) {
     const {key, value, target} = action;
     const targets = this.getTargets(target);
@@ -160,6 +161,7 @@ export default class Stage {
       if (index >= 0) {
         this.player.cardDeck.hand.push(this.player.cardDeck.graveyard.splice(index, 1)[0]);
       }
+    // TODO this probably isn't picking randomly
     } else if (key === "playNatural") {
       const index = this.player.cardDeck.hand.findIndex(
         (card) => card.tags?.attribute === "natural",
