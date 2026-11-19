@@ -191,7 +191,7 @@ export const CARDLIST = {
           "text-color": "#000000",
         },
         type: {
-          "bg-color": "linear-gradient(.90turn, #35deab, #35b1de)",
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
           "text-color": "#000000",
         },
         description: {
@@ -356,7 +356,7 @@ export const CARDLIST = {
           "text-color": "#000000",
         },
         type: {
-          "bg-color": "linear-gradient(.90turn, #35deab, #35b1de)",
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
           "text-color": "#000000",
         },
         description: {
@@ -387,6 +387,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/hellreborn.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #600d0d, #cc1414)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #600d0d, #cc1414)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #600d0d, #cc1414)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "dark" },
     ),
@@ -401,6 +421,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/demonshand.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #aa3131, #c3bfbf)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #aa3131, #c3bfbf)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #aa3131, #c3bfbf)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "dark" },
     ),
@@ -415,6 +455,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/feed.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #a231aa, #feb9fb)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #a231aa, #feb9fb)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #a231aa, #feb9fb)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "dark" },
     ),
@@ -429,6 +489,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/transfercontract.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #818169, #d6d7b1)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #818169, #d6d7b1)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #818169, #d6d7b1)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "dark" },
     ),
@@ -443,6 +523,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/seducinglie.png",
+        name: {
+          "bg-color": "linear-gradient(.0turn, #d000ff, #36062f)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #35deab, #35b1de)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.0turn, #d82cff, #36062f)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.0turn, #d82cff, #36062f)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "dark" },
     ),
@@ -457,6 +557,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/eatingwhole.png",
+        name: {
+          "bg-color": "linear-gradient(.0turn, #ff00bf, #a8fcff)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.0turn, #ff00bf, #a8fcff)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.0turn, #ff00bf, #a8fcff)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "dark" },
     ),
@@ -473,6 +593,26 @@ export const CARDLIST = {
       null,
       {
         front_img: "./assets/purification.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #5fd1d5, #156459)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #5fd1d5, #156459)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #5fd1d5, #156459)",
+          "text-color": "#000000",
+        },
       },
       { attribute: "light" },
     ),
@@ -497,7 +637,12 @@ export const CARDLIST = {
       "enemy",
       null,
       null,
-      {},
+      {
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+      },
       { attribute: "light" },
     ),
     "Holy Arrow": new Card(
@@ -525,7 +670,12 @@ export const CARDLIST = {
       "self",
       null,
       null,
-      {},
+      {
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+      },
       { attribute: "light" },
     ),
     "Love and Rage": new Card(
@@ -551,7 +701,12 @@ export const CARDLIST = {
       "self",
       null,
       null,
-      {},
+      {
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+      },
       { attribute: "natural" },
     ),
     "Rock Armor": new Card(
@@ -563,7 +718,12 @@ export const CARDLIST = {
       "self",
       null,
       null,
-      {},
+      {
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+      },
       { attribute: "natural" },
     ),
     "Golem Strike": new Card(
@@ -611,7 +771,12 @@ export const CARDLIST = {
       "self",
       null,
       null,
-      {},
+      {
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+      },
       { attribute: "natural" },
     ),
 
@@ -625,7 +790,12 @@ export const CARDLIST = {
       "all",
       null,
       null,
-      {},
+      {
+        type: {
+          "bg-color": "linear-gradient(.90turn, #9235de, #de35d0)",
+          "text-color": "#000000",
+        },
+      },
       { attribute: "void" },
     ),
   },
@@ -679,6 +849,26 @@ export const LOGICLIST = {
       [],
       {
         front_img: "./assets/if.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #a9ffad, #33fb5b)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
       },
       {},
     ),
@@ -693,6 +883,26 @@ export const LOGICLIST = {
       [],
       {
         front_img: "./assets/demonshand.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #a9ffad, #33fb5b)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
       },
       {},
     ),
@@ -707,6 +917,26 @@ export const LOGICLIST = {
       [],
       {
         front_img: "./assets/demonshand.png",
+        name: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
+        type: {
+          "bg-color": "linear-gradient(.90turn, #a9ffad, #33fb5b)",
+          "text-color": "#000000",
+        },
+        description: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
+        energy: {
+          "bg-color": "linear-gradient(.25turn, #af1a8a, #fc036f)",
+          "text-color": "linear-gradient(.25turn, #760505, #0c0235)",
+        },
+        block: {
+          "bg-color": "linear-gradient(.90turn, #3dc0c9, #678bae)",
+          "text-color": "#000000",
+        },
       },
       {},
     ),

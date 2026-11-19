@@ -421,6 +421,10 @@ function updateHealthBar(character, characterBase) {
     0,
     Math.min(100, (character.health / character.maxHealth) * 100),
   );
+  if (percentage<30)
+    characterBase.healthBar.fill.classList.add("lowHealth")
+  else 
+    characterBase.healthBar.fill.classList.remove("lowHealth")
   characterBase.healthBar.fill.style.width = `${percentage}%`;
   characterBase.healthBar.label.textContent = `${character.health} / ${character.maxHealth}`;
   updateStatusDisplay(character, characterBase);

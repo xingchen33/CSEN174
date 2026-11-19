@@ -1,6 +1,9 @@
 import Player from "./player.js";
 import SimpleDeck from "./simpleDeck.js";
 import CardDeck from "./cardDeck.js";
+import { ENEMYLIST } from "./enemy.js";
+import { CARDLIST } from "./card.js";
+
 
 const target = { damage() {} };
 
@@ -19,11 +22,10 @@ test("energy depletes when playing cards", () => {
   const card_deck = new CardDeck("basic");
   const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
-
-  player.cardDeck.draw(1);
-  player.playCard(0, target);
-
+  result = player.playCard(0, target);
+  expect(result).toBe(true);
   expect(player.energy).toBeLessThan(5);
+
 });
 
 test("energy comes back after passing", () => {
@@ -32,6 +34,7 @@ test("energy comes back after passing", () => {
   const player = new Player(100, 5, card_deck, logic_deck);
 
   player.cardDeck.draw(1);
+
   player.playCard(0, target);
   player.passTurn();
 
@@ -42,11 +45,12 @@ test("playing a card removes it from your hand", () => {
   const card_deck = new CardDeck("basic");
   const logic_deck = new SimpleDeck("basic");
   const player = new Player(100, 5, card_deck, logic_deck);
+  const initialHandSize = player.cardDeck.hand.length;
 
-  player.cardDeck.draw(3);
-  player.playCard(0, target);
+  const result = player.playCard(0, target);
 
-  expect(player.cardDeck.hand.length).toBe(2);
+  expect(result).toBe(true);
+  expect(player.cardDeck.hand.length).toBe(initialHandSize - 1);
 });
 
 test("failing to play a card does not remove it from your hand", () => {
@@ -60,4 +64,53 @@ test("failing to play a card does not remove it from your hand", () => {
   }
 
   expect(player.cardDeck.hand.length).toBeGreaterThan(0);
+});
+
+//testing evaluate card
+test('evaluateCard works as expected', () => {
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic");
+  const player = new Player(100, 5, card_deck, logic_deck);
+  const card1 = player.cardDeck.hand[0];
+  const locations = player.getValidPositions("statement", player.currentMove, []);
+  player.evaluateCard(card1, locations[0]);
+  expect(player.energy).toBeLessThan(5);
+  const card_deck_2 = new CardDeck("basic");
+  const logic_deck_2 = new SimpleDeck("basic");
+  const player2 = new Player(100, 10, card_deck_2, logic_deck_2);
+  const card2 = player2.logicDeck.hand[0];
+  const locations_2 = player2.getValidPositions("ritual", player2.currentMove, indexset = []);
+  player2.evaluateCard(card2, locations_2[0]);
+  expect(player2.energy).toBe(10);
+});
+
+//testing useMove
+test('useMove works as expected for conditionals', () => {
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic");
+  const player = new Player(100, 5, card_deck, logic_deck);
+  const enemy = ENEMYLIST.pick("Slime");
+  enemy.power = -5;
+  const holyArrow = CARDLIST.pick("Holy Arrow");
+  player.currentMove = [{effects: holyArrow.effects, target: enemy}];
+  const actions = player.useMove();
+  expect(actions).toEqual(expect.arrayContaining([expect.objectContaining({key: "damage",value: 6,}),expect.objectContaining({key: "enemyPower",value: -5,})]));
+  
+});
+
+
+//testing useMove for for statement cards
+test('useMove works as expected for for statement cards', () => {
+  const card_deck = new CardDeck("basic");
+  const logic_deck = new SimpleDeck("basic");
+  const player = new Player(100, 5, card_deck, logic_deck);
+  const enemy = ENEMYLIST.pick("Slime");
+  const statement_card = CARDLIST.pick("Transfer Contract");
+  player.currentMove = [{effects: statement_card.effects, target: enemy}];
+  const actions = player.useMove();
+  expect(actions).toEqual(expect.arrayContaining([expect.objectContaining({key: "enemyPower",value: 1,}),expect.objectContaining({key: "enemyDefense", value: -3})]));
+
+
+
+
 });

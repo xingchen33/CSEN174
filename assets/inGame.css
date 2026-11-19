@@ -189,6 +189,12 @@
     left: 0%
 }
 
+#enemies-container {
+    inset: 0;
+    width: 50%;
+    left: 50%;
+}
+
 #player-energy {
     position: absolute;
     bottom: 3%;
@@ -198,7 +204,7 @@
     border-radius: 50%;
     margin: 0;
     color: white;
-    background-color: rgb(200, 116, 207);
+    background: linear-gradient(.25turn, #af1a8a, #fc036f);
     text-shadow: 0 0.1rem 0.2rem black;
     font-size: 1rem;
     font-weight: bold;
@@ -230,7 +236,7 @@
     opacity: 0.6;
 }
 
-#end-turn-button:hover {
+#end-turn-button:not(:disabled):hover {
     transform: scale(1.05);
     color: var(--defaultHoverColor);
 }

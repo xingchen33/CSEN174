@@ -7,7 +7,9 @@ const LOGIC_PRESETS = {
     LOGICLIST.pick("While"),
     LOGICLIST.pick("Pointer"),
   ],
-  basic: [LOGICLIST.pick("If")],
+  basic: [LOGICLIST.pick("If"),
+    LOGICLIST.pick("While"),
+    LOGICLIST.pick("Pointer")],
 };
 
 export default class SimpleDeck {

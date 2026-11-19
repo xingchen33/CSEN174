@@ -19,11 +19,11 @@ test("initializing the stage works", () => {
   enemies = [enemy1];
   curr_round = 1;
   curr_turn = player;
-  stage = new Stage(card_deck, player, enemies, curr_round, curr_turn);
+  stage = new Stage(player, enemies, []);
   expect(stage.player).toBe(player);
-  expect(stage.enemies_list).toEqual(enemies);
-  expect(stage.curr_round).toBe(curr_round);
-  expect(stage.curr_turn).toBe(curr_turn);
+  expect(stage.enemies).toEqual(enemies);
+  expect(stage.turnCount).toBe(0);
+  expect(stage.turn).toBe("player");
 });
 
 test("adding an enemy works", () => {
@@ -40,11 +40,11 @@ test("adding an enemy works", () => {
   enemies = [enemy1];
   curr_round = 1;
   curr_turn = player;
-  stage = new Stage(card_deck, player, enemies, curr_round, curr_turn);
+  stage = new Stage(player, enemies, []);
   enemy2 = new Enemy(50, [{ fireball: 10 }], "E2", "./assets/missing.jpg", {});
   stage.addEnemy(enemy2);
-  expect(stage.enemies_list).toContain(enemy2);
-  expect(stage.enemies_list.length).toBe(2);
+  expect(stage.enemies).toContain(enemy2);
+  expect(stage.enemies.length).toBe(2);
 });
 
 test("attacking and changing turns updates the metadata", () => {
@@ -61,14 +61,14 @@ test("attacking and changing turns updates the metadata", () => {
   enemies = [enemy1];
   curr_round = 1;
   curr_turn = player;
-  stage = new Stage(card_deck, player, enemies, curr_round, curr_turn);
+  stage = new Stage(player, enemies, []);
   const fireball = CARDLIST.pick("Fireball");
-  player.currentMove.push({ fireball, target: enemy1 });
-  player.useMove();
+  player.currentMove.push({type: fireball.type,effects: fireball.effects ,target: enemy1 });
+  stage.passTurn();
   stage.damage_dealt += 100 - enemy1.health;
-  expect(enemy1.health).toBe(enemy1.maxHealth - fireball.damage);
-  expect(stage.damage_dealt).toBe(fireball.damage);
-  expect(stage.enemies_destroyed).toBe(0);
+  expect(enemy1.health).toBe(enemy1.maxHealth - fireball.effects.damage);
+  expect(stage.stats.damageDone).toBe(fireball.effects.damage);
+  expect(stage.enemies.length).toBe(1);
   stage.nextTurn(player, enemy1);
-  expect(stage.curr_turn).toBe(enemy1);
+  expect(stage.turn).toBe(enemy1);
 });
